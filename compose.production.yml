@@ -13,7 +13,7 @@ services:
     depends_on:
       - db
       - redis
-    command: bundle exec puma -C config/puma.rb
+    command: bash -lc "mkdir -p tmp/pids tmp/cache tmp/sockets && bundle exec puma -C config/puma.rb"
 
   db:
     image: postgres:15
