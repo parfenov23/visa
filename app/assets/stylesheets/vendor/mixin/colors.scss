@@ -1,0 +1,108 @@
+$red:      #9C0001;
+$green_g:  #10f09f;
+$green_n:  #0ED421;
+$blue_origin:#004D81;
+$blue_h:   #3e30eb;
+$blue_l:   #f2f5fd;
+$blue_2:   #657790;
+$blue_3:   #1977E5;
+$orange:   #fbb040;
+$orange_h: #fa763e;
+// $purp:     #f083ec;
+$purp_2:   #5C15CE;
+$turquoise:#10F09F;
+$border:    #B7BABE;
+
+//site colors
+$main_color: #004D81;
+$main_color2: #FBB040;
+$main_color3: #657791;
+$green: #10F09F;
+
+$black: #000;
+$light_black: #39414E;
+$dark: #111;
+$dark2: #4d4d4d;
+$grey: #cccccc;
+$grey_2: #dfdfdf;
+$grays: #999999;
+$light_grey: #F4F4F4;
+$light_greys: #dedede;
+$dark_grey: #788394;
+$black_gray: #808080;
+$light_blue: #EAEFFC;
+$light_yellow: #F7FFEC;
+$primary: #C6D0EE;
+///
+$women_color: #DC78D8;
+$male_color: #325FEB;
+
+$bunker_color: #202327;
+$pink: #E0258A;
+
+$light_blue_air: #eaeffc;
+
+$body:     #39414e;
+$caprion:  #788394;
+$text_2:   #657790;
+
+$telega: #419FD9;
+
+$success: #52B530;
+$danger: #E85656;
+
+$gray:     #808080;
+$gray_l:   #dedede;
+$gray_li:  #b3b3b3;
+$border:   #B7BABE;
+
+$ok-border: #52B530;
+$ok-bg: #DEF6D5;
+$war-border: #F9AA34;
+$war-bg: #FDE4BF;
+$error-border: #E85656;
+$error-bg: #F2D1D1;
+
+@mixin insta_text {
+  @include gradient-horizontal(#E91662, #EA6D13);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+$slider_bg: #bcbcbc;
+$progress_bg: #eaeaea;
+
+@mixin rgba-bg($property, $background: transparent, $opacity: 1) {
+  #{$property}: rgba($background, $opacity);
+}
+
+@mixin rgba-cr($property, $color: transparent, $opacity: 1) {
+  #{$property}: rgba($color, $opacity);
+}
+
+@mixin brd-cr($property, $border-color: transparent, $opacity: 1) {
+  #{$property}: rgba($border-color, $opacity);
+}
+
+@mixin placeholder($color) {
+  &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: $color;
+  }
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: $color;
+    opacity: 1;
+  }
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: $color;
+    opacity: 1;
+  }
+  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: $color;
+  }
+  &::-ms-input-placeholder { /* Microsoft Edge */
+    color: $color;
+  }
+  &::placeholder { /* Most modern browsers support this now. */
+    color: $color;
+  }
+}

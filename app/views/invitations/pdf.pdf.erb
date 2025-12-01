@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Invitation</title>
+  <style>
+      * { box-sizing: border-box; }
+
+      body {
+          font-family: "DejaVu Sans", Arial, sans-serif;
+          font-size: 11px;
+          margin: 15px 20px;
+      }
+
+      h1,h2,h3,h4,h5,h6 {
+          margin: 0;
+          padding: 0;
+      }
+
+      .small   { font-size: 10px; }
+      .b       { font-weight: bold; }
+      .center  { text-align: center; }
+      .mt-5    { margin-top: 5px; }
+      .mt-10   { margin-top: 10px; }
+      .mt-15   { margin-top: 15px; }
+      .mt-20   { margin-top: 20px; }
+      .mt-30   { margin-top: 30px; }
+
+      /* общий лэйаут: две колонки на странице */
+      table.layout {
+          width: 100%;
+          border-collapse: collapse;
+      }
+
+      td.col {
+          width: 57%;
+          vertical-align: top;
+          padding: 0 8px;
+      }
+
+      .header-left {
+          text-align: center;
+          font-weight: bold;
+          font-size: 14px;
+          margin-bottom: 8px;
+          line-height: 1.3;
+      }
+
+      .header-right {
+          text-align: left;
+          font-weight: bold;
+          font-size: 13px;
+          line-height: 1.4;
+          margin-bottom: 10px;
+
+          width: 80%;
+      }
+
+      .header-right .title{
+          /*margin-right: auto;*/
+          /*margin-left: auto;*/
+          text-align: center;
+      }
+
+      table.inner {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #000;
+      }
+
+      table.inner td,
+      table.inner th {
+          border: 1px solid #000;
+          padding: 3px 4px;
+          vertical-align: top;
+          font-size: 14px;
+      }
+
+      table.inner th {
+          font-weight: bold;
+          text-align: left;
+      }
+
+      .nowrap { white-space: nowrap; }
+
+      .company-block {
+          margin-top: 10px;
+          line-height: 1.4;
+          font-size: 14px;
+      }
+
+      .director-block {
+          margin-top: 15px;
+          position: relative;
+          height: 120px;
+          font-size: 14px;
+      }
+
+      .director-line {
+          margin-top: 65px;
+      }
+
+      .stamp-img {
+          position: absolute;
+          left: 20px;   /* можно подгонять */
+          top: 18px;   /* можно подгонять */
+          height: 160px;
+          opacity: 0.9;
+      }
+
+      .sign-img {
+          position: absolute;
+          left: 55px;   /* подогнать под печать */
+          top: 35px;
+          height: 55px;
+      }
+
+      .logo-img {
+          height: 70px;
+      }
+  </style>
+</head>
+<body>
+<%
+  # Номера документов — подстрой под свою модель, если есть отдельные поля
+  invitation_number = @invitation.current_id
+
+  voucher_number = invitation_number
+  invoice_number =
+    if @invitation.respond_to?(:invoice_number)
+      @invitation.invoice_number
+    else
+      invitation_number
+    end
+
+  # Пол
+  sex_text_en =
+    case @invitation.sex.to_s.downcase
+    when "1", "male", "м", "муж", "m" then "Мужской"
+    when "0", "female", "ж", "жен", "f" then "Женский"
+    else ""
+    end
+
+  # Маршрут/отели слева (русский)
+  hotels_ru = (@invitation.hotels_ru || @invitation.hotels || "").to_s
+  hotels_ru_html = hotels_ru.gsub(/\r\n|\r|\n/, "<br>").html_safe
+
+  # Отели справа (англ) – если нет отдельного поля, используем то же
+  hotels_en = (@invitation.hotels || @invitation.hotels || "").to_s
+  hotels_en_html = hotels_en.gsub(/\r\n|\r|\n/, "<br>").html_safe
+
+  # Город/страна
+  city_ru = @invitation.cities.to_s.presence || "MOSCOW"
+  city_en = (@invitation.respond_to?(:cities_en) && @invitation.cities_en.present?) ? @invitation.cities_en : city_ru
+
+  # Даты
+  arrival_date    = @invitation.arival_date
+  departure_date  = @invitation.departure_date
+  birth_date      = @invitation.birthDate
+
+  # Даты подписи
+  print_date =
+    if @invitation.respond_to?(:issued_on) && @invitation.issued_on.present?
+      @invitation.issued_on
+    else
+      @invitation.created_at.to_date rescue Date.today
+    end
+%>
+
+<table class="layout">
+  <tr>
+    <!-- ЛЕВАЯ КОЛОНКА: ПОДТВЕРЖДЕНИЕ -->
+    <td class="col left" style="padding-right: 36px">
+      <div class="header-left">
+        Подтверждение<br>
+        о приеме иностранного туриста № <%= invitation_number %><br>
+        <span class="small">(Tourist Confirmation)</span>
+      </div>
+
+      <!-- Таблица: кратность/даты/цель/маршрут -->
+      <table class="inner small">
+        <tr>
+          <td class="nowrap" style="width: 50%"><b>Кратность</b> (Number of entries)</td>
+          <td>Однократная</td>
+        </tr>
+        <tr>
+          <td class="nowrap"><b>Дата въезда</b> (Date of arrival)</td>
+          <td><%= arrival_date %></td>
+        </tr>
+        <tr>
+          <td class="nowrap"><b>Выезд до</b> (Date of departure)</td>
+          <td><%= departure_date %></td>
+        </tr>
+        <tr>
+          <td class="nowrap"><b>Цель</b> (Purpose of visit)</td>
+          <td>Туризм</td>
+        </tr>
+        <tr>
+          <td>
+            <b>Маршрут и места размещения</b><br>
+            (Hotel)
+          </td>
+          <td><%= hotels_ru_html %></td>
+        </tr>
+      </table>
+
+      <!-- Таблица: персональные данные -->
+      <table class="inner small mt-10">
+        <tr>
+          <th>Фамилия Имя<br>(Surname Name)</th>
+          <th>Дата рождения<br>(Date of birth)</th>
+          <th>Пол<br>(Sex)</th>
+          <th>Номер паспорта<br>(Passport No.)</th>
+          <th>Гражданство<br>(Citizenship)</th>
+        </tr>
+        <tr>
+          <td><%= @invitation.surname %> <br><%= @invitation.name %> <%= @invitation.middlename %></td>
+          <td><%= birth_date %></td>
+          <td><%= sex_text_en %></td>
+          <td><%= @invitation.passport %></td>
+          <td><%= @invitation.citizenship_title(lang: :ru) %></td>
+        </tr>
+      </table>
+
+      <p class="mt-10 b small">
+        ТУР ОПЛАЧЕН ПОЛНОСТЬЮ
+      </p>
+
+      <div class="company-block small">
+        <span class="b">Принимающая организация, её адрес:</span><br><br>
+        ООО «ГОРОДСКОЕ БЮРО ПУТЕШЕСТВИЙ. Ф-Л3», ИНН 7705796440, ОГРН 5077746950530<br>
+        Москва, ул. Шолохова, 10, 235<br>
+        Реестровый номер В031-00161-77/02027413 от 24.03.2025<br>
+        email:<br>
+        тел: +7 901 5168990<br>
+        Дополнительные сведения: индивидуальный тур
+      </div>
+
+      <div class="director-block small">
+        Генеральный директор:
+
+        <!-- Печать и подпись СЛЕВА, как в образце -->
+        <img src="data:image/png;base64,<%= @seal_base64 %>" class="stamp-img" style="opacity: 1;">
+
+        <div class="director-line">
+          _________________________ /Маслов К.В./
+        </div>
+
+        <div class="mt-30">
+          Дата: <%= print_date.strftime('%d.%m.%Y') %>
+        </div>
+      </div>
+    </td>
+
+    <!-- ПРАВАЯ КОЛОНКА: INVOICE / VOUCHER -->
+    <td class="col right">
+      <table class="header-right">
+        <tr>
+          <td>
+            <img src="data:image/png;base64,<%= @logo_base64 %>" class="logo-img" style="opacity: 1;">
+          </td>
+          <td class="title">
+            Gorodskoye Buro Puteshestviy. F-l 3<br>
+            Reference № 02027413
+          </td>
+        </tr>
+      </table>
+
+      <table class="inner small mt-5">
+        <tr>
+          <td>
+            Voucher: №<%= voucher_number %>
+          </td>
+        </tr>
+        <tr>
+          <td class="nowrap">
+            Country / City:
+            <br>
+            Russia: <%= city_en %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Hotel: <%= hotels_en_html %>
+          </td>
+
+        </tr>
+        <tr>
+          <td>Names: <%= @invitation.surname %> <%= @invitation.name %> <%= @invitation.middlename %></td>
+        </tr>
+        <tr>
+          <td>Check in: <%= arrival_date %></td>
+        </tr>
+        <tr>
+          <td>Check out: <%= departure_date %></td>
+        </tr>
+        <tr>
+          <td>Accomodation: <%= @invitation.accomodation %></td>
+        </tr>
+        <tr>
+          <td>Meals: <%= @invitation.meals %></td>
+        </tr>
+        <tr>
+          <td>Remarks: FULLY PAID</td>
+        </tr>
+      </table>
+
+      <div class="company-block small">
+        <span class="b">Receiving company</span><br><br>
+        Gorodskoye Buro Puteshestviy. F-l 3<br>
+        Reference № 02027413<br>
+        TIN 7705796440<br>
+        119634, Sholokhova street, 10, 235, Moscow, Russia<br>
+        email: manager@russvisa.com<br>
+        Tel.: +7 901 5168990
+      </div>
+
+      <div class="director-block small">
+        CEO:
+
+        <!-- Печать и подпись СПРАВА (симметрично, можно убрать, если не нужно) -->
+        <img src="data:image/png;base64,<%= @seal_2_base64 %>" class="stamp-img" style="opacity: 1;">
+
+<!--        <img src="<%#= asset_path('signature.png') %>" class="sign-img">-->
+
+        <div class="director-line">
+          _________________________ /Maslov K.V./
+        </div>
+
+        <div class="mt-30">
+          Date: <%= print_date.strftime('%d.%m.%Y') %>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

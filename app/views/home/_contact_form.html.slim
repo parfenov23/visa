@@ -1,0 +1,152 @@
+div#imGroup_10.imHGroup.display_flex.center
+  div#imGroup_11.imVGroup
+    div#imCell_112
+      div#imCellStyle_112 data-responsive-sequence-number="26"
+        div
+          = form_with url: invitations_path,
+                  method: :post,
+                  local: true,
+                  html: { id: "invitationForm", class: "contact_form", name: "contact_form" } do
+            ul
+              li.line
+                h4
+                  | Type of invitation*
+                span.required_notification
+                  | * Denotes Required Field
+              li.w-100per
+                label for="invitation_type_id"
+                  | Select the type of invitation
+                br
+                input type="hidden" name="currency" value=@currency
+                input type="hidden" name="tariff" value=@tariff
+                select#invitation_type_id.form-control name="package" required=""
+                  - all_price_items(currency: @currency, tariff: @tariff).each do |item|
+                    - selector = item[:selector]
+                    option value=selector[:value]
+                      = raw selector[:text]
+              li.line
+                h4
+                  | Client information
+                span.required_notification
+                  | * Denotes Required Field
+              li
+                label for="surname"
+                  | Surname*:
+                br
+                input#surname type="text" name="surname" placeholder="As in passport" required=""
+                span.form_hint
+                  | As in passport
+              li
+                label for="name"
+                  | Name:
+                br
+                input#name type="text" name="name" placeholder="As in passport"
+                  span.form_hint
+                    | As in passport
+              li
+                label for="middle_name"
+                  | Middle Name:
+                br
+                input#middlename type="text" name="middlename" placeholder="As in passport"
+                span.form_hint
+                  | As in passport
+              li.w-100per
+                label for="sex"
+                  | Sex*
+                br
+                select#sex.form-control name="sex" required=""
+                  option value=""
+                    | -
+                  option value="0"
+                    | Female
+                  option value="1"
+                    | Male
+              li.clear_selector
+                label for="citizenship"
+                  | Citizenship*
+                br
+                select.form-control name="citizenship" required=""
+                  option value=""
+                    | -
+                  - Country.all.each do |country|
+                    option value=country[:code]
+                      = "#{country[:flag]} #{country[:title]}"
+
+                / label for="citizenship"
+                /   | Citizenship*:
+                / br
+                / input#citizenship type="text" name="citizenship" placeholder="As in passport" required=""
+              li.clear_selector
+                label for="birthDate"
+                  | Date of birth*:
+                br
+                input#birthDate type="text" name="birthDate" placeholder="dd.mm.yyyy" required=""
+                span.form_hint
+                  | Proper format "dd.mm.yyyy"
+              li.line
+                h4
+                  | Trip information
+                span.required_notification
+                  | * Denotes Required Field
+              li.clear_selector
+                label for="arival_date"
+                  | Date of arrival*:
+                br
+                input#arival_date type="text" name="arival_date" placeholder="dd.mm.yyyy" required=""
+                span.form_hint
+                  | Proper format "dd.mm.yyyy"
+              li.clear_selector
+                label for="departure_date"
+                  | Date of departure*:
+                br
+                input#departure_date type="text" name="departure_date" placeholder="dd.mm.yyyy" required=""
+                span.form_hint
+                  | Proper format "dd.mm.yyyy"
+              li
+                label for="passport"
+                  | Passport Number*:
+                br
+                input#passport type="text" name="passport" placeholder="As in passport" required=""
+              li
+                label for="visa_obtain_place"
+                  | Place of obtaining the visa:
+                br
+                textarea#visa_obtain_place type="text" name="visa_obtain_place" cols="40" rows="2" placeholder="Country, city with a Russian Consulate or Visa center"
+              li
+                label for="cities"
+                  | Cities of stay:
+                br
+                textarea#cities type="text" name="cities" cols="40" rows="3" placeholder="Cities of stay (if known), or specify NOT DECIDED"
+              li
+                label for="hotels"
+                  | Hotel(s):
+                br
+                textarea#hotels type="text" name="hotels" cols="40" rows="3" placeholder="Hotel(s) (if known) or Airbnb address (if known), or leave this field empty if place of stay is unknown"
+              li.line
+                h4
+                  | Contacts
+                span.required_notification
+                  | * Denotes Required Field
+              li
+                label for="offname"
+                  | Email*:
+                br
+                input#offname type="email" name="email" placeholder="john_doe@example.com" required=""
+                span.form_hint
+                  | Proper format "name@something.com"
+              li
+                label for="promocode"
+                  | Promo code:
+                br
+                textarea#promocode type="text" name="promocode" cols="40" rows="1" placeholder="If known"
+              li
+                label for="comments"
+                  | Comments:
+                br
+                textarea#comments type="text" name="comments" cols="40" rows="3" placeholder="Some additional info about your trip, for example if you travel by car etc. - optional"
+              li
+                h5.center_button
+                  | Within one hour we will send you your invitation and invoice.
+              li.display_flex.center
+                button.btn.red.big type="submit" name="submit"
+                  | GET INVITATION AND INVOICE

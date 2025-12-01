@@ -1,0 +1,36 @@
+#version: "3.9"
+#services:
+#  nginx:
+#    image: nginx:1.23.1
+#    container_name: nginx
+#    volumes:
+#      - ${DEPLOY_PATH}/current/public:/public
+#      - ${DEPLOY_PATH}/current/config/docker/nginx/nginx.${STAGE}.conf:/etc/nginx/nginx.conf
+#      - ${DEPLOY_PATH}/shared/log/nginx:/log
+#      - ${DEPLOY_PATH}/shared/letsencrypt:/etc/letsencrypt
+#      - ${DEPLOY_PATH}/shared/certbot:/var/www/certbot
+#      - ${DEPLOY_PATH}/shared/letsencrypt/log/nginx:/var/log/nginx
+#    ports:
+#      - '80:80'
+#      - '443:443'
+#    restart: always
+#  rails:
+#    image: app/rails:7.0
+#    container_name: rails
+#    build:
+#      context: .
+#      dockerfile: config/docker/rails/DockerFile
+#    environment:
+#      - BUNDLE_PATH=/bundle
+#      - TZ=Europe/Moscow
+#      - RAILS_SERVICE_HOST=158.160.20.5
+#    volumes:
+#      - ${RELEASE_PATH}:/app:Z
+#      - ${DEPLOY_PATH}/shared/log/rails:/app/log
+#      - ${DEPLOY_PATH}/shared/log/puma:/app/log/puma
+#      - ${DEPLOY_PATH}/shared/public/attachments:/app/public/attachments
+#      - ${DEPLOY_PATH}/shared/db/pg/backups:/backups
+#      - ${DEPLOY_PATH}/shared/db/pg/yandex_cloud_postgres.crt:/yandex_cloud_postgres.crt
+#      - ${DEPLOY_PATH}/shared/db/opensearch/yandex_cloud_opensearch.crt:/app/yandex_cloud_opensearch.crt
+#    command: /bin/bash -c 'ruby bin/rails oapi:fetch store=true; ruby bin/rails db:create; ruby bin/rails db:create:clickhouse; ruby bin/rails db:migrate; rm -f .overmind-rails.sock; bundle exec overmind start -f Procfile_prod -s .overmind-rails.sock -T'
+#    restart: always

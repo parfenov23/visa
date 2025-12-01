@@ -1,0 +1,20 @@
+FROM ruby:3.1.3
+ENV APP_HOME /app
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+ENV DEBCONF_NOWARNINGS yes
+
+RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash -
+RUN apt-get update && apt-get -y install cron nodejs libcurl4-openssl-dev cmake libjemalloc2
+
+ENV LD_PRELOAD='/usr/lib/x86_64-linux-gnu/libjemalloc.so.2'
+
+ENV BUNDLE_PATH /bundle
+RUN gem install bundler -v 2.5.4 && gem install foreman overmind
+RUN bundle config set --local without 'development test'
+COPY ./Gemfile.lock $APP_HOME
+COPY ./Gemfile $APP_HOME
+RUN bundle install --jobs 4
+
+CMD tail -f /dev/null

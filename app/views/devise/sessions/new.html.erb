@@ -1,0 +1,26 @@
+<div id="background">
+  <div id="auth-form-wrapper">
+    <div id="auth-form">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div id="auth-inputs">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+
+          <%= f.label :password %><br />
+          <%= f.password_field :password, autocomplete: "current-password" %>
+
+          <% if devise_mapping.rememberable? %>
+              <div id="remember-me">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me %>
+              </div>
+          <% end %>
+
+          <%= f.submit "Log in" %>
+        </div>
+        <div id="app-version">VERSION INFO: <%= $VERSION %></div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%#= render "devise/shared/links" %>

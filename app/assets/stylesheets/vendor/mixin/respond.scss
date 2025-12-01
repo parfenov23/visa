@@ -1,0 +1,165 @@
+// OLD
+$old_mobile: 320px;
+$mobile: 960px;
+$tablet: 1279px;
+$notebook: 1024px;
+$laptop: 1400px;
+$desktop: 1600px;
+$max_width: 1200px;
+
+@mixin respond-to($media) {
+
+  @if $media == mobile {
+    @media only screen and (max-width: $mobile - 1) {
+      @content;
+    }
+  }
+  @else if $media == old_mobile {
+    @media only screen and (max-width: $old_mobile) {
+      @content;
+    }
+  }
+  @else if $media == notebook {
+    @media only screen and (min-width: $mobile) and (max-width: $tablet) {
+      @content;
+    }
+  }
+  @else if $media == sort_tablet {
+    @media only screen and (min-width: $notebook) and (max-width: $tablet) {
+      @content;
+    }
+  }
+  @else if $media == laptop {
+    @media only screen and (min-width: $mobile) and (max-width: $laptop - 1) {
+      @content;
+    }
+  }
+  @else if $media == desktop {
+    @media only screen and (min-width: $laptop) {
+      @content;
+    }
+  }
+  @else if $media == desktop_average {
+    @media only screen and (min-width: $max_width + 81) and (max-width: $desktop - 1) {
+      @content;
+    }
+  }
+  @else if $media == hover {
+    @media only screen and (min-width: $mobile) {
+      @content;
+    }
+  }
+}
+
+// NEW
+$mobile_small: 320px;
+$mobile_old: 343px;
+$mobile_medium: 768px;
+$mobile_large: 1024px;
+$desktop_small: 1200px;
+$desktop_medium: 1400px;
+$desktop_large: 1600px;
+
+@mixin adaptive($media) {
+
+  @if $media == mobile {
+    @media only screen and (min-width: $mobile_small) and (max-width: $mobile_large - 1) {
+      @content;
+    }
+  } @else if $media == mobile_b {
+    @media only screen and (min-width: $mobile_small) and (max-width: $mobile_medium) {
+      @content;
+    }
+  } @else if $media == mobile_old {
+    @media only screen and (min-width: $mobile_small) and (max-width: $mobile_old) {
+      @content;
+    }
+  } @else if $media == tablet {
+    @media only screen and (min-width: $mobile_large) and (max-width: $desktop_small) {
+      @content;
+    }
+  } @else if $media == tablet_l {
+    @media only screen and (min-width: $mobile_medium) and (max-width: $mobile_large - 1) {
+      @content;
+    }
+  } @else if $media == tablet_b {
+    @media only screen and (min-width: $mobile_medium) and (max-width: $desktop_small - 1) {
+      @content;
+    }
+  } @else if $media == desktop_small {
+    @media only screen and (min-width: $desktop_small + 1) and (max-width: $desktop_medium) {
+      @content;
+    }
+  } @else if $media == desktop_medium {
+    @media only screen and (min-width: $desktop_medium + 1) and (max-width: $desktop_large) {
+      @content;
+    }
+  } @else if $media == desktop_large {
+    @media only screen and (min-width: $desktop_large) {
+      @content;
+    }
+  } @else if $media == hover {
+    @media only screen and (min-width: $mobile_large) {
+      @content;
+    }
+  } @else if $media == laptop {
+    @media only screen and (max-width: $desktop_medium) {
+      @content;
+    }
+  } @else if $media == hd {
+    @media only screen and (min-width: $desktop_small) {
+      @content;
+    }
+  } @else if $media == ultra {
+    @media only screen and (min-width: $desktop_large) {
+      @content;
+    }
+  }
+}
+
+
+@mixin respond {
+  padding: 0;
+  margin: 0 auto;
+
+  @include adaptive(mobile_old) {
+    width: calc(100% - 12px);
+  }
+
+  @include adaptive(mobile) {
+    width: calc(100% - 32px);
+  }
+
+  @include adaptive(tablet) {
+    width: calc(100% - 40px);
+    padding-left: 82px;
+  }
+
+  @include adaptive(desktop_small) {
+    max-width: calc(100% - 48px);
+    padding-left: 82px;
+  }
+
+  @include adaptive(desktop_medium) {
+    max-width: 1374px;
+    padding-left: 82px;
+  }
+
+  @include adaptive(desktop_large) {
+    max-width: 1400px;
+    padding-left: 82px;
+  }
+}
+
+
+@mixin adaptive_for_funds_tracking {
+  @media only screen and (max-width: 530px) {
+    @content;
+  }
+}
+
+@mixin adaptive_for_funds_tracking_small {
+  @media only screen and (max-width: 340px) {
+    @content;
+  }
+}

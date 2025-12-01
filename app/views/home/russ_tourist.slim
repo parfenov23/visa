@@ -1,0 +1,46 @@
+div#imHeaderBg
+div#imFooterBg
+div#imPage
+  div#imHeader
+    div#imHeaderObjects
+      div#imHeader_imTextObject_03_wrapper.template-object-wrapper
+        div#imHeader_imCell_3
+          div#imHeader_imCellStyle_3
+            div#imHeader_imTextObject_03
+              div#imHeader_imTextObject_03_tab0.text-tab-content style=""
+                div.text-inner
+                  div style="text-align: center;"
+                    span.ff1 style="line-height: 23px;"
+                      span.fs10.cf1
+                        | invitation to Russia
+      div#imHeader_imTextObject_04_wrapper.template-object-wrapper
+        div#imHeader_imCell_4
+          div#imHeader_imCellStyleGraphics_4
+          div#imHeader_imCellStyle_4
+            div#imHeader_imTextObject_04
+              div#imHeader_imTextObject_04_tab0.text-tab-content style=""
+                div.text-inner
+                  div style="text-align: center;"
+                    span.ff1 style="line-height: 23px;"
+                      span.fs10.cf1
+                        | Online
+      div#imHeader_imObjectImage_05_wrapper.template-object-wrapper
+        div#imHeader_imCell_5
+          div#imHeader_imCellStyleGraphics_5
+          div#imHeader_imCellStyle_5
+            a href="/" onclick="return x5engine.utils.location('/', null, false)"
+              = image_tag("logo_up_03.png", id: "imHeader_imObjectImage_05")
+
+
+  a.imHidden href="#imGoToCont" title="Skip the main menu"
+    | Go to content
+  a#imGoToMenu href="/"
+  p.imHidden
+    | Main menu:
+  = render 'header_menu'
+  div#imContentContainer
+    div#imContent
+      a#imGoToCont href="/"
+      div#imGroup_1.imVGroup
+      = render "voucher"
+    = render "footer"

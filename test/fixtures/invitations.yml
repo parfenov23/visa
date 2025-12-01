@@ -1,0 +1,41 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  invitation_type_id: MyString
+  surname: MyString
+  name: MyString
+  middlename: MyString
+  sex: MyString
+  citizenship: MyString
+  birthDate: MyString
+  arival_date: MyString
+  departure_date: MyString
+  passport: MyString
+  visa_obtain_place: MyText
+  cities: MyText
+  hotels: MyText
+  offname: MyString
+  email: MyString
+  website: MyString
+  promocode: MyString
+  comments: MyText
+
+two:
+  invitation_type_id: MyString
+  surname: MyString
+  name: MyString
+  middlename: MyString
+  sex: MyString
+  citizenship: MyString
+  birthDate: MyString
+  arival_date: MyString
+  departure_date: MyString
+  passport: MyString
+  visa_obtain_place: MyText
+  cities: MyText
+  hotels: MyText
+  offname: MyString
+  email: MyString
+  website: MyString
+  promocode: MyString
+  comments: MyText

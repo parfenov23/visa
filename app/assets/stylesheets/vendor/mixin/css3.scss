@@ -1,0 +1,68 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin box-shadow($shadow: 0 1px 2px 0px rgba(0,0,0,0.2)) {
+  -webkit-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
+@mixin blur($blur) {
+  -webkit-filter: blur($blur);
+  -moz-filter: blur($blur);
+  filter: blur($blur);
+}
+
+@mixin transform($transform) {
+  -moz-transform: $transform;
+  -webkit-transform: $transform;
+  -o-transform: $transform;
+  -ms-transform: $transform;
+  transform: $transform;
+}
+
+@mixin transition($target: all, $time: 250ms, $ease: ease-in-out) {
+  -webkit-transition: $target $time $ease;
+  -moz-transition: $target $time $ease;
+  -o-transition: $target $time $ease;
+  -ms-transition: $target $time $ease;
+  transition: $target $time $ease;
+}
+
+@mixin transition-time($time) {
+  -webkit-transition: all $time ease-in-out;
+  -moz-transition: all $time ease-in-out;
+  -o-transition: all $time ease-in-out;
+  -ms-transition: all $time ease-in-out;
+  transition: all $time ease-in-out;
+}
+
+@mixin transition-delay($transition, $delay) {
+  -webkit-transition: $transition;
+  -webkit-transition-delay: $delay;
+  -o-transition: $transition;
+  -o-transition-delay: $delay;
+  -moz-transition: $transition;
+  -moz-transition-delay: $delay;
+  transition: $transition;
+  transition-delay: $delay;
+}
+
+@mixin user-select($uselect) {
+  -webkit-touch-callout: $uselect;
+  -webkit-user-select: $uselect;
+  -khtml-user-select: $uselect;
+  -moz-user-select: $uselect;
+  -ms-user-select: $uselect;
+  user-select: $uselect;
+}
+
+@mixin mobile-scroll {
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}

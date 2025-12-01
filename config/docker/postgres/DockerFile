@@ -1,0 +1,2 @@
+FROM postgres:12.9-alpine
+RUN apk add p7zip

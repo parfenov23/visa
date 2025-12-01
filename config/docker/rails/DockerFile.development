@@ -1,0 +1,33 @@
+FROM ruby:3.1
+
+ENV APP_HOME=/app
+ENV DEBCONF_NOWARNINGS yes
+
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
+
+RUN mkdir -p /tmp && chmod 1777 /tmp
+
+# Node.js + системные зависимости
+RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash -
+RUN apt-get update && apt-get install -y \
+  nodejs \
+  libcurl4-openssl-dev \
+  cmake \
+  build-essential \
+  libffi-dev \
+  apt-transport-https \
+  ca-certificates \
+  dirmngr \
+  && rm -rf /var/lib/apt/lists/*
+
+# Ruby
+ENV BUNDLE_PATH /bundle
+RUN gem install bundler -v 2.5.4 && gem install foreman overmind
+RUN bundle config set force_ruby_platform true
+
+# Копируем только для установки зависимостей
+COPY ./Gemfile.lock ./Gemfile $APP_HOME/
+RUN bundle install --jobs 4
+
+CMD tail -f /dev/null

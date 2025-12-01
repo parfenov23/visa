@@ -1,0 +1,100 @@
+div#imHeaderBg
+div#imFooterBg
+div#imPage
+  div#imHeader
+    div#imHeaderObjects
+      div#imHeader_imTextObject_03_wrapper.template-object-wrapper
+        div#imHeader_imCell_3
+          div#imHeader_imCellStyle_3
+            div#imHeader_imTextObject_03
+              div#imHeader_imTextObject_03_tab0.text-tab-content style=""
+                div.text-inner
+                  div style="text-align: center;"
+                    span.ff1 style="line-height: 23px;"
+                      span.fs10.cf1
+                        | invitation to Russia
+      div#imHeader_imTextObject_04_wrapper.template-object-wrapper
+        div#imHeader_imCell_4
+          div#imHeader_imCellStyleGraphics_4
+          div#imHeader_imCellStyle_4
+            div#imHeader_imTextObject_04
+              div#imHeader_imTextObject_04_tab0.text-tab-content style=""
+                div.text-inner
+                  div style="text-align: center;"
+                    span.ff1 style="line-height: 23px;"
+                      span.fs10.cf1
+                        | Online
+      div#imHeader_imObjectImage_05_wrapper.template-object-wrapper
+        div#imHeader_imCell_5
+          div#imHeader_imCellStyleGraphics_5
+          div#imHeader_imCellStyle_5
+            a href="/" onclick="return x5engine.utils.location('/', null, false)"
+              = image_tag("logo_up_03.png", id: "imHeader_imObjectImage_05")
+              / img#imHeader_imObjectImage_05 src="assets/logo_up_03_quhrypzb.png" title="" alt=""
+
+
+  a.imHidden href="#imGoToCont" title="Skip the main menu"
+    | Go to content
+  a#imGoToMenu href="/"
+  p.imHidden
+    | Main menu:
+  = render 'header_menu'
+  div#imContentContainer
+    div#imContentGraphics
+    div#imContent
+      a#imGoToCont href="/"
+      div#imGroup_1.imVGroup
+        = render "company_info"
+        = render "header_social"
+        = render "price_info"
+        = render "advantages"
+        div#imPageRow_7.imPageRow
+          div#imPageRowGraphics_7
+          div#imPageRowContent_7.imContentDataContainer
+            = render 'prices_block1'
+            = render 'prices_block2'
+            .position-relative
+              .text-inner.pt-48px
+                .font-28px.text_center.mb-20px
+                  span
+                    | FILL OUT THE
+                  span.font-.red.mr-4px.ml-4px
+                    | APPLICATION FORM
+            = render 'contact_form'
+        = render 'reviews'
+        = render "banner_steps"
+        = render "faq"
+        = render "ask_your"
+        = render "contacts"
+        div#imPageRow_12.imPageRow
+          div#imPageRowContent_12.imContentDataContainer
+            div#imGroup_19.imEGroup
+      div#imFooPad
+      div#imBtMnContainer.imContentDataContainer
+        div#imBtMn
+          a href="#about" onclick="return x5engine.utils.location('#about', null, false)"
+            | ABOUT US
+          | |
+          a href="#faq" onclick="return x5engine.utils.location('#faq', null, false)"
+            | FAQ
+          | |
+          a href="license.html"
+            | LICENSE
+          | | PRICING |
+          a href="#reviews" onclick="return x5engine.utils.location('#reviews', null, false)"
+            | REVIEWS
+          | |
+          a href="#contact" onclick="return x5engine.utils.location('#contact', null, false)"
+            | CONTACTS
+          | |
+          a href="imsitemap.html"
+            | General Site Map
+      div.imClear
+  = render "footer"
+span.imHidden
+  a href="#imGoToCont" title="Read this page again"
+    | Back to content
+  | |
+  a href="#imGoToMenu" title="Remain on this page"
+    | Back to main menu
+

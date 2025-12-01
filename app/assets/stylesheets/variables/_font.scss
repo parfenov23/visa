@@ -1,0 +1,71 @@
+@import "variables/size";
+// Font family
+$ff: 'Raleway';
+$icon: 'Material Symbols Rounded';
+
+// Font weight
+$fw-l: 300;
+$fw-r: 400;
+$fw-m: 500;
+$fw-sb: 600;
+$fw-b: 700;
+
+// icons
+$icon-x3: 12px;
+$icon-x4: 16px;
+$icon-x5: 20px;
+$icon-x6: 24px;
+$icon-x7: 28px;
+$icon-x8: 32px;
+
+// Text transfortm
+$ls: -0.02em;
+$td-u: underline;
+$td-lt: line-through;
+$tc-u: uppercase;
+$tc-c: capitalize;
+
+// Title
+$title-x12: #{$fw-b} #{$zui-48}/#{$zui-48} #{$ff};
+$title-x14: #{$fw-b} #{$zui-56}/#{$zui-56} #{$ff};
+$title-x16: #{$fw-b} #{$zui-64}/#{$zui-64} #{$ff};
+
+$headline-x5: #{$fw-b} #{$zui-20}/#{$zui-28} #{$ff};
+$headline-x6: #{$fw-b} #{$zui-24}/#{$zui-32} #{$ff};
+$headline-x8: #{$fw-b} #{$zui-32}/#{$zui-40} #{$ff};
+$headline-x10: #{$fw-b} #{$zui-40}/#{$zui-40} #{$ff};
+
+// Subline
+$subline-x5: #{$fw-r} #{$zui-20}/#{$zui-28} #{$ff};
+$subline-x6: #{$fw-r} #{$zui-24}/#{$zui-32} #{$ff};
+$subline-x8: #{$fw-r} #{$zui-32}/#{$zui-40} #{$ff};
+$subline-x10: #{$fw-r} #{$zui-40}/#{$zui-40} #{$ff};
+
+// Paragraphs
+$body-normal-x4: #{$fw-m} #{$zui-16}/#{$zui-24} #{$ff};
+$normal-x4: #{$fw-m} #{$zui-16}/#{$zui-24} #{$ff};
+$body-bold-x4: #{$fw-b} #{$zui-16}/#{$zui-24} #{$ff};
+$bold-x4: #{$fw-b} #{$zui-16}/#{$zui-24} #{$ff};
+$body-normal-x5: #{$fw-m} #{$zui-20}/#{$zui-28} #{$ff};
+$normal-x5: #{$fw-m} #{$zui-20}/#{$zui-28} #{$ff};
+$body-bold-x5: #{$fw-b} #{$zui-20}/#{$zui-28} #{$ff};
+$bold-x5: #{$fw-b} #{$zui-20}/#{$zui-28} #{$ff};
+
+$normal-x5: #{$fw-r} #{$zui-20}/#{$zui-24} #{$ff};
+$bold-x5: #{$fw-b} #{$zui-20}/#{$zui-24} #{$ff};
+$caption-normal-x3: #{$fw-r} #{$zui-12}/#{$zui-20} #{$ff};
+$normal-x3: #{$fw-r} #{$zui-12}/#{$zui-20} #{$ff};
+$caption-normal-x3-5: #{$fw-r} #{$zui-14}/#{$zui-20} #{$ff};
+$caption-bold-x3: #{$fw-b} #{$zui-12}/#{$zui-20} #{$ff};
+$bold-x3: #{$fw-b} #{$zui-12}/#{$zui-20} #{$ff};
+$normal-x35: #{$fw-r} #{$zui-14}/#{$zui-20} #{$ff};
+$bold-x35: #{$fw-b} #{$zui-14}/#{$zui-20} #{$ff};
+$caption-normal-x4: #{$fw-r} #{$zui-16}/#{$zui-24} #{$ff};
+$normal-x4: #{$fw-r} #{$zui-16}/#{$zui-24} #{$ff};
+$caption-bold-x4: #{$fw-b} #{$zui-16}/#{$zui-24} #{$ff};
+$bold-x4: #{$fw-b} #{$zui-16}/#{$zui-24} #{$ff};
+
+// Button
+$large: #{$fw-sb} #{$zui-24}/#{$zui-24} #{$ff};
+$middle: #{$fw-sb} #{$zui-20}/#{$zui-20} #{$ff};
+$small: #{$fw-m} #{$zui-16}/#{$zui-16} #{$ff};

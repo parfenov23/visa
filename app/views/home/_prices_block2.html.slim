@@ -1,0 +1,34 @@
+div#imGroup_9.imHGroup.display_flex.center.wrap
+  - all_price_items(currency: @currency, tariff: @tariff).each do |block_price|
+    - if !block_price[:hide]
+      .price_item class=(block_price[:popular] ? "popular" : "")
+        - if block_price[:title].present?
+          .title.h-48px.text_vertical_center = block_price[:title]
+        .content
+          div.position-relative.display_flex.column.h-100per
+            div.description.mb-36px
+              div
+                span.font-24px
+                  = raw block_price[:description]
+              span
+                span.font-14px
+                  = raw block_price[:last_desc]
+            .amount.bolder.mb-36px
+              span
+                = raw "#{block_price[:currency]} #{block_price[:price]}"
+
+            ul.text_left.mb-36px
+              - block_price[:li].each do |li|
+                li
+                  span
+                    = raw li
+
+            .bottom_info style="margin-top: auto;"
+              .text-center.mb-12px
+                a.btn.large class=(block_price[:popular] ? "red" : "blue") href="#form" onclick="return x5engine.utils.location('#form', null, false)"
+                  |FILL OUT THE FORM
+              .text_center
+                = image_tag("paypal.png", class: "image-1")
+                = image_tag("mastercard.png", class: "image-2")
+                = image_tag("visa.png", class: "image-3")
+                = image_tag("american.png", class: "image-4")

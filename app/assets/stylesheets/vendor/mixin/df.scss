@@ -1,0 +1,318 @@
+@import "colors", "css3";
+
+@mixin df($fd,$jc,$ai) {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: $fd;
+  -ms-flex-direction: $fd;
+  flex-direction: $fd;
+  -webkit-box-pack: $jc;
+  -webkit-justify-content: $jc;
+  -ms-flex-pack: $jc;
+  justify-content: $jc;
+  -webkit-box-align: $ai;
+  -webkit-align-items: $ai;
+  -ms-flex-align: $ai;
+  align-items: $ai;
+}
+
+@mixin normalize(){
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  outline: none;
+  @include set_font_raleway($important: false);
+}
+
+@mixin block-material($border){
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  border: 0;
+  border-radius: $border;
+  -webkit-border-radius: $border;
+  //border-top-left-radius: $border !important;
+  //border-top-right-radius: $border !important;
+}
+
+@mixin set_focus(){
+  &:focus, &:focus-within{
+    -webkit-box-shadow:inset 0px 0px 0px 2px $dark_grey;
+    -moz-box-shadow:inset 0px 0px 0px 2px $dark_grey;
+    box-shadow:inset 0px 0px 0px 2px $dark_grey;
+  }
+}
+
+@mixin include_animate_hover(){
+  position: relative;
+  overflow: hidden;
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    -webkit-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-border-top-right-radius: 100px;
+    border-top-right-radius: 100px;
+  }
+  &:hover {
+    &:after {
+      -webkit-transform: translateX(0);
+      -ms-transform: translateX(0);
+      transform: translateX(0);
+      opacity: 1;
+      -webkit-border-top-right-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+  }
+  &[class*=-white] {
+    &:hover {
+      color: #111;
+    }
+    &:after {
+      background-color: #fff;
+    }
+  }
+  &[class*=-orange]{
+    &:hover {
+      color: #111;
+    }
+    &:after {
+      background-color: $main_color2;
+    }
+  }
+  &[class*=-blue]{
+    &:hover {
+      color: #fff;
+    }
+    &:after {
+      background-color: $main_color;
+    }
+  }
+  &[class*=-black]{
+    &:hover {
+      color: #fff;
+    }
+    &:after {
+      background-color: $light_black;
+    }
+  }
+  &[class*=-red]{
+    &:hover {
+      color: #fff;
+    }
+    &:after {
+      background-color: $red;
+    }
+  }
+}
+
+@mixin text_count_line($count){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $count;
+  -webkit-box-orient: vertical;
+  @include break_word();
+}
+
+@mixin text_count_gradient($width,$width_mob,$bg){
+  width: #{$width}px;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+
+  @include mq(mobile) {
+    width: #{$width_mob}px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: $zui-20;
+    height: $zui-100p;
+    background: linear-gradient(270.00deg, rgba($bg, 1) 0%,rgba($bg, 0) 100%);
+  }
+}
+
+@mixin break_word(){
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+@mixin set_font_raleway($important: false, $line-height: 120%, $mobile-line-height: 140%){
+  @if $important {
+    font-family: 'Raleway', sans-serif !important;
+  } @else {
+    font-family: 'Raleway', sans-serif;
+  }
+  line-height: $line-height;
+  font-feature-settings: 'pnum' on, 'lnum' on, 'liga' off;
+  @include respond-to(mobile) {
+    line-height: $mobile-line-height;
+  }
+}
+
+@mixin set_input_border($color: $dark_grey){
+  box-shadow: inset 0 0 0 2px $color;
+}
+
+@mixin block_shadow {
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5), 0px 2px 4px rgba(34, 34, 34, 0.12);
+}
+
+@mixin block($color: $white, $padding: 16px, $br: 8px) {
+  background: $color;
+  box-sizing: border-box;
+  padding: $padding;
+  @include border-radius($br);
+  @include block_shadow;
+}
+
+@mixin content_center($flow: column){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: $flow;
+}
+
+@mixin adaptive_text($size: 24px){
+  font-size: $size;
+
+  @include respond-to(mobile) {
+    font-size: ($size - 6px);
+  }
+}
+
+// @mixin tag {
+//   .tag {
+//     display: flex;
+//     flex-wrap: wrap;
+
+//     &-item {
+//       color: $white;
+//       padding: 8px 16px;
+//       margin: 16px 16px 0 0;
+//       background: $caprion;
+//       @include transition;
+//       @include border-radius(8px);
+//       @include raleway(12px, 12px, 500);
+
+//       @include adaptive(mobile) {
+//         margin-top: 8px;
+//       }
+
+//       @include adaptive(hover) {
+
+//         &:hover {
+//           background: $headline;
+//         }
+//       }
+
+//       span {
+//         color: $light-blue-air;
+//       }
+//     }
+//   }
+// }
+
+@mixin border($bt: 1px, $br: 1px, $bb: 1px, $bl: 1px, $color: $caprion, $opacity: 1 ) {
+  border-top: $bt solid $color;
+  border-right: $br solid $color;
+  border-bottom: $bb solid $color;
+  border-left: $bl solid $color;
+  @include brd-cr(border-color, $color, $opacity);
+}
+
+@mixin no_scroll {
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+
+  -ms-overflow-style: none; // IE 10
+  overflow: -moz-scrollbars-none; // FF
+}
+
+@mixin resize {
+
+  &::-webkit-resizer {
+    background: asset_url("icons/resize.svg") 0 0 no-repeat;
+    background-size: 9px;
+  }
+}
+
+@mixin amount {
+
+  &.ru {
+    padding-right: 4px;
+  }
+
+  &.en {
+    padding-left: 4px;
+  }
+
+  &.ua {
+    padding-right: 4px;
+  }
+}
+
+@mixin grid($columns, $rows, $gap) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: $rows;
+  gap: $gap;
+}
+
+@mixin flex($first: row, $second: flex-start, $third: flex-start, $fourth: null) {
+  @if $fourth == null {
+      display: flex;
+      flex-direction: $first;
+      justify-content: $second;
+      align-items: $third;
+  } @else {
+      display: $first;
+      flex-direction: $second;
+      justify-content: $third;
+      align-items: $fourth;
+  }
+}
+
+@mixin tbl($gap: 0px, $fixed-widths...) {
+  display: grid;
+  grid-gap: $gap; // Устанавливаем значение gap
+  $grid-template-columns: '';
+  
+  // Перебираем каждое значение в переданном списке
+  @each $width in $fixed-widths {
+    // Добавляем ширину в строку grid-template-columns
+    @if $width == 'auto' {
+      $grid-template-columns: $grid-template_columns + '1fr ';
+    } @else {
+      $grid-template_columns: $grid_template_columns + $width + ' ';
+    }
+  }
+  
+  // Применяем строку к свойству
+  grid-template-columns: unquote($grid_template_columns);
+}

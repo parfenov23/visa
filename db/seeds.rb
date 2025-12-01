@@ -1,0 +1,1 @@
+AdminUser.create!(email: 'admin@mail.ru', password: 'password', password_confirmation: 'password') if Rails.env.development?

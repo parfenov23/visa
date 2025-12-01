@@ -1,0 +1,20 @@
+@mixin gradient-vertical($color-gv-1, $color-gv-2) {
+  background: $color-gv-1;
+  background: -moz-linear-gradient(top,  $color-gv-1 0%, $color-gv-2 100%);
+  background: -webkit-linear-gradient(top,  $color-gv-1 0%, $color-gv-2 100%);
+  background: linear-gradient(to bottom,  $color-gv-1 0%, $color-gv-2 100%);
+}
+
+@mixin gradient-horizontal($color-gh-1, $color-gh-2) {
+	background: $color-gh-1;
+	background: -moz-linear-gradient(left,  $color-gh-1 0%, $color-gh-2 100%);
+	background: -webkit-linear-gradient(left,  $color-gh-1 0%, $color-gh-2 100%);
+	background: linear-gradient(to right,  $color-gh-1 0%, $color-gh-2 100%);
+}
+
+@mixin gradient-diagonal-bottom($color-gh-1, $color-gh-2) {
+	background: $color-gh-1;
+  background: -moz-linear-gradient(-45deg,  $color-gh-1 0%, $color-gh-2 100%);
+  background: -webkit-linear-gradient(-45deg,  $color-gh-1 0%, $color-gh-2 100%);
+  background: linear-gradient(135deg,  $color-gh-1 0%, $color-gh-2 100%);
+}

@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: pg
+  port: 2345
+  pool: 5
+
+development:
+  <<: *default
+  database: visatoruss
+  username: visatoruss_user
+  password: visatoruss_pass
+
+test:
+  <<: *default
+  database: visatoruss_test
+  username: visatoruss_user
+  password: visatoruss_pass

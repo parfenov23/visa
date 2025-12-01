@@ -1,0 +1,59 @@
+// Primary
+$white:    #fff;
+$blue:     #325feb;
+$orange:   #FBB040;
+$success:  #52B530;
+$waring:   #F9AA34;
+$danger:   #E85656;
+$purp:     #E1268B;
+
+// Secondary
+$secondary-gray:       #DFDFDF;
+$secondary-gray-05:    #EFEFEF;
+$secondary-primary:    #C6D0EE;
+$secondary-primary-05: #E2E7F7;
+$secondary-success:    #DEF6D5;
+$secondary-success-05: #EEFAEA;
+$secondary-waring:     #FDE4BF;
+$secondary-waring-05:  #FEF2DF;
+$secondary-danger:     #F2D1D1;
+$secondary-danger-05:  #F9E8E8;
+
+// Text
+$headline: #202327;
+$body:     #39414E;
+$caption:  #788394;
+$tertiary:  #4E555F;
+
+// Background
+$overlay: rgba(32, 35, 39, 0.65);
+$pages:   #EAEAEA;
+$objects: #EAEFFC;
+$border:  #B7BABE;
+
+// Chart
+$female: #D748D1;
+$male:   #0B8AE5;
+
+// Hover
+$blue-hover:     #6185F0;
+$waring-hover:   #FABF66;
+$headline-hover: #4E555F;
+$success-hover:  #8DDA72;
+$danger-hover:   #EE8181;
+$violet-hover:   #8F52DC;
+
+// Pressed
+$blue-pressed:     #1544D6;
+$waring-pressed:   #F29408;
+$success-pressed:  #408D25;
+$danger-pressed:   #E12828;
+
+// Gradient
+$promo_1: linear-gradient(294deg, #D748D1 35.46%, rgba(215, 72, 209, 0.00) 107.09%), var(--Color-Char-Male, #0B8AE5);
+$promo_2: linear-gradient(294deg, #D748D1 35.46%, rgba(215, 72, 209, 0.00) 107.09%), var(--Color-Primary-Danger, #E85656);
+$promo_3: linear-gradient(294deg, #F9AA34 35.46%, rgba(249, 170, 52, 0.00) 107.09%), var(--Color-Primary-Danger, #E85656);
+$promo_4: linear-gradient(294deg, #4EDD1C 35.46%, rgba(115, 149, 145, 0.52) 69.85%, rgba(78, 221, 28, 0.00) 107.09%), var(--Color-Char-Male, #0B8AE5);
+$ai: linear-gradient(107deg, #D748D1 -7.83%, rgba(215, 72, 209, 0.00) 89.94%), var(--Color-Primary-Blue, #325FEB);
+// Opacity
+$tr: transparent;

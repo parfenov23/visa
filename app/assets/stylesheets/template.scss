@@ -1,0 +1,146 @@
+html { position: relative; margin: 0; padding: 0; }
+body { margin: 0; padding: 0; text-align: left; }
+#imPage { position: relative; width: 100%; }
+#imHeaderBg { position: absolute; left: 0; top: 0; width: 100%; }
+#imMnMnGraphics { position: absolute; top: 0; bottom: 0; z-index: 9; }
+#imContentContainer { position: relative; }
+#imContent { position: relative; }
+#imContentGraphics { position: absolute; top: 0; bottom: 0; }
+#imFooPad { float: left; margin: 0 auto; }
+#imBtMnContainer { clear: both; }
+.imPageRow { position: relative; clear: both; overflow: hidden; float: left; width: 100%; }
+.imHGroup:after, .imUGroup:after, .imVGroup:after, .imPageRow:after { content: ""; display: table; clear: both; }
+#imFooterBg { position: absolute; left: 0; bottom: 0; width: 100%; }
+#imFooter { position: relative; }
+#imMnMn.static-menu { height: 58px; margin: 0; background-image: none; background-color: #800000; }
+@media (min-width: 1100px) {
+    html { background-image: url(asset-path("bg_main_01_black_02.jpg")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: transparent; }
+    #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 1100px; }
+    #imHeaderBg { height: 200px; background-image: none; background-color: transparent; }
+    #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 200px; background-image: none; background-color: transparent; }
+    #imHeaderObjects { position: relative; height: 200px; }
+    #imMnMnContainer { position: absolute; top: 80px; left: 0; right: 0; margin-left: auto; margin-right: auto; }
+    #imMnMn { position: relative; margin-left: 196px; margin-right: auto; height: 80px; padding: 0px 0px 0px 0px; background-image: none; background-color: transparent; }
+    #imMnMn > ul { text-align: right; }
+    #imMnMn li { display: inline; }
+    #imMnMnGraphics { display: none; }
+    #imContent { min-height: 520px; padding: 15px 0 0px 0; }
+    #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
+    #imFooterBg { height: 200px; background-image: url(asset-path("bg-footer_10.jpg")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #B00203; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 200px; background-image: none; background-color: transparent; }
+    #imFooterObjects { position: relative; height: 200px; }
+    #imFooPad { height: 520px; }
+    #imHeader, #imMnMnContainer, #imFooter { width: 1100px; }
+    #imMnMn { width: 900px; }
+    #imContentGraphics { width: 1100px; }
+
+}
+@media (max-width: 1099px) and (min-width: 720px) {
+    html { background-image: url(asset-path("bg-1100.jpg")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #A70101; }
+    #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 720px; }
+    #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
+    #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: transparent; }
+    #imHeaderObjects { position: relative; height: 150px; }
+    #imMnMnContainer { position: absolute; top: 50px; left: 0; right: 0; margin-left: auto; margin-right: auto; }
+    #imMnMn { position: relative; margin-left: 513px; margin-right: auto; height: 30px; padding: 5px 5px 5px 5px; background-image: none; background-color: transparent; }
+    #imMnMn > ul { text-align: left; }
+    #imMnMn li { display: inline; }
+    #imMnMnGraphics { display: none; }
+    #imContent { min-height: 520px; padding: 15px 0 15px 0; }
+    #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
+    #imFooterBg { height: 170px; background-image: none; background-color: #A70101; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 170px; background-image: none; background-color: #A70101; }
+    #imFooterObjects { position: relative; height: 170px; }
+    #imFooPad { height: 520px; }
+    #imHeader, #imMnMnContainer, #imFooter { width: 720px; }
+    #imMnMn { width: 190px; }
+    #imContentGraphics { width: 720px; }
+
+}
+@media (max-width: 719px) and (min-width: 480px) {
+    html { background-image: url(asset-path("bg-720.jpg")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #B00203; }
+    #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 480px; }
+    #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
+    #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: transparent; }
+    #imHeaderObjects { position: relative; height: 150px; }
+    #imMnMnContainer { position: absolute; top: 50px; left: 0; right: 0; margin-left: auto; margin-right: auto; }
+    #imMnMn { position: relative; margin-left: 365px; margin-right: auto; height: 30px; padding: 5px 5px 5px 5px; background-image: none; background-color: transparent; }
+    #imMnMn > ul { text-align: left; }
+    #imMnMn li { display: inline; }
+    #imMnMnGraphics { display: none; }
+    #imContent { min-height: 520px; padding: 15px 0 15px 0; }
+    #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
+    #imFooterBg { height: 150px; background-image: none; background-color: #B00203; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: #B00203; }
+    #imFooterObjects { position: relative; height: 150px; }
+    #imFooPad { height: 520px; }
+    #imHeader, #imMnMnContainer, #imFooter { width: 480px; }
+    #imMnMn { width: 90px; }
+    #imContentGraphics { width: 480px; }
+
+}
+@media (max-width: 479px) and (min-width: 360px) {
+    html { background-image: url(asset-path("bg-480.jpg")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #B00203; }
+    #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 360px; }
+    #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
+    #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 120px; background-image: none; background-color: transparent; }
+    #imHeaderObjects { position: relative; height: 120px; }
+    #imMnMnContainer { position: absolute; top: 42px; left: 0; right: 0; margin-left: auto; margin-right: auto; }
+    #imMnMn { position: relative; margin-left: 285px; margin-right: auto; height: 65px; padding: 0px 0px 0px 0px; background-image: none; background-color: transparent; }
+    #imMnMn > ul { text-align: center; }
+    #imMnMn li { display: inline; }
+    #imMnMnGraphics { display: none; }
+    #imContent { min-height: 520px; padding: 15px 0 15px 0; }
+    #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
+    #imFooterBg { height: 150px; background-image: none; background-color: #B00203; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: #B00203; }
+    #imFooterObjects { position: relative; height: 150px; }
+    #imFooPad { height: 520px; }
+    #imHeader, #imMnMnContainer, #imFooter { width: 360px; }
+    #imMnMn { width: 70px; }
+    #imContentGraphics { width: 360px; }
+
+}
+@media (max-width: 359px) and (min-width: 320px) {
+    html { background-image: url(asset-path("bg-480.jpg")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #A70101; }
+    #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 320px; }
+    #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
+    #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 120px; background-image: none; background-color: transparent; }
+    #imHeaderObjects { position: relative; height: 120px; }
+    #imMnMnContainer { position: absolute; top: 42px; left: 0; right: 0; margin-left: auto; margin-right: auto; }
+    #imMnMn { position: relative; margin-left: 247px; margin-right: auto; height: 65px; padding: 0px 0px 0px 0px; background-image: none; background-color: transparent; }
+    #imMnMn > ul { text-align: center; }
+    #imMnMn li { display: inline; }
+    #imMnMnGraphics { display: none; }
+    #imContent { min-height: 520px; padding: 15px 0 15px 0; }
+    #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
+    #imFooterBg { height: 150px; background-image: none; background-color: #A70101; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: #B00203; }
+    #imFooterObjects { position: relative; height: 150px; }
+    #imFooPad { height: 520px; }
+    #imHeader, #imMnMnContainer, #imFooter { width: 320px; }
+    #imMnMn { width: 70px; }
+    #imContentGraphics { width: 320px; }
+
+}
+@media (max-width: 319px) {
+    html { background-image: url(asset-path("bg-480.jpg")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #850303; }
+    #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; }
+    #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
+    #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 120px; background-image: none; background-color: transparent; }
+    #imHeaderObjects { position: relative; height: 120px; }
+    #imMnMnContainer { position: absolute; top: 42px; left: 0; right: 0; margin-left: auto; margin-right: auto; }
+    #imMnMn { position: relative; margin-left: 245px; margin-right: auto; height: 65px; padding: 0px 0px 0px 0px; background-image: none; background-color: transparent; }
+    #imMnMn > ul { text-align: center; }
+    #imMnMn li { display: inline; }
+    #imMnMnGraphics { display: none; }
+    #imContent { min-height: 520px; padding: 15px 0 15px 0; }
+    #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
+    #imFooterBg { height: 150px; background-image: none; background-color: #B00203; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: #B00203; }
+    #imFooterObjects { position: relative; height: 150px; }
+    #imFooPad, #imBtMnContainer, #imBtMn, #imPgMnContainer { display: none; }
+    #imMnMn { width: 70px; }
+    #imPage, #imContent, #imContentGraphics, #imFooter { box-sizing: border-box; width: 100%; }
+
+}

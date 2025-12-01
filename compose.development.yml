@@ -1,0 +1,33 @@
+services:
+  pg:
+    platform: linux/amd64
+    build:
+      context: config/docker/postgres
+      dockerfile: DockerFile
+    container_name: pg
+    environment:
+      - TZ=Europe/Moscow
+      - POSTGRES_DB=visatoruss
+      - POSTGRES_USER=visatoruss_user
+      - POSTGRES_PASSWORD=visatoruss_pass
+    volumes:
+      - ./docker-data/db/pg:/var/lib/postgresql/data
+      - ./config/docker/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - '2345:2345'
+    command: -p 2345
+  rails:
+    build:
+      context: .
+      dockerfile: config/docker/rails/DockerFile.development
+    container_name: rails
+    platform: linux/amd64
+    ports:
+      - '3000:3000'
+    environment:
+      - RAILS_ENV=development
+    depends_on:
+      - pg
+    command: /bin/bash -c 'bundle install; ruby bin/rails db:create; ruby bin/rails db:migrate; bundle exec overmind start -f Procfile_dev -T'
+    volumes:
+      - .:/app

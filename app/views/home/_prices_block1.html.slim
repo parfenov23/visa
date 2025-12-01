@@ -1,0 +1,19 @@
+#pricing.position-relative
+  .text-inner.pt-48px
+    .font-28px.text_center.mb-20px
+      span
+        | WHAT
+      span.font-.red.mr-4px.ml-4px
+        | KIND OF INVITATION
+      span
+        | DO YOU PREFER?
+
+    - if @tariff == :default
+      .display_flex
+        .margin_vertical_center
+          span.font-20px
+            | Select currency:
+        .display_flex.ml-8px
+          a.eur.mt-0px href="/#pricing"
+          a.usd.mt-0px href="/?currency=usd#pricing"
+

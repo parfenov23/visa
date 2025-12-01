@@ -1,0 +1,22 @@
+@mixin icon($size, $color: null) {
+  color: if($color != null, $color, $border);
+  font: #{$size}/#{$size} $icon;
+  font-variant-numeric: lining-nums proportional-nums;
+}
+
+.tcon {
+  font-family: $icon;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+.no_after_background::after {
+  background: none !important;
+}
