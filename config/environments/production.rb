@@ -92,7 +92,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.asset_host = $API_HOST
   config.action_mailer.default_url_options = { host: $API_HOST }
-  config.active_storage.service = :yandex
+  config.active_storage.service = :production
 
   # config.lograge.enabled = true
   # config.lograge.formatter = Lograge::Formatters::Json.new
