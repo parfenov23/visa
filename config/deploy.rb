@@ -9,6 +9,13 @@ set :keep_releases, 5
 append :linked_files, ".env.production"
 append :linked_dirs, "log", "storage"
 
+set :compose_file, "compose.production.yml"
+set :compose_project_name, fetch(:application) # "visa"
+
+def compose(cmd)
+  "compose -p #{fetch(:compose_project_name)} -f #{fetch(:compose_file)} #{cmd}"
+end
+
 namespace :deploy do
   desc "Build and start containers"
   task :docker_up do
