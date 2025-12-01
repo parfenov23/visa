@@ -15,6 +15,5 @@ COPY . .
 
 # assets (если используешь sprockets/webpacker/jsbundling)
 ENV RAILS_ENV=production
-RUN bundle exec rails assets:precompile
 
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

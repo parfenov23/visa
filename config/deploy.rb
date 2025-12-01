@@ -43,3 +43,15 @@ namespace :deploy do
   after :docker_up, :migrate_in_docker
   after :migrate_in_docker, :restart_docker
 end
+
+namespace :deploy do
+  task :assets_precompile_in_docker do
+    on roles(:app) do
+      within release_path do
+        execute :docker, "compose -f docker-compose.prod.yml run --rm web bundle exec rails assets:precompile"
+      end
+    end
+  end
+
+  before :docker_up, :assets_precompile_in_docker
+end
