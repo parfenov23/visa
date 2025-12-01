@@ -8,5 +8,5 @@ else
   threads 2, 16
   workers 2
 end
-
+port ENV.fetch("PORT") { 3000 }
 activate_control_app
