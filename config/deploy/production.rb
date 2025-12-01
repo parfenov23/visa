@@ -1,4 +1,4 @@
-# prod_ip = '158.160.20.5'
-# puts "production server ip: #{prod_ip}"
-# set :user, 'deployer'
-# server prod_ip, user: 'deployer', roles: %w{web app}, **fetch(:prod_options)
+server "92.205.109.107", user: "deploy", roles: %w[app db web], primary: true
+
+set :branch, "main"
+set :rails_env, "production"

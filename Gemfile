@@ -49,3 +49,7 @@ gem 'wkhtmltopdf-binary'
 # group :production, :staging do
 #   gem 'ddtrace', require: 'ddtrace/auto_instrument'
 # end
+group :development do
+  gem "capistrano"
+  gem "capistrano-rails"
+end
