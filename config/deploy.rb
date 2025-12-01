@@ -48,7 +48,7 @@ namespace :deploy do
   task :assets_precompile_in_docker do
     on roles(:app) do
       within release_path do
-        execute :docker, "compose -f docker-compose.prod.yml run --rm web bundle exec rails assets:precompile"
+        execute :docker, "compose -f compose.production.yml run --rm web bundle exec rails assets:precompile"
       end
     end
   end
