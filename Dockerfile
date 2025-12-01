@@ -10,7 +10,8 @@ WORKDIR /app
 
 # gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install
+RUN bundle install --jobs 2
+RUN bundle exec rake assets:precompile
 
 # app
 COPY . .
