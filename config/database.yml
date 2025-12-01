@@ -16,3 +16,6 @@ test:
   database: visatoruss_test
   username: visatoruss_user
   password: visatoruss_pass
+
+production:
+  url: <%= ENV["DATABASE_URL"] %>
