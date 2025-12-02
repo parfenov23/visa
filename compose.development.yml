@@ -31,3 +31,5 @@ services:
     command: /bin/bash -c 'bundle install; ruby bin/rails db:create; ruby bin/rails db:migrate; bundle exec overmind start -f Procfile_dev -T'
     volumes:
       - .:/app
+    env_file:
+      - .env

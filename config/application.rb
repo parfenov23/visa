@@ -6,6 +6,7 @@ Bundler.require(*Rails.groups)
 
 module Visatoruss
   class Application < Rails::Application
+    $SITE_HOST = "http://#{ENV['RAILS_SERVICE_HOST']}".freeze
 #=======================================================================================================================
     #TIMEZONE
     config.time_zone = ActiveSupport::TimeZone[3].name

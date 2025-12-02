@@ -6,6 +6,12 @@ $(document).ready(function(){
     select.value = $(this).attr("data-value");
   });
 
+  new TomSelect("#countrySelect", {
+    create: false,      // запрет добавлять новые значения
+    sortField: "text",
+    placeholder: "Start introducing citizenship..."
+  });
+
   (function ($) {
     const year = new Date().getFullYear();
 

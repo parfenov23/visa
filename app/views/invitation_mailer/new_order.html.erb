@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Order</title>
+</head>
+<body style="margin:0; padding:0; background:#f6f7fb; font-family: Arial, sans-serif;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f6f7fb;">
+  <tr>
+    <td align="center" style="padding:24px 12px;">
+      <!-- контейнер -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600"
+             style="width:600px; max-width:100%; background:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 6px 18px rgba(19,33,68,0.06);">
+
+        <!-- шапка -->
+        <tr>
+          <td style="padding:20px 24px; background:#0f172a;">
+            <div style="color:#ffffff; font-size:18px; font-weight:700;">
+              New Order
+            </div>
+          </td>
+        </tr>
+
+        <!-- контент -->
+        <tr>
+          <td style="padding:24px;">
+            <div style="font-size:16px; color:#111827; line-height:1.6;">
+              Hi!
+              <br><br>
+              Request new order
+              <b>№ <%= @order_number %></b>
+              from
+              <b><%= l(@order_date, format: :long) %></b>.
+            </div>
+
+            <!-- карточка с деталями (опционально) -->
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+                   style="margin-top:16px; background:#f9fafb; border:1px solid #eef0f4; border-radius:10px;">
+              <tr>
+                <td style="padding:14px 16px; font-size:14px; color:#374151;">
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Num order:</span>
+                    <b style="color:#111827;"><%= @order_number %></b>
+                  </div>
+                  <div>
+                    <span style="color:#6b7280;">Date:</span>
+                    <b style="color:#111827;"><%= l(@order_date, format: :long) %></b>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <!-- кнопка -->
+            <div style="text-align:center; margin-top:22px;">
+              <a href="<%= @order_url %>"
+                 style="display:inline-block; padding:12px 18px; background:#2563eb; color:#ffffff; text-decoration:none; border-radius:8px; font-size:15px; font-weight:700;">
+                Go to Order
+              </a>
+            </div>
+
+            <!-- примечание -->
+            <div style="margin-top:18px; font-size:12px; color:#6b7280; line-height:1.5;">
+              If the button doesn't work, copy the link into your browser:
+              <br>
+              <span style="word-break:break-all;"><%= @order_url %></span>
+            </div>
+          </td>
+        </tr>
+
+        <!-- футер -->
+        <tr>
+          <td style="padding:16px 24px; background:#f3f4f6; font-size:12px; color:#6b7280;">
+            This is an automatic notification, you do not need to respond to it.
+          </td>
+        </tr>
+
+      </table>
+      <!-- /контейнер -->
+    </td>
+  </tr>
+</table>
+</body>
+</html>

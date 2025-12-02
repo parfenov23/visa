@@ -69,7 +69,7 @@ Rails.application.configure do
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
 
-  config.action_mailer.default_url_options = { host: $API_HOST }
+  config.action_mailer.default_url_options = { host: $SITE_HOST }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -90,8 +90,17 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   config.active_record.dump_schema_after_migration = false
-  config.action_mailer.asset_host = $API_HOST
-  config.action_mailer.default_url_options = { host: $API_HOST }
+  config.action_mailer.asset_host = $SITE_HOST
+  config.action_mailer.default_url_options = { host: $SITE_HOST }
+  config.action_mailer.smtp_settings = {
+    address:              "smtp.yandex.ru",
+    port:                 465,
+    domain:               $SITE_HOST,
+    user_name:            ENV["SMTP_USERNAME"],   # полный адрес почты
+    password:             ENV["SMTP_PASSWORD"],
+    authentication:       "login",
+    ssl:                  true
+  }
   config.active_storage.service = :production
 
   # config.lograge.enabled = true

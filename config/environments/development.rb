@@ -64,4 +64,14 @@ Rails.application.configure do
 
   # config.lograge.enabled = true
   # config.lograge.formatter = Lograge::Formatters::Json.new
+
+  config.action_mailer.smtp_settings = {
+    address:              "smtp.yandex.ru",
+    port:                 465,
+    domain:               $SITE_HOST,
+    user_name:            ENV["SMTP_USERNAME"],   # полный адрес почты
+    password:             ENV["SMTP_PASSWORD"],
+    authentication:       "login",
+    ssl:                  true
+  }
 end
