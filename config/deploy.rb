@@ -17,13 +17,22 @@ def compose(cmd)
 end
 
 namespace :deploy do
+  desc "Precompile assets in container into shared volume"
+  task :assets_precompile_in_docker do
+    on roles(:app) do
+      within release_path do
+        execute :docker, compose("run --rm web bundle exec rails assets:precompile")
+      end
+    end
+  end
+
   desc "Build and start containers"
   task :docker_up do
     on roles(:app) do
       within release_path do
-        execute :docker, "compose -f compose.production.yml pull || true"
-        execute :docker, "compose -f compose.production.yml build"
-        execute :docker, "compose -f compose.production.yml up -d"
+        execute :docker, compose("pull || true")
+        execute :docker, compose("build")
+        execute :docker, compose("up -d")
       end
     end
   end
@@ -32,7 +41,7 @@ namespace :deploy do
   task :migrate_in_docker do
     on roles(:db) do
       within release_path do
-        execute :docker, "compose -f compose.production.yml run --rm web bundle exec rails db:migrate"
+        execute :docker, compose("run --rm web bundle exec rails db:migrate")
       end
     end
   end
@@ -41,24 +50,13 @@ namespace :deploy do
   task :restart_docker do
     on roles(:app) do
       within release_path do
-        execute :docker, "compose -f compose.production.yml restart web"
-      end
-    end
-  end
-
-  after :publishing, :docker_up
-  after :docker_up, :migrate_in_docker
-  after :migrate_in_docker, :restart_docker
-end
-
-namespace :deploy do
-  task :assets_precompile_in_docker do
-    on roles(:app) do
-      within release_path do
-        execute :docker, "compose -f compose.production.yml run --rm web bundle exec rails assets:precompile"
+        execute :docker, compose("restart web")
       end
     end
   end
 
   before :docker_up, :assets_precompile_in_docker
+  after  :publishing, :docker_up
+  after  :docker_up,  :migrate_in_docker
+  after  :migrate_in_docker, :restart_docker
 end
