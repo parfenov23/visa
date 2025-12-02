@@ -325,6 +325,13 @@
 a.custom{
   text-decoration: underline;
 }
+a.default{
+  text-decoration: none;
+  color: $black;
+  &:hover{
+    color: $red;
+  }
+}
 .custom{
   cursor: pointer;
   &:not([class*=font-]){

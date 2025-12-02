@@ -14,6 +14,8 @@
           span.font-20px
             | Select currency:
         .display_flex.ml-8px
-          a.eur.mt-0px href="/#pricing"
-          a.usd.mt-0px href="/?currency=usd#pricing"
+          a.eur.mt-0px.default.display_flex href="/#pricing"
+            = render "/home/svg/eur"
+          a.usd.mt-0px.ml-8px.default.display_flex href="/?currency=usd#pricing"
+            = render "/home/svg/usd"
 
