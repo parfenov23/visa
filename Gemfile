@@ -34,6 +34,7 @@ gem 'sass'
 
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem "cloudflare-turnstile-rails"
 
 # group :development, :test do
 # end

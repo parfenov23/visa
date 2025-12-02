@@ -30,7 +30,7 @@ class Invitation < ApplicationRecord
           single: { price: 50 },
           double: { price: 75 }
         },
-        custom_70: {
+        custom_75: {
           single: { price: 75 },
           double: { price: 99 }
         }

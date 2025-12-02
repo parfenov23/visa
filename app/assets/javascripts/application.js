@@ -1,6 +1,11 @@
 //= require jquery
 //= require_tree .
 $(document).ready(function(){
+  $(document).on('click', '.js_select_package', function(){
+    const select = document.querySelector("#invitation_type_id");
+    select.value = $(this).attr("data-value");
+  });
+
   (function ($) {
     const year = new Date().getFullYear();
 
@@ -96,92 +101,9 @@ $(document).ready(function(){
     }
 
   // ---------------------------------------------------------
-  // CREATE PERSON TEMPLATE
-  // ---------------------------------------------------------
-    function createPersonBlock() {
-      return $(`
-      <div class="person border p-3 mb-3 rounded bg-light">
-        <button type="button" class="close removePerson">&times;</button>
-        <h4>Person:</h4>
-
-        <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label>Surname*</label>
-              <input type="text" class="form-control" name="surname">
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="form-group">
-              <label>Name</label>
-              <input type="text" class="form-control" name="name">
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="form-group">
-              <label>Middle name</label>
-              <input type="text" class="form-control" name="middlename">
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label>Sex*</label>
-              <select class="form-control" name="sex">
-                <option value="-1">-</option>
-                <option value="0">Female</option>
-                <option value="1">Male</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="form-group">
-              <label>Date of birth*</label>
-              <input type="date" class="form-control" name="birthDate">
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label>Citizenship*</label>
-              <input type="text" class="form-control" name="citizenship">
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="form-group">
-              <label>Passport*</label>
-              <input type="text" class="form-control" name="passport">
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="form-group">
-              <label>Passport expire date</label>
-              <input type="date" class="form-control" name="passportExpire">
-            </div>
-          </div>
-        </div>
-      </div>
-      `);
-    }
-
-  // ---------------------------------------------------------
   // DOCUMENT READY
   // ---------------------------------------------------------
     $(function () {
-
-      $("#addPerson").on("click", function (e) {
-        e.preventDefault();
-        $("#persons").append(createPersonBlock());
-      });
 
       $("#persons").on("click", ".removePerson", function () {
         $(this).closest(".person").remove();
@@ -227,3 +149,43 @@ $(document).ready(function(){
 
   })(jQuery);
 })
+
+(function () {
+  // высота фиксированной шапки (поставь свою)
+  const OFFSET = 80;
+
+  function smoothScrollTo(target) {
+    const el = typeof target === "string" ? document.querySelector(target) : target;
+    if (!el) return;
+
+    const top = el.getBoundingClientRect().top + window.pageYOffset - OFFSET;
+
+    window.scrollTo({
+      top,
+      behavior: "smooth"
+    });
+  }
+
+  // клики по ссылкам/кнопкам
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest('a[href^="#"], [data-scroll]');
+    if (!link) return;
+
+    const selector = link.dataset.scroll || link.getAttribute("href");
+    if (!selector || selector === "#") return;
+
+    const el = document.querySelector(selector);
+    if (!el) return;
+
+    e.preventDefault();
+    smoothScrollTo(el);
+
+    // обновим хэш в адресной строке без прыжка
+    history.pushState(null, "", selector);
+  });
+
+  // если открыли страницу сразу с хэшем
+  window.addEventListener("load", () => {
+    if (location.hash) smoothScrollTo(location.hash);
+  });
+})();

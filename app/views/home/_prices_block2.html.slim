@@ -25,7 +25,7 @@ div#imGroup_9.imHGroup.display_flex.center.wrap
 
             .bottom_info style="margin-top: auto;"
               .text-center.mb-12px
-                a.btn.large class=(block_price[:popular] ? "red" : "blue") href="#form" onclick="return x5engine.utils.location('#form', null, false)"
+                a.btn.large.js_select_package class=(block_price[:popular] ? "red" : "blue") href="#invitationForm" data-value=block_price.dig(:selector, :value)
                   |FILL OUT THE FORM
               .text_center
                 = image_tag("paypal.png", class: "image-1")

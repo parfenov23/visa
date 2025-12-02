@@ -5,8 +5,13 @@ class InvitationsController < ApplicationController
   def create
     @invitation = Invitation.new(invitation_params)
 
+    unless verify_turnstile
+      flash.now[:alert] = "Please confirm that you are not a robot"
+      return render :new, status: :unprocessable_entity
+    end
+
     if @invitation.save
-      redirect_to root_path, notice: "Invitation created successfully"
+      redirect_to root_path, notice: "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
     end
   end
 

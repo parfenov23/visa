@@ -92,7 +92,7 @@ div#imPageRow_4.imPageRow
                             div
                               span.ff1
                                 | Cost of tourist invitation letter is
-                                b.color-red.ml-4px €9,99.
+                                b.color-red.ml-4px = raw default_price(currency: @currency, tariff: @tariff) + "."
                 div
                   div
                 div
