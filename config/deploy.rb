@@ -1,4 +1,4 @@
-lock "~> 3.19.2"
+lock "~> 3.17.3"
 
 set :application, "visa"
 set :repo_url, "git@github.com:parfenov23/visa.git"
