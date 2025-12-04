@@ -10,6 +10,34 @@
           font-family: "DejaVu Sans", Arial, sans-serif;
           font-size: 11px;
           margin: 15px 20px;
+          position: relative; /* важно для псевдоэлемента */
+      }
+
+      .wm-item {
+          position: fixed;
+          z-index: 0;
+          pointer-events: none;
+
+          font-family: "DejaVu Sans", Arial, sans-serif;
+          font-size: 14px !important;          /* маленький */
+          font-weight: 700 !important;
+          color: rgba(0,0,0,0.06) !important;  /* светлый */
+
+          white-space: nowrap;
+
+          /* префиксы для wkhtmltopdf/старого webkit */
+          -webkit-transform: translate(-50%, -50%) rotate(-45deg) !important;
+          transform: translate(-50%, -50%) rotate(-45deg) !important;
+
+          -webkit-transform-origin: center center !important;
+          transform-origin: center center !important;
+      }
+
+
+      /* контент поверх */
+      table.layout, .header-left, .header-right, .inner, .company-block, .director-block{
+          position: relative;
+          z-index: 1;
       }
 
       h1,h2,h3,h4,h5,h6 {
@@ -121,6 +149,43 @@
   </style>
 </head>
 <body>
+<%
+  wm_text = "FULLY PAID" # или что угодно
+  step_x = 180           # шаг по горизонтали (px)
+  step_y = 140           # шаг по вертикали (px)
+  cols   = 8             # сколько колонок текста
+  rows   = 10            # сколько строк текста
+%>
+
+<!--<div class="watermark-layer">-->
+<!--  <table class="tg" style="width: 100%">-->
+    <%# rows.times do |r| %>
+<!--    <tr>-->
+    <%# cols.times do |c| %>
+<!--        <td class="watermark-item"> <%#= wm_text %></td>-->
+    <%# end %>
+<!--    </tr>-->
+      <%# end %>
+<!--    </table>-->
+<!--  </table>-->
+<!--</div>-->
+
+<%
+  wm_text = "#{@invitation.surname} #{@invitation.name} #{@invitation.current_id}" # или "FULLY PAID"
+
+  wm_positions_mm = [
+    [30, 20],  [130, 25], [230, 20], [330, 25],
+    [20, 70],  [95, 80], [170, 70], [245, 80], [320, 70],
+    [30, 125],  [130, 130], [230, 125], [330, 130],
+    [20, 175],  [95, 185], [170, 175], [245, 185], [320, 175],
+  ]
+%>
+
+<% wm_positions_mm.each do |left_mm, top_mm| %>
+  <div class="wm-item" style="left:<%= left_mm %>mm; top:<%= top_mm %>mm;">
+    <%= wm_text %>
+  </div>
+<% end %>
 <%
   # Номера документов — подстрой под свою модель, если есть отдельные поля
   invitation_number = @invitation.current_id

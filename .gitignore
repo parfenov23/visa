@@ -36,6 +36,7 @@
 .solargraph.yml
 
 config.codekit3
+.overmind.sock
 
 latest_telega_new.sql
 

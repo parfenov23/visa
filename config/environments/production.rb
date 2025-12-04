@@ -92,14 +92,23 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.asset_host = $SITE_HOST
   config.action_mailer.default_url_options = { host: $SITE_HOST }
+  # config.action_mailer.smtp_settings = {
+  #   address:              "smtp.yandex.ru",
+  #   port:                 465,
+  #   domain:               $SITE_HOST,
+  #   user_name:            ENV["SMTP_USERNAME"],   # полный адрес почты
+  #   password:             ENV["SMTP_PASSWORD"],
+  #   authentication:       "login",
+  #   ssl:                  true
+  # }
   config.action_mailer.smtp_settings = {
-    address:              "smtp.yandex.ru",
-    port:                 465,
-    domain:               $SITE_HOST,
-    user_name:            ENV["SMTP_USERNAME"],   # полный адрес почты
-    password:             ENV["SMTP_PASSWORD"],
-    authentication:       "login",
-    ssl:                  true
+    address: "smtp.gmail.com",
+    port: 587,
+    domain: $SITE_HOST, # можно оставить как есть или поменять
+    user_name: ENV["SMTP_USERNAME"],
+    password: ENV["SMTP_PASSWORD"],
+    authentication: "plain",
+    enable_starttls_auto: true
   }
   config.active_storage.service = :production
 

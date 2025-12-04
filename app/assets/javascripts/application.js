@@ -9,6 +9,7 @@ $(document).ready(function(){
   new TomSelect("#countrySelect", {
     create: false,      // запрет добавлять новые значения
     sortField: "text",
+    maxOptions: null,
     placeholder: "Start introducing citizenship..."
   });
 

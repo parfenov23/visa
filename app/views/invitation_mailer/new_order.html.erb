@@ -47,24 +47,116 @@
                     <span style="color:#6b7280;">Date:</span>
                     <b style="color:#111827;"><%= l(@order_date, format: :long) %></b>
                   </div>
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Price:</span>
+                    <% curr_currency = @invitation.currency == "eur" ? "€" : "$" %>
+                    <b style="color:#111827;"><%= "#{curr_currency} #{@invitation.price}" %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Surname:</span>
+                    <b style="color:#111827;"><%= @invitation.surname %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Name:</span>
+                    <b style="color:#111827;"><%= @invitation.name %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Middle name:</span>
+                    <b style="color:#111827;"><%= @invitation.middlename %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Sex:</span>
+                    <b style="color:#111827;"><%= @invitation.sex.to_s.downcase == "1" ? "male" : "female"%></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Citizenship:</span>
+                    <b style="color:#111827;"><%= @invitation.citizenship_title(lang: :en) %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Date of birth:</span>
+                    <b style="color:#111827;"><%= @invitation.birthDate %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Arrival date:</span>
+                    <b style="color:#111827;"><%= @invitation.arival_date %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Departure date:</span>
+                    <b style="color:#111827;"><%= @invitation.departure_date %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Passport No.:</span>
+                    <b style="color:#111827;"><%= @invitation.passport %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Visa obtain place:</span>
+                    <b style="color:#111827;"><%= @invitation.visa_obtain_place %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Cities:</span>
+                    <b style="color:#111827;"><%= @invitation.cities %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Hotels:</span>
+                    <b style="color:#111827;"><%= @invitation.hotels %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Accommodation:</span>
+                    <b style="color:#111827;"><%= @invitation.accomodation %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Meals:</span>
+                    <b style="color:#111827;"><%= @invitation.meals %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Email:</span>
+                    <b style="color:#111827;"><%= @invitation.email %></b>
+                  </div>
+
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Promocode:</span>
+                    <b style="color:#111827;"><span style="color:red;"><%= @invitation.promocode %></span></b>
+                  </div>
+
+                  <div style="margin-bottom:0;">
+                    <span style="color:#6b7280;">Comments:</span>
+                    <b style="color:#111827;"><%= @invitation.comments %></b>
+                  </div>
+
                 </td>
               </tr>
             </table>
+            <% if !@hide_btn %>
+              <!-- кнопка -->
+              <div style="text-align:center; margin-top:22px;">
+                <a href="<%= @order_url %>"
+                   style="display:inline-block; padding:12px 18px; background:#2563eb; color:#ffffff; text-decoration:none; border-radius:8px; font-size:15px; font-weight:700;">
+                  Go to Order
+                </a>
+              </div>
 
-            <!-- кнопка -->
-            <div style="text-align:center; margin-top:22px;">
-              <a href="<%= @order_url %>"
-                 style="display:inline-block; padding:12px 18px; background:#2563eb; color:#ffffff; text-decoration:none; border-radius:8px; font-size:15px; font-weight:700;">
-                Go to Order
-              </a>
-            </div>
-
-            <!-- примечание -->
-            <div style="margin-top:18px; font-size:12px; color:#6b7280; line-height:1.5;">
-              If the button doesn't work, copy the link into your browser:
-              <br>
-              <span style="word-break:break-all;"><%= @order_url %></span>
-            </div>
+              <!-- примечание -->
+              <div style="margin-top:18px; font-size:12px; color:#6b7280; line-height:1.5;">
+                If the button doesn't work, copy the link into your browser:
+                <br>
+                <span style="word-break:break-all;"><%= @order_url %></span>
+              </div>
+            <% end %>
           </td>
         </tr>
 

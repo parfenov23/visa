@@ -85,6 +85,14 @@ class Invitation < ApplicationRecord
     lang == :ru ? country[:title_ru] : country[:title]
   end
 
+  def send_notify_email
+    begin
+      InvitationMailer.new_order(self).deliver_now
+      InvitationMailer.new_order(self, true).deliver_now
+    rescue
+    end
+  end
+
   private
 
   def set_price

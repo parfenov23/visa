@@ -11,7 +11,7 @@ class InvitationsController < ApplicationController
     end
 
     if @invitation.save
-      InvitationMailer.new_order(@invitation).deliver_now
+      @invitation.send_notify_email
       redirect_to root_path, notice: "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
     end
   end
