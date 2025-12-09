@@ -53,4 +53,5 @@ gem "cloudflare-turnstile-rails"
 group :development do
   gem "capistrano"
   gem "capistrano-rails"
+  gem 'pry-byebug', '= 3.10.1'
 end

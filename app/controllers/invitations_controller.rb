@@ -5,15 +5,16 @@ class InvitationsController < ApplicationController
   def create
     @invitation = Invitation.new(invitation_params)
 
-    unless verify_turnstile
-      flash.now[:alert] = "Please confirm that you are not a robot"
-      return render :new, status: :unprocessable_entity
+    notice = "Please confirm that you are not a robot"
+    cf_verify = verify_turnstile(model: @invitation)
+    if cf_verify.success?
+      if @invitation.save
+        @invitation.send_notify_email
+        notice = "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
+      end
     end
 
-    # if @invitation.save
-    #   @invitation.send_notify_email
-    #   redirect_to root_path, notice: "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
-    # end
+    redirect_to root_path, notice: notice
   end
 
   def show
