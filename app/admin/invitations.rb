@@ -1,7 +1,7 @@
 ActiveAdmin.register Invitation do
   # Разрешённые параметры для формы
   permit_params :invitation_type_id, :surname, :name, :middlename, :sex,
-                :citizenship, :birthDate, :arival_date, :departure_date,
+                :citizenship, :birthDate, :arival_date, :departure_date, :package,
                 :passport, :visa_obtain_place, :cities, :hotels, :hotels_ru,
                 :email, :promocode, :comments, :accomodation, :meals, :price, :currency, :tariff
 
@@ -45,6 +45,7 @@ ActiveAdmin.register Invitation do
 
     f.inputs "Invitation Details" do
       f.input :price
+      f.input :package, as: :select, collection: Invitation.tariff_price(currency: f.object.currency.to_sym, tariff: f.object.tariff.to_sym).keys
       f.input :surname
       f.input :name
       f.input :middlename

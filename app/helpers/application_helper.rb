@@ -70,4 +70,8 @@ module ApplicationHelper
   def all_country
 
   end
+
+  def get_name_package(package)
+    { single: "Однократная", double: "Двукратная", multi: "Многократная", multi_usa: "Многократная" }[package]
+  end
 end

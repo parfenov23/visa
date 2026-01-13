@@ -246,7 +246,8 @@
       <table class="inner small">
         <tr>
           <td class="nowrap" style="width: 50%"><b>Кратность</b> (Number of entries)</td>
-          <td>Однократная</td>
+          <% curr_name_package = get_name_package(@invitation.package.to_sym) %>
+          <td><%= curr_name_package %></td>
         </tr>
         <tr>
           <td class="nowrap"><b>Дата въезда</b> (Date of arrival)</td>

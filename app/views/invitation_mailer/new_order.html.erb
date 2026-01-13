@@ -52,6 +52,11 @@
                     <% curr_currency = @invitation.currency == "eur" ? "€" : "$" %>
                     <b style="color:#111827;"><%= "#{curr_currency} #{@invitation.price}" %></b>
                   </div>
+                  <div style="margin-bottom:6px;">
+                    <span style="color:#6b7280;">Tariff:</span>
+                    <b style="color:#111827;"><%= "#{@invitation.package}" %></b>
+                  </div>
+
 
                   <div style="margin-bottom:6px;">
                     <span style="color:#6b7280;">Surname:</span>
