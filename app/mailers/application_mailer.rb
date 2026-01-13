@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'parfen407@yandex.ru'
+  default from: ENV['SMTP_TO_EMAIL']
   layout 'mailer'
 end
 
