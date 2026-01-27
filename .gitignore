@@ -53,8 +53,6 @@ coverage/*
 Gemfile.lock
 logfile
 dump.rdb
-public/robots.txt
-public/sitemap.xml
 .DS_Store
 app/assets/javascripts/routes.js
 log/development.log

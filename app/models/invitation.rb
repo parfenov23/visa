@@ -9,30 +9,46 @@ class Invitation < ApplicationRecord
       eur: {
         default: {
           single: { price: 9.99 },
+          single_90: { price: 14.99 },
           double: { price: 14.99 },
-          multi: { price: 44.99 },
+          multi: { price: 24.99 },
           multi_usa: {price: 44.99}
         }
       },
       usd: {
         default: {
           single: {price: 12},
+          single_90: { price: 17 },
           double: {price: 17},
           multi: {price: 30},
           multi_usa: {price: 49.99}
         },
-        custom_20: {
+        sale_10: {
+          single: { price: 10 },
+          single_90: { price: 10 },
+          double: { price: 10 },
+          multi: { price: 10 }
+        },
+        sale_20: {
           single: { price: 20 },
-          double: { price: 30 },
-          multi: { price: 40 }
+          double: { price: 20 },
+          multi: { price: 20 }
+        },
+        custom_20: {
+          single: { price: 15 },
+          single_90: { price: 20 },
+          double: { price: 20 },
+          multi: { price: 30 }
         },
         custom_50: {
-          single: { price: 50 },
-          double: { price: 75 }
+          single: { price: 35 },
+          single_90: { price: 50 },
+          double: { price: 50 }
         },
         custom_75: {
-          single: { price: 75 },
-          double: { price: 99 }
+          single: { price: 50 },
+          single_90: { price: 75 },
+          double: { price: 75 }
         }
       }
     }
