@@ -65,5 +65,6 @@ div#imFooter
       div#imFooter_imCell_21
         div#imFooter_imCellStyle_21
           div#imFooter_imHTMLObject_21.imHTMLObject style="height: 350px; overflow: auto; text-align: center;"
-            a.link href="/russ_tourist"
+            - add_tariff = params[:tariff].present? ? "?tariff=#{params[:tariff]}" : ""
+            a.link href="/russ_tourist#{add_tariff}"
               | Russian tourist voucher

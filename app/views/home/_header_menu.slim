@@ -1,3 +1,4 @@
+- add_tariff = params[:tariff].present? ? "?tariff=#{params[:tariff]}" : ""
 div#imMnMnContainer
   div#imMnMnGraphics
   div#imMnMn.auto.main-menu
@@ -15,7 +16,7 @@ div#imMnMnContainer
             | ×
     ul.auto.menu-mobile-hidden
       li#imMnMnNode9.imLevel.imMnMnCurrent
-        a href="#advantages"
+        a href="/#{add_tariff}#advantages"
           span.imMnMnFirstBg
             span.imMnMnTxt
               span.imMnMnImg
@@ -23,7 +24,7 @@ div#imMnMnContainer
                 | ABOUT US
         ul.auto
       li#imMnMnNode11.imLevel
-        a href="#pricing"
+        a href="/#{add_tariff}#pricing"
           span.imMnMnFirstBg
             span.imMnMnLevelImg
             span.imMnMnTxt
@@ -39,7 +40,7 @@ div#imMnMnContainer
                 | LICENSE
 
       li#imMnMnNode12.imLevel.imMnMnCurrent
-        a href="#reviews"
+        a href="/#{add_tariff}#reviews"
           span.imMnMnFirstBg
             span.imMnMnTxt
               span.imMnMnImg
@@ -47,7 +48,7 @@ div#imMnMnContainer
                 | REVIEWS
 
       li#imMnMnNode10.imLevel.imMnMnCurrent
-        a href="#faq"
+        a href="/#{add_tariff}#faq"
           span.imMnMnFirstBg
             span.imMnMnTxt
               span.imMnMnImg
@@ -58,7 +59,7 @@ div#imMnMnContainer
         ul.auto
 
       li#imMnMnNode14.imLevel.imMnMnCurrent
-        a href="#contact"
+        a href="/#{add_tariff}#contact"
           span.imMnMnFirstBg
             span.imMnMnTxt
               span.imMnMnImg
