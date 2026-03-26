@@ -65,3 +65,4 @@ compose.dev.my-containers.yml
 config/docker/my-containers/*
 /documentation/out/*
 /documentation/images/*
+/.claude/settings.local.json
