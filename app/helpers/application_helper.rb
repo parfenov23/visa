@@ -37,7 +37,7 @@ module ApplicationHelper
       title: "Most popular",
       description: "Single or Double entry",
       last_desc: "Tourist invitation <br> (tourist confirmation and tourist voucher)",
-      selector: {value: package, text: "Tourist Double entry (90/90 days) #{curr_currency} #{current_tariff.dig(package, :price)}"},
+      selector: {value: :single_90, text: "Tourist Double entry (90/90 days) #{curr_currency} #{current_tariff.dig(package, :price)}"},
       price: current_tariff.dig(package, :price),
       currency: curr_currency,
       li: [
@@ -123,6 +123,6 @@ module ApplicationHelper
   end
 
   def get_name_package(package)
-    { single: "Однократная", double: "Двукратная", multi: "Многократная", multi_usa: "Многократная" }[package]
+    { single: "Однократная", single_90: "Однократная", double: "Двукратная", multi: "Многократная", multi_usa: "Многократная" }[package]
   end
 end

@@ -117,5 +117,18 @@
   Allow: /*.svg
   Allow: /*.ico
 
+  # Google Special Case Crawlers
+  User-agent: Google-Extended
+  Allow: /
+
+  User-agent: GoogleOther
+  Allow: /
+
+  User-agent: GoogleOther-Image
+  Allow: /
+
+  User-agent: GoogleOther-Video
+  Allow: /
+
   Sitemap: https://russvisa.com/sitemap.xml
 

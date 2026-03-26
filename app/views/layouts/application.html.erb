@@ -28,14 +28,14 @@
   <meta charset="utf-8">
   <!--[if IE]>
   <meta http-equiv="ImageToolbar" content="False"/><![endif]-->
-  <meta name="description" content="Our company's Russian invitation letter just for €9.99 which consists of tourist confirmation and tourist voucher, will ensure you a Russian visa with 100% guarantee">
+  <meta name="description" content="Our company's Russian letter of invitation just for <%= @meta_price || '€9.99' %> which consists of tourist confirmation and tourist voucher, will ensure you a Russian visa with 100% guarantee">
   <meta name="keywords" content="Invitation for Russia, russian invitation letter, invitation to russia, russia visa invitation, invitation for russian visa, visa to Russia, Tourist invitation for a Russian visa">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
   <meta property="og:url" content="/">
-  <meta property="og:title" content="Invitation to russia for £9,99 - fill out application form now">
+  <meta property="og:title" content="Invitation to russia for <%= @meta_price || '€9.99' %> - fill out application form now">
   <meta property="og:site_name" content="">
-  <meta property="og:description" content="Our company's Russian invitation letter just for €9.99 which consists of tourist confirmation and tourist voucher, will ensure you a Russian visa with 100% guarantee">
+  <meta property="og:description" content="Our company's Russian letter of invitation just for <%= @meta_price || '€9.99' %> which consists of tourist confirmation and tourist voucher, will ensure you a Russian visa with 100% guarantee">
   <meta property="og:image" content="/favicons/android-chrome-192x192.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="219">
@@ -420,6 +420,86 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/106353770" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a Russian visa invitation letter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Russian visa invitation letter (also called visa support) is a mandatory document required by all foreign nationals applying for a Russian tourist visa. It consists of a tourist confirmation and tourist voucher issued by an accredited Russian travel agency."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does a Russian visa invitation cost at Russvisa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Russvisa.com provides an official Russian tourist visa invitation letter for just €9.99, which includes both the tourist confirmation and tourist voucher required for your visa application."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How quickly will I receive my Russian visa invitation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "After completing your order, you will receive your Russian visa invitation letter by email within one hour."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the Russvisa invitation letter accepted by Russian embassies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Russvisa.com is an accredited Russian travel agency. Our invitation letters are officially recognized and accepted by Russian embassies and consulates worldwide, guaranteeing visa approval."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Structured Data: Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Russvisa",
+  "url": "https://russvisa.com",
+  "logo": "https://russvisa.com/images/logo.png",
+  "description": "Russvisa.com provides official Russian tourist visa invitation letters for €9.99, accepted by all Russian embassies worldwide.",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "availableLanguage": ["English"]
+  },
+  "areaServed": "Worldwide",
+  "priceRange": "€"
+}
+</script>
+
+<!-- Structured Data: Service -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Russian Visa Invitation Letter",
+  "provider": {
+    "@type": "Organization",
+    "name": "Russvisa"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "9.99",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
 
 </body>
 </html>
