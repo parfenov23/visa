@@ -37,7 +37,8 @@ module ApplicationHelper
       title: "Most popular",
       description: "Single or Double entry",
       last_desc: "Tourist invitation <br> (tourist confirmation and tourist voucher)",
-      selector: {value: :single_90, text: "Tourist Double entry (90/90 days) #{curr_currency} #{current_tariff.dig(package, :price)}"},
+      selector: {value: :double, text: "Tourist Double entry (90/90 days) #{curr_currency} #{current_tariff.dig(package, :price)}"},
+      button_value: :single_90,
       price: current_tariff.dig(package, :price),
       currency: curr_currency,
       li: [
