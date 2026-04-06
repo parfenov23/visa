@@ -7,8 +7,8 @@ class InvitationsController < ApplicationController
     @invitation = Invitation.new(invitation_params)
 
     notice = "Please confirm that you are not a robot"
-    #cf_verify = verify_turnstile(model: @invitation)
-    if true #cf_verify.success?
+    cf_verify = verify_turnstile(model: @invitation)
+    if cf_verify.success?
       if @invitation.save
         @invitation.send_notify_email
         notice = "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
