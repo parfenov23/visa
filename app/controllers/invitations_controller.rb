@@ -3,12 +3,12 @@ class InvitationsController < ApplicationController
   include WickedPdf::WickedPdfHelper::Assets
   skip_forgery_protection only: :create
 
-  RATE_LIMIT_WINDOW = 1.hour
+  RATE_LIMIT_WINDOW = 2.minutes
 
   def create
     if submission_rate_limited?
       redirect_to root_path(tariff: params[:tariff].presence),
-                  notice: "We already received an application from your IP. Please try again in an hour."
+                  notice: "We already received an application from your IP. Please try again in a couple of minutes."
       return
     end
 
