@@ -6,11 +6,11 @@ class InvitationsController < ApplicationController
   RATE_LIMIT_WINDOW = 2.minutes
 
   def create
-    if submission_rate_limited?
-      redirect_to root_path(tariff: params[:tariff].presence),
-                  notice: "We already received an application from your IP. Please try again in a couple of minutes."
-      return
-    end
+    # if submission_rate_limited?
+    #   redirect_to root_path(tariff: params[:tariff].presence),
+    #               notice: "We already received an application from your IP. Please try again in a couple of minutes."
+    #   return
+    # end
 
     @invitation = Invitation.new(invitation_params)
 
@@ -20,7 +20,7 @@ class InvitationsController < ApplicationController
     # if cf_verify.success?
     if @invitation.save
       @invitation.send_notify_email
-      mark_submission!
+      # mark_submission!
       notice = "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
     end
     # end
