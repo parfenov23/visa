@@ -3,15 +3,24 @@ class InvitationsController < ApplicationController
   include WickedPdf::WickedPdfHelper::Assets
   skip_forgery_protection only: :create
 
+  RATE_LIMIT_WINDOW = 1.hour
+
   def create
+    if submission_rate_limited?
+      redirect_to root_path(tariff: params[:tariff].presence),
+                  notice: "We already received an application from your IP. Please try again in an hour."
+      return
+    end
+
     @invitation = Invitation.new(invitation_params)
 
     notice = "There was a problem submitting your application. Please try again."
-    # Turnstile temporarily disabled; anti-spam handled by Rack::Attack (see config/initializers/rack_attack.rb)
+    # Turnstile temporarily disabled; anti-spam is enforced via Redis rate-limit below.
     # cf_verify = verify_turnstile(model: @invitation)
     # if cf_verify.success?
     if @invitation.save
       @invitation.send_notify_email
+      mark_submission!
       notice = "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
     end
     # end
@@ -51,6 +60,27 @@ class InvitationsController < ApplicationController
   end
 
   private
+
+  def submission_rate_limited?
+    redis_client.exists?(rate_limit_key)
+  rescue Redis::BaseError => e
+    Rails.logger.warn("Rate-limit check skipped: #{e.class}: #{e.message}")
+    false
+  end
+
+  def mark_submission!
+    redis_client.set(rate_limit_key, Time.now.to_i, ex: RATE_LIMIT_WINDOW.to_i)
+  rescue Redis::BaseError => e
+    Rails.logger.warn("Rate-limit write skipped: #{e.class}: #{e.message}")
+  end
+
+  def rate_limit_key
+    "invitation_submit:#{request.remote_ip}"
+  end
+
+  def redis_client
+    @redis_client ||= Redis.new(url: ENV.fetch("REDIS_URL", "redis://localhost:6379/2"))
+  end
 
   def invitation_params
     params.permit(
