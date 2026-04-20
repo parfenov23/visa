@@ -35,6 +35,8 @@ gem 'sass'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem "cloudflare-turnstile-rails"
+gem "rack-attack"
+gem "redis"
 
 # group :development, :test do
 # end
