@@ -16,14 +16,12 @@ class InvitationsController < ApplicationController
 
     notice = "There was a problem submitting your application. Please try again."
     # Turnstile temporarily disabled; anti-spam is enforced via Redis rate-limit below.
-    # cf_verify = verify_turnstile(model: @invitation)
-    # if cf_verify.success?
-    if @invitation.save
+    cf_verify = verify_turnstile(model: @invitation)
+    if cf_verify.success? && @invitation.save
       @invitation.send_notify_email
       # mark_submission!
       notice = "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
     end
-    # end
 
     redirect_to root_path(tariff: params[:tariff].presence), notice: notice
   end
