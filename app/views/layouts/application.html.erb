@@ -372,10 +372,14 @@
 
       overlay.classList.add("show");
 
-      setTimeout(() => {
+      const close = () => {
         overlay.classList.remove("show");
         overlay.addEventListener("transitionend", () => overlay.remove(), { once: true });
-      }, 5000);
+      };
+
+      overlay.querySelectorAll(".flash-popup__close").forEach((btn) => {
+        btn.addEventListener("click", close);
+      });
     });
   </script>
 </head>
@@ -389,7 +393,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="flash-overlay">
     <% flash.each do |type, message| %>
       <div class="flash-popup <%= type %>">
-        <%= message %>
+        <button type="button" class="flash-popup__close" aria-label="Close">&times;</button>
+        <div class="flash-popup__body"><%= simple_format(message.to_s) %></div>
       </div>
     <% end %>
   </div>
@@ -418,6 +423,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   ym(106353770, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
 </script>
+<% if Rails.env.production? %>
 <noscript><div><img src="https://mc.yandex.ru/watch/106353770" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
@@ -482,6 +488,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 </script>
 
+<% fb_pixel_id = params[:tariff].to_s == 'custom_50' ? '26595698796788130' : '954534740669017' %>
 <!-- Meta Pixel Code -->
 <script>
     !function(f,b,e,v,n,t,s)
@@ -492,14 +499,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '954534740669017');
+    fbq('init', '<%= fb_pixel_id %>');
     fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
-               src="https://www.facebook.com/tr?id=954534740669017&ev=PageView&noscript=1"
+               src="https://www.facebook.com/tr?id=<%= fb_pixel_id %>&ev=PageView&noscript=1"
     /></noscript>
 <!-- End Meta Pixel Code -->
-
+<script src="//code.jivosite.com/widget/b67RY8PKCu" async></script>
 <!-- Structured Data: Service -->
 <script type="application/ld+json">
 {
@@ -518,6 +525,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 }
 </script>
-
+<% end %>
 </body>
 </html>

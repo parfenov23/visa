@@ -1,5 +1,33 @@
-class Country
-  def self.all
+class CreateCountries < ActiveRecord::Migration[7.0]
+  class MigrationCountry < ActiveRecord::Base
+    self.table_name = 'countries'
+  end
+
+  def up
+    create_table :countries do |t|
+      t.string :code, null: false
+      t.string :title
+      t.string :title_ru
+      t.string :flag
+      t.integer :position, default: 0, null: false
+
+      t.timestamps
+    end
+    add_index :countries, :code, unique: true
+    add_index :countries, :position
+
+    MigrationCountry.reset_column_information
+
+    countries_data.each_with_index do |attrs, idx|
+      MigrationCountry.create!(attrs.merge(position: idx))
+    end
+  end
+
+  def down
+    drop_table :countries
+  end
+
+  def countries_data
     [
       { code: 'AFG', title: 'Afghanistan', title_ru: 'Афганистан', flag: '🇦🇫' },
       { code: 'ALB', title: 'Albania', title_ru: 'Албания', flag: '🇦🇱' },

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_11_20_192017) do
+ActiveRecord::Schema[7.0].define(version: 2026_04_30_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_20_192017) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "countries", force: :cascade do |t|
+    t.string "code", null: false
+    t.string "title"
+    t.string "title_ru"
+    t.string "flag"
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_countries_on_code", unique: true
+    t.index ["position"], name: "index_countries_on_position"
+  end
+
   create_table "invitations", force: :cascade do |t|
     t.string "tariff"
     t.string "package"
@@ -67,6 +79,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_20_192017) do
     t.string "meals"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "purpose", default: "tourism", null: false
+    t.string "status", default: "in_progress", null: false
+    t.text "additional_info"
+    t.index ["status"], name: "index_invitations_on_status"
   end
 
 end

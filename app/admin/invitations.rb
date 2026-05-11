@@ -3,7 +3,8 @@ ActiveAdmin.register Invitation do
   permit_params :invitation_type_id, :surname, :name, :middlename, :sex,
                 :citizenship, :birthDate, :arival_date, :departure_date, :package,
                 :passport, :visa_obtain_place, :cities, :hotels, :hotels_ru,
-                :email, :promocode, :comments, :accomodation, :meals, :price, :currency, :tariff
+                :email, :promocode, :comments, :accomodation, :meals, :price, :currency, :tariff,
+                :purpose, :status, :additional_info
 
   action_item :pdf, only: :show do
     link_to "Invoice PDF", invitation_path(resource, format: :pdf), target: "_blank"
@@ -12,6 +13,15 @@ ActiveAdmin.register Invitation do
   index do
     selectable_column
     id_column
+    column('Status') do |inv|
+      label = Invitation::STATUSES[inv.status] || inv.status
+      color = case inv.status
+              when 'done'        then '#1f9d55'
+              when 'correction'  then '#d97706'
+              else '#2563eb'
+              end
+      status_tag label, style: "background-color: #{color}; color: #fff;"
+    end
     column :email
     column :tariff
     column :price
@@ -23,6 +33,8 @@ ActiveAdmin.register Invitation do
     column :birthDate
     column :arival_date
     column :departure_date
+    column('Purpose') { |inv| Invitation::PURPOSES[inv.purpose] || inv.purpose }
+    column('Created at') { |inv| inv.created_at&.strftime('%d.%m.%Y %H.%M.%S') }
     actions
   end
 
@@ -35,7 +47,22 @@ ActiveAdmin.register Invitation do
   filter :passport
   filter :arival_date
   filter :departure_date
-  filter :created_at
+  filter :purpose, as: :select, collection: Invitation::PURPOSES.invert
+  filter :status, as: :select, collection: Invitation::STATUSES.invert
+
+  filter :created_at, as: :date_range, label: 'Created at (range)'
+
+  filter :created_in_period,
+         as: :select,
+         label: 'Created at (period)',
+         collection: [
+           ['Today',      'today'],
+           ['Yesterday',  'yesterday'],
+           ['This week',  'this_week'],
+           ['Last week',  'last_week'],
+           ['This month', 'this_month'],
+           ['Last month', 'last_month']
+         ]
 
   # -----------------------------
   # Форма редактирования
@@ -46,6 +73,8 @@ ActiveAdmin.register Invitation do
     f.inputs "Invitation Details" do
       f.input :price
       f.input :package, as: :select, collection: Invitation.tariff_price(currency: f.object.currency.to_sym, tariff: f.object.tariff.to_sym).keys
+      f.input :purpose, as: :select, collection: Invitation::PURPOSES.invert, include_blank: false, label: 'Purpose of visit'
+      f.input :status, as: :select, collection: Invitation::STATUSES.invert, include_blank: false
       f.input :surname
       f.input :name
       f.input :middlename
@@ -64,6 +93,10 @@ ActiveAdmin.register Invitation do
       f.input :email
       f.input :promocode
       f.input :comments
+      f.input :additional_info,
+              as: :text,
+              input_html: { rows: 3 },
+              hint: 'Будет добавлено к строке "индивидуальный тур" в PDF (Дополнительные сведения).'
     end
 
     f.actions
@@ -75,9 +108,11 @@ ActiveAdmin.register Invitation do
   show do
     attributes_table do
       row :id
+      row('Status') { |inv| Invitation::STATUSES[inv.status] || inv.status }
       row :package
       row :tariff
       row :currency
+      row('Purpose of visit') { |inv| Invitation::PURPOSES[inv.purpose] || inv.purpose }
       row :surname
       row :name
       row :middlename
@@ -97,8 +132,9 @@ ActiveAdmin.register Invitation do
         raw "<b style='color: red;'>#{inv.promocode}</b>"
       end
       row :comments
-      row :created_at
-      row :updated_at
+      row :additional_info
+      row(:created_at) { |inv| inv.created_at&.strftime('%d.%m.%Y %H.%M.%S') }
+      row(:updated_at) { |inv| inv.updated_at&.strftime('%d.%m.%Y %H.%M.%S') }
     end
   end
 end

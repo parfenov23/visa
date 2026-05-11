@@ -20,7 +20,7 @@ class InvitationsController < ApplicationController
     if cf_verify.success? && @invitation.save
       @invitation.send_notify_email
       # mark_submission!
-      notice = "Thank you for submitting your application at russvisa.com. We will send a payment link to provided email address. For any questions, please contact manager@russvisa.com"
+      notice = "Thank you for submitting your application at russvisa.com. We have received your request and will send a payment link to the email address you provided.\n\nIf you do not receive an email from us within 1 hour, <strong>please check your spam folder</strong> and please contact us at manager@russvisa.com.\n\nFor any questions, please contact us at manager@russvisa.com."
     end
 
     redirect_to root_path(tariff: params[:tariff].presence), notice: notice

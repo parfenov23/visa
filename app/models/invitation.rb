@@ -4,6 +4,36 @@ class Invitation < ApplicationRecord
   ALL_ACCOMODATION = ["Double (DBL)", "Twin (TWN)", "Single (SGL)"]
   ALL_MEALS = %w[BB RO HB FB AI UAI CB]
 
+  PURPOSES = {
+    'tourism'        => 'Tourism',
+    'auto_tourism'   => 'Auto tourism',
+    'target_tourism' => 'Target tourism'
+  }.freeze
+
+  STATUSES = {
+    'in_progress' => 'In progress',
+    'done'        => 'Done',
+    'correction'  => 'Correction'
+  }.freeze
+
+  scope :created_in_period, ->(period) {
+    now = Time.zone.now
+    range =
+      case period.to_s
+      when 'today'      then now.beginning_of_day..now.end_of_day
+      when 'yesterday'  then 1.day.ago.beginning_of_day..1.day.ago.end_of_day
+      when 'this_week'  then now.beginning_of_week..now.end_of_week
+      when 'last_week'  then 1.week.ago.beginning_of_week..1.week.ago.end_of_week
+      when 'this_month' then now.beginning_of_month..now.end_of_month
+      when 'last_month' then 1.month.ago.beginning_of_month..1.month.ago.end_of_month
+      end
+    range ? where(created_at: range) : all
+  }
+
+  def self.ransackable_scopes(_auth_object = nil)
+    [:created_in_period]
+  end
+
   def self.tariff_price(currency: :eur, tariff: :default)
     all_tariffs = {
       eur: {
@@ -78,6 +108,9 @@ class Invitation < ApplicationRecord
       website
       promocode
       comments
+      additional_info
+      purpose
+      status
       created_at
       updated_at
     ]
@@ -97,8 +130,9 @@ class Invitation < ApplicationRecord
   end
 
   def citizenship_title(lang: :en)
-    country = Country.all.find{|country| country[:code] == self.citizenship} || {}
-    lang == :ru ? country[:title_ru] : country[:title]
+    country = Country.find_by_code(self.citizenship)
+    return nil unless country
+    lang == :ru ? country.title_ru : country.title
   end
 
   def send_notify_email

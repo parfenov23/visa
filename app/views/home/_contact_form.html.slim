@@ -69,8 +69,8 @@ div#imGroup_10.imHGroup.display_flex.center
                   option value=""
                     | -
                   - Country.all.each do |country|
-                    option value=country[:code]
-                      = "#{country[:flag]} #{country[:title]}"
+                    option value=country.code
+                      = "#{country.flag} #{country.title}"
 
                 / label for="citizenship"
                 /   | Citizenship*:

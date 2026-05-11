@@ -223,6 +223,21 @@
   departure_date  = @invitation.departure_date
   birth_date      = @invitation.birthDate
 
+  # Цель поездки
+  purpose_ru_map = {
+    'tourism'        => 'Туризм',
+    'auto_tourism'   => 'Автотуризм',
+    'target_tourism' => 'Целевой туризм'
+  }
+  purpose_en_map = {
+    'tourism'        => 'Tourism',
+    'auto_tourism'   => 'Auto tourism',
+    'target_tourism' => 'Target tourism'
+  }
+  purpose_key = @invitation.respond_to?(:purpose) ? @invitation.purpose.to_s : 'tourism'
+  purpose_ru  = purpose_ru_map[purpose_key] || 'Туризм'
+  purpose_en  = purpose_en_map[purpose_key] || 'Tourism'
+
   # Даты подписи
   print_date =
     if @invitation.respond_to?(:issued_on) && @invitation.issued_on.present?
@@ -259,7 +274,7 @@
         </tr>
         <tr>
           <td class="nowrap"><b>Цель</b> (Purpose of visit)</td>
-          <td>Туризм</td>
+          <td><%= purpose_ru %> (<%= purpose_en %>)</td>
         </tr>
         <tr>
           <td>
@@ -299,7 +314,7 @@
         Реестровый номер В031-00161-77/02027413 от 24.03.2025<br>
         email: gorburoputeshestviy@gmail.com<br>
         тел: +7 901 5168990<br>
-        Дополнительные сведения: индивидуальный тур
+        Дополнительные сведения: индивидуальный тур<%= ". #{@invitation.additional_info.to_s.strip}" if @invitation.additional_info.present? %>
       </div>
 
       <div class="director-block small">

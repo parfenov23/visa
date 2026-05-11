@@ -47,12 +47,13 @@
 
 /* сам попап */
 .flash-popup {
+  position: relative;
   background: #fff;
   color: #111;
   min-width: 320px;
   max-width: 520px;
   width: 80%;
-  padding: 28px 32px;
+  padding: 40px 32px 28px;
   border-radius: 14px;
   font-size: 18px;
   text-align: center;
@@ -63,6 +64,39 @@
   transform: translateY(10px) scale(.98);
   opacity: 0;
   transition: opacity .25s ease, transform .25s ease;
+}
+
+.flash-popup__close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 28px;
+  line-height: 1;
+  color: #666;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background .15s ease, color .15s ease;
+}
+
+.flash-popup__close:hover {
+  background: rgba(0,0,0,0.06);
+  color: #111;
+}
+
+.flash-popup__body p {
+  margin: 0 0 12px;
+}
+
+.flash-popup__body p:last-child {
+  margin-bottom: 0;
 }
 
 #flash-overlay.show .flash-popup {
