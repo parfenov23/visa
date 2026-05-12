@@ -1,0 +1,26 @@
+<%
+  case kind.to_s
+  when "submission_success"
+    css_class = "notice"
+  when "submission_error"
+    css_class = "alert"
+  else
+    css_class = nil
+  end
+%>
+
+<% if css_class %>
+  <div class="flash-popup <%= css_class %>">
+    <button type="button" class="flash-popup__close" aria-label="Close">&times;</button>
+    <div class="flash-popup__body">
+      <% case kind.to_s %>
+      <% when "submission_success" %>
+        <p>Thank you for submitting your application at russvisa.com. We have received your request and will send a payment link to the email address you provided.</p>
+        <p>If you do not receive an email from us within 1 hour, <strong>please check your spam folder</strong> and please contact us at manager@russvisa.com.</p>
+        <p>For any questions, please contact us at manager@russvisa.com.</p>
+      <% when "submission_error" %>
+        <p>There was a problem submitting your application. Please try again.</p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -389,14 +389,9 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<% if flash.any? %>
+<% if flash[:popup].present? %>
   <div id="flash-overlay">
-    <% flash.each do |type, message| %>
-      <div class="flash-popup <%= type %>">
-        <button type="button" class="flash-popup__close" aria-label="Close">&times;</button>
-        <div class="flash-popup__body"><%= simple_format(message.to_s) %></div>
-      </div>
-    <% end %>
+    <%= render "shared/flash_popup", kind: flash[:popup] %>
   </div>
 <% end %>
 
