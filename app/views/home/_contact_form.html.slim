@@ -68,7 +68,7 @@ div#imGroup_10.imHGroup.display_flex.center
                 select.form-control#countrySelect name="citizenship" required=""
                   option value=""
                     | -
-                  - Country.all.each do |country|
+                  - Country.order(:title).each do |country|
                     option value=country.code
                       = "#{country.flag} #{country.title}"
 

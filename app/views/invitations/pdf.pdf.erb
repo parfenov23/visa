@@ -229,14 +229,8 @@
     'auto_tourism'   => 'Автотуризм',
     'target_tourism' => 'Целевой туризм'
   }
-  purpose_en_map = {
-    'tourism'        => 'Tourism',
-    'auto_tourism'   => 'Auto tourism',
-    'target_tourism' => 'Target tourism'
-  }
   purpose_key = @invitation.respond_to?(:purpose) ? @invitation.purpose.to_s : 'tourism'
   purpose_ru  = purpose_ru_map[purpose_key] || 'Туризм'
-  purpose_en  = purpose_en_map[purpose_key] || 'Tourism'
 
   # Даты подписи
   print_date =
@@ -274,7 +268,7 @@
         </tr>
         <tr>
           <td class="nowrap"><b>Цель</b> (Purpose of visit)</td>
-          <td><%= purpose_ru %> (<%= purpose_en %>)</td>
+          <td><%= purpose_ru %></td>
         </tr>
         <tr>
           <td>
