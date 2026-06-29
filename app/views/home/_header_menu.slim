@@ -1,4 +1,15 @@
 - add_tariff = params[:tariff].present? ? "?tariff=#{params[:tariff]}" : ""
+
+/ Кастомная мобильная навигация (показывается только на узких экранах,
+/ imCreator-меню при этом скрывается — см. mobile_fixes.scss)
+nav.mobile-nav
+  a href="/#{add_tariff}#advantages" ABOUT US
+  a href="/#{add_tariff}#pricing" PRICING
+  a href="/files/TIN.pdf" target="_blank" LICENSE
+  a href="/#{add_tariff}#reviews" REVIEWS
+  a href="/#{add_tariff}#faq" FAQ
+  a href="/#{add_tariff}#contact" CONTACTS
+
 div#imMnMnContainer
   div#imMnMnGraphics
   div#imMnMn.auto.main-menu

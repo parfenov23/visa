@@ -1,6 +1,5 @@
 # app/controllers/invitations_controller.rb
 class InvitationsController < ApplicationController
-  include WickedPdf::WickedPdfHelper::Assets
   skip_forgery_protection only: :create
 
   RATE_LIMIT_WINDOW = 2.minutes
@@ -29,36 +28,36 @@ class InvitationsController < ApplicationController
 
   def show
     @invitation = Invitation.find(params[:id])
-    path = Rails.root.join("app/assets/images/seal.png")
-    image_data = File.read(path)
-    @seal_base64 = Base64.strict_encode64(image_data)
 
-    path = Rails.root.join("app/assets/images/seal_1.png")
-    image_data = File.read(path)
-    @seal_2_base64 = Base64.strict_encode64(image_data)
+    @seal_ru_base64 = encode_image("fortuna_seal_ru.png")
+    @seal_en_base64 = encode_image("fortuna_seal_en.png")
+    @logo_base64    = encode_image("fortuna_logo.png")
+    @qr_base64      = encode_image("fortuna_qr.png")
 
-    path = Rails.root.join("app/assets/images/logo-cb.png")
-    image_data = File.read(path)
-    @logo_base64 = Base64.strict_encode64(image_data)
+    html = render_to_string(template: "invitations/pdf", formats: [:pdf], layout: false)
 
     if params[:debug]
-      erb = ERB.new(File.read(Rails.root.join("app/views/invitations/pdf.pdf.erb")))
-      html = erb.result(binding)
       render html: html.html_safe, layout: false
       return
     end
 
     respond_to do |format|
-      format.html
+      format.html { render html: html.html_safe, layout: false }
       format.pdf do
-        render pdf: "invitation_#{@invitation.id}",
-               template: "invitations/pdf",
-               orientation: "Landscape"
+        pdf = PdfRenderer.render(html, landscape: true)
+        send_data pdf,
+                  filename: "invitation_#{@invitation.id}.pdf",
+                  type: "application/pdf",
+                  disposition: "inline"
       end
     end
   end
 
   private
+
+  def encode_image(filename)
+    Base64.strict_encode64(File.read(Rails.root.join("app/assets/images", filename)))
+  end
 
   def submission_rate_limited?
     redis_client.exists?(rate_limit_key)

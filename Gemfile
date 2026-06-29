@@ -32,8 +32,7 @@ gem 'uri'
 gem 'slim'
 gem 'sass'
 
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
+gem 'ferrum'
 gem "cloudflare-turnstile-rails"
 gem "redis"
 

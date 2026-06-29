@@ -10,401 +10,303 @@
           font-family: "DejaVu Sans", Arial, sans-serif;
           font-size: 11px;
           margin: 15px 20px;
-          position: relative; /* важно для псевдоэлемента */
+          position: relative;
       }
 
-      .wm-item {
+      /* Водяной знак: один полностраничный инлайн-SVG. Поворот строк сделан ВНУТРИ
+         SVG (вектор), без CSS-transform — поэтому текст чёткий, без растрового мыла. */
+      .watermark {
           position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
           z-index: 0;
           pointer-events: none;
-
-          font-family: "DejaVu Sans", Arial, sans-serif;
-          font-size: 14px !important;          /* маленький */
-          font-weight: 700 !important;
-          color: rgba(0,0,0,0.06) !important;  /* светлый */
-
-          white-space: nowrap;
-
-          /* префиксы для wkhtmltopdf/старого webkit */
-          -webkit-transform: translate(-50%, -50%) rotate(-45deg) !important;
-          transform: translate(-50%, -50%) rotate(-45deg) !important;
-
-          -webkit-transform-origin: center center !important;
-          transform-origin: center center !important;
       }
 
-
-      /* контент поверх */
       table.layout, .header-left, .header-right, .inner, .company-block, .director-block{
           position: relative;
           z-index: 1;
       }
 
-      h1,h2,h3,h4,h5,h6 {
-          margin: 0;
-          padding: 0;
-      }
+      h1,h2,h3,h4,h5,h6 { margin: 0; padding: 0; }
 
-      .small   { font-size: 12px; }
       .b       { font-weight: bold; }
       .center  { text-align: center; }
       .mt-5    { margin-top: 5px; }
       .mt-10   { margin-top: 10px; }
       .mt-15   { margin-top: 15px; }
       .mt-20   { margin-top: 20px; }
-      .mt-30   { margin-top: 30px; }
 
-      /* общий лэйаут: две колонки на странице */
+      /* две колонки на странице */
       table.layout {
           width: 100%;
           border-collapse: collapse;
       }
 
       td.col {
-          width: 57%;
+          width: 50%;
           vertical-align: top;
-          padding: 0 8px;
+          padding: 0 10px;
       }
 
+      /* --- левый заголовок (RU) --- */
       .header-left {
           text-align: center;
-          font-weight: bold;
-          font-size: 15px;
-          margin-bottom: 8px;
-          line-height: 1.3;
+          line-height: 1.25;
+          margin-bottom: 6px;
       }
+      .header-left .title { font-weight: bold; font-size: 15px; }
+      .header-left .sub   { font-weight: bold; font-size: 12px; }
+      .header-left .subi  { font-style: italic; font-size: 11px; }
 
-      .header-right {
-          text-align: left;
-          font-weight: bold;
-          font-size: 14px;
-          line-height: 1.4;
-          margin-bottom: 10px;
+      /* --- правый заголовок (EN) с логотипом --- */
+      .header-right { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+      .header-right td { vertical-align: middle; }
+      .header-right .logo-cell { width: 120px; text-align: center; }
+      .header-right .titles { text-align: center; font-weight: bold; font-size: 14px; line-height: 1.4; }
+      .logo-img { height: 80px; }
 
-          width: 80%;
-      }
-
-      .header-right .title{
-          /*margin-right: auto;*/
-          /*margin-left: auto;*/
-          text-align: center;
-      }
-
+      /* --- таблицы --- */
       table.inner {
           width: 100%;
           border-collapse: collapse;
           border: 1px solid #000;
       }
-
-      table.inner td,
-      table.inner th {
+      table.inner td {
           border: 1px solid #000;
-          padding: 6px 4px;
+          padding: 3px 5px;
           vertical-align: top;
-          font-size: 15px;
+          font-size: 12px;
       }
+      /* Белый фон только на ячейках-названиях — водяной знак под ними не просвечивает.
+         Ячейки со значениями остаются прозрачными (вотермарк виден). */
+      td.lbl, td.lbl-en { background: #fff; }
+      .lbl .ru { font-weight: bold; }
+      .lbl .en { font-style: italic; }
+      .lbl-en { font-size: 12px; }
 
-      table.inner th {
-          font-weight: bold;
-          text-align: left;
-      }
+      .paid { font-weight: bold; font-size: 14px; margin: 9px 0 5px; }
 
-      .nowrap { white-space: nowrap; }
-
-      .company-block {
-          margin-top: 10px;
-          line-height: 1.4;
-          font-size: 15px;
-      }
+      .company-block { line-height: 1.35; font-size: 12px; }
 
       .director-block {
-          margin-top: 15px;
           position: relative;
-          height: 120px;
-          font-size: 15px;
+          height: 44mm;
+          font-size: 14px;
       }
-
-      .director-line {
-          margin-top: 65px;
-      }
-
-      .stamp-img {
-          position: absolute;
-          left: 8px;   /* можно подгонять */
-          top: -20px;   /* можно подгонять */
-          height: 196px;
-          opacity: 1;
-      }
-
-      .sign-img {
-          position: absolute;
-          left: 55px;   /* подогнать под печать */
-          top: 35px;
-          height: 55px;
-      }
-
-      .logo-img {
-          height: 80px;
-      }
+      /* Печать ООО — стандартный диаметр круга 40 мм. В исходных PNG круг
+         занимает всю высоту картинки, поэтому height изображения = диаметру.
+         scale в PdfRenderer = 1.0, значит 40mm печатается ровно 40 мм. */
+      .stamp-img { position: absolute; height: 40mm; opacity: 1; }
+      .qr-img { height: 110px; }
   </style>
 </head>
 <body>
 <%
-  wm_text = "FULLY PAID" # или что угодно
-  step_x = 180           # шаг по горизонтали (px)
-  step_y = 140           # шаг по вертикали (px)
-  cols   = 8             # сколько колонок текста
-  rows   = 10            # сколько строк текста
-%>
-
-<!--<div class="watermark-layer">-->
-<!--  <table class="tg" style="width: 100%">-->
-    <%# rows.times do |r| %>
-<!--    <tr>-->
-    <%# cols.times do |c| %>
-<!--        <td class="watermark-item"> <%#= wm_text %></td>-->
-    <%# end %>
-<!--    </tr>-->
-      <%# end %>
-<!--    </table>-->
-<!--  </table>-->
-<!--</div>-->
-
-<%
-  wm_text = "#{@invitation.surname} #{@invitation.name} #{@invitation.current_id}" # или "FULLY PAID"
-
-  wm_positions_mm = [
-    [30, 20],  [130, 25], [230, 20], [330, 25],
-    [20, 70],  [95, 80], [170, 70], [245, 80], [320, 70],
-    [30, 125],  [130, 130], [230, 125], [330, 130],
-    [20, 175],  [95, 185], [170, 175], [245, 185], [320, 175],
-  ]
-%>
-
-<% wm_positions_mm.each do |left_mm, top_mm| %>
-  <div class="wm-item" style="left:<%= left_mm %>mm; top:<%= top_mm %>mm;">
-    <%= wm_text %>
-  </div>
-<% end %>
-<%
-  # Номера документов — подстрой под свою модель, если есть отдельные поля
   invitation_number = @invitation.current_id
+  reference_number  = "04845639"
 
-  voucher_number = invitation_number
-  invoice_number =
-    if @invitation.respond_to?(:invoice_number)
-      @invitation.invoice_number
-    else
-      invitation_number
-    end
-
-  # Пол
-  sex_text_en =
+  sex_text_ru =
     case @invitation.sex.to_s.downcase
     when "1", "male", "м", "муж", "m" then "Мужской"
     when "0", "female", "ж", "жен", "f" then "Женский"
     else ""
     end
 
-  # Маршрут/отели слева (русский)
-  hotels_ru = (@invitation.hotels_ru || @invitation.hotels || "").to_s
+  hotels_ru = (@invitation.try(:hotels_ru) || @invitation.hotels || "").to_s
   hotels_ru_html = hotels_ru.gsub(/\r\n|\r|\n/, "<br>").html_safe
-
-  # Отели справа (англ) – если нет отдельного поля, используем то же
-  hotels_en = (@invitation.hotels || @invitation.hotels || "").to_s
+  hotels_en = (@invitation.hotels || "").to_s
   hotels_en_html = hotels_en.gsub(/\r\n|\r|\n/, "<br>").html_safe
 
-  # Город/страна
   city_ru = @invitation.cities.to_s.presence || "MOSCOW"
   city_en = (@invitation.respond_to?(:cities_en) && @invitation.cities_en.present?) ? @invitation.cities_en : city_ru
 
-  # Даты
-  arrival_date    = @invitation.arival_date
-  departure_date  = @invitation.departure_date
-  birth_date      = @invitation.birthDate
+  arrival_date   = @invitation.arival_date
+  departure_date = @invitation.departure_date
+  birth_date     = @invitation.birthDate
 
-  # Цель поездки
-  purpose_ru_map = {
-    'tourism'        => 'Туризм',
-    'auto_tourism'   => 'Автотуризм',
-    'target_tourism' => 'Целевой туризм'
-  }
-  purpose_key = @invitation.respond_to?(:purpose) ? @invitation.purpose.to_s : 'tourism'
-  purpose_ru  = purpose_ru_map[purpose_key] || 'Туризм'
-
-  # Даты подписи
   print_date =
     if @invitation.respond_to?(:issued_on) && @invitation.issued_on.present?
       @invitation.issued_on
     else
       @invitation.created_at.to_date rescue Date.today
     end
+  print_date_str = print_date.strftime('%d.%m.%Y')
+
+  full_name = [@invitation.surname, @invitation.name, @invitation.middlename].reject(&:blank?).join(" ")
+  curr_name_package = get_name_package(@invitation.package.to_sym)
+
+  # Две чередующиеся строки водяного знака (как в рефе): имя+номер и фраза о защите.
+  wm_name = "#{@invitation.surname} #{@invitation.name} #{invitation_number}".strip
+  wm_note = "Protected against copying"
+
+  # Параметры (все в одном месте):
+  wm_vb_w  = 1123        # ширина холста (A4 landscape @96dpi)
+  wm_vb_h  = 794         # высота холста
+  wm_angle = -30         # наклон строк
+  wm_font  = 14          # размер шрифта
+  wm_fill  = "#777777"   # цвет
+  wm_op    = "0.20"      # насыщенность
+  wm_gap   = 34          # расстояние между строками (меньше -> плотнее)
+
+  esc = ->(s) { ERB::Util.html_escape(s) }
+  # одна строка = фраза, повторённая на всю ширину диагонали
+  unit_name = ("#{esc.call(wm_name)}&#160;&#160;&#160;&#160;" * 12)
+  unit_note = ("#{esc.call(wm_note)}&#160;&#160;&#160;&#160;" * 12)
+
+  wm_rows = []
+  i = 0
+  y = -300
+  while y < wm_vb_h + 300
+    txt = i.even? ? unit_name : unit_note
+    x   = i.even? ? -400 : -470   # кирпичный сдвиг чётных/нечётных
+    wm_rows << %(<text x="#{x}" y="#{y}" xml:space="preserve" font-family="DejaVu Sans, Arial, sans-serif" font-size="#{wm_font}" font-weight="400" fill="#{wm_fill}" fill-opacity="#{wm_op}">#{txt}</text>)
+    y += wm_gap
+    i += 1
+  end
+  wm_svg_inner = wm_rows.join.html_safe
 %>
+
+<svg class="watermark" viewBox="0 0 <%= wm_vb_w %> <%= wm_vb_h %>" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(<%= wm_angle %> <%= wm_vb_w / 2 %> <%= wm_vb_h / 2 %>)"><%= wm_svg_inner %></g>
+</svg>
 
 <table class="layout">
   <tr>
-    <!-- ЛЕВАЯ КОЛОНКА: ПОДТВЕРЖДЕНИЕ -->
-    <td class="col left" style="padding-right: 36px">
+    <!-- ЛЕВАЯ КОЛОНКА: ПОДТВЕРЖДЕНИЕ (RU) -->
+    <td class="col left">
       <div class="header-left">
-        Подтверждение<br>
-        о приеме иностранного туриста № <%= invitation_number %><br>
-        <span class="small">(Tourist Confirmation)</span>
+        <span class="title">ПОДТВЕРЖДЕНИЕ № <%= invitation_number %></span><br>
+        <span class="sub">о приеме иностранного туриста</span><br>
+        <span class="subi">(tourist confirmation)</span>
       </div>
 
-      <!-- Таблица: кратность/даты/цель/маршрут -->
-      <table class="inner small">
+      <table class="inner">
         <tr>
-          <td class="nowrap" style="width: 50%"><b>Кратность</b> (Number of entries)</td>
-          <% curr_name_package = get_name_package(@invitation.package.to_sym) %>
-          <td><%= curr_name_package %></td>
+          <td class="lbl" style="width: 27%"><span class="ru">Кратность визы</span><br><span class="en">(number of entries)</span></td>
+          <td style="width: 23%"><%= curr_name_package %></td>
+          <td class="lbl" style="width: 27%"><span class="ru">Гражданство</span><br><span class="en">(citizenship)</span></td>
+          <td style="width: 23%"><%= @invitation.citizenship_title(lang: :ru) %></td>
         </tr>
         <tr>
-          <td class="nowrap"><b>Дата въезда</b> (Date of arrival)</td>
+          <td class="lbl"><span class="ru">Въезд с</span><br><span class="en">(date of arrival)</span></td>
           <td><%= arrival_date %></td>
-        </tr>
-        <tr>
-          <td class="nowrap"><b>Выезд до</b> (Date of departure)</td>
+          <td class="lbl"><span class="ru">Выезд до</span> <span class="en">(date of departure)</span></td>
           <td><%= departure_date %></td>
         </tr>
         <tr>
-          <td class="nowrap"><b>Цель</b> (Purpose of visit)</td>
-          <td><%= purpose_ru %></td>
+          <td class="lbl"><span class="ru">Фамилия/Имя</span><br><span class="en">(surname/name)</span></td>
+          <td colspan="3"><%= full_name %></td>
         </tr>
         <tr>
-          <td>
-            <b>Маршрут и места размещения</b><br>
-            (Hotel)
-          </td>
-          <td><%= hotels_ru_html %></td>
-        </tr>
-      </table>
-
-      <!-- Таблица: персональные данные -->
-      <table class="inner small mt-10">
-        <tr>
-          <th>Фамилия Имя<br>(Surname Name)</th>
-          <th>Дата рождения<br>(Date of birth)</th>
-          <th>Пол<br>(Sex)</th>
-          <th>Номер паспорта<br>(Passport No.)</th>
-          <th>Гражданство<br>(Citizenship)</th>
-        </tr>
-        <tr>
-          <td><%= @invitation.surname %> <br><%= @invitation.name %> <%= @invitation.middlename %></td>
+          <td class="lbl"><span class="ru">Дата рождения</span><br><span class="en">(date of birth)</span></td>
           <td><%= birth_date %></td>
-          <td><%= sex_text_en %></td>
+          <td class="lbl"><span class="ru">Пол</span><br><span class="en">(sex)</span></td>
+          <td><%= sex_text_ru %></td>
+        </tr>
+        <tr>
+          <td class="lbl"><span class="ru">№ паспорта</span><br><span class="en">(passport №)</span></td>
           <td><%= @invitation.passport %></td>
-          <td><%= @invitation.citizenship_title(lang: :ru) %></td>
+          <td class="lbl"><span class="ru">Цель</span><br><span class="en">(purpouse of visit)</span></td>
+          <td>Туризм</td>
+        </tr>
+        <tr>
+          <td class="lbl"><span class="ru">Маршрут и места размещения</span><br><span class="en">(route and hotel)</span></td>
+          <td colspan="3"><%= hotels_ru_html %></td>
         </tr>
       </table>
 
-      <p class="mt-10 b small">
-        ТУР ОПЛАЧЕН ПОЛНОСТЬЮ
-      </p>
+      <div class="paid">Тур оплачен полностью</div>
 
-      <div class="company-block small">
-        <span class="b">Принимающая организация, её адрес:</span><br><br>
-        ООО «ГОРОДСКОЕ БЮРО ПУТЕШЕСТВИЙ. Ф-Л3», ИНН 7705796440, ОГРН 5077746950530<br>
-        Москва, ул. Шолохова, 10, 235<br>
-        Реестровый номер В031-00161-77/02027413 от 24.03.2025<br>
-        email: gorburoputeshestviy@gmail.com<br>
-        тел: +7 901 5168990<br>
-        Дополнительные сведения: индивидуальный тур<%= ". #{@invitation.additional_info.to_s.strip}" if @invitation.additional_info.present? %>
+      <div class="company-block">
+        Дополнительные сведения: индивидуальный тур<%= ". #{@invitation.additional_info.to_s.strip}" if @invitation.additional_info.present? %><br>
+        <span class="b">Принимающая организация, ее адрес:</span><br>
+        ООО "ФОРТУНА ТРЕВЕЛ",<br>
+        360030, РОССИЯ, КАБАРДИНО-БАЛКАРСКАЯ РЕСП, НАЛЬЧИК Г.О., Г. НАЛЬЧИК,<br>
+        ПР-КТ КУЛИЕВА, Д. 19А, КВ. 2.<br>
+        Тел.: +7 965 396 96 00<br>
+        E-mail: manager.fortunatravel@gmail.com<br>
+        ИНН 0700030427<br>
+        Реестровый (референс) номер: <%= reference_number %><br>
+        Дата: <%= print_date_str %>
       </div>
 
-      <div class="director-block small">
-        Генеральный директор:
-
-        <!-- Печать и подпись СЛЕВА, как в образце -->
-        <img src="data:image/png;base64,<%= @seal_base64 %>" class="stamp-img" style="opacity: 1;">
-
-        <div class="director-line">
-          _________________________ /Маслов К.В./
-        </div>
-
-        <div class="mt-30">
-          Дата: <%= print_date.strftime('%d.%m.%Y') %>
-        </div>
+      <div class="director-block">
+        <div style="margin-top: 12px;">Генеральный директор&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ахматова И.В.</div>
+        <img src="data:image/png;base64,<%= @seal_ru_base64 %>" class="stamp-img" style="left: 150px; top: 20px;">
       </div>
     </td>
 
-    <!-- ПРАВАЯ КОЛОНКА: INVOICE / VOUCHER -->
+    <!-- ПРАВАЯ КОЛОНКА: VOUCHER & CONFIRMATION (EN) -->
     <td class="col right">
       <table class="header-right">
         <tr>
-          <td>
-            <img src="data:image/png;base64,<%= @logo_base64 %>" class="logo-img" style="opacity: 1;">
+          <td class="logo-cell">
+            <img src="data:image/png;base64,<%= @logo_base64 %>" class="logo-img">
           </td>
-          <td class="title">
-            Gorodskoye Buro Puteshestviy. F-l 3<br>
-            Reference № 02027413
+          <td class="titles">
+            ООО «ФОРТУНА ТРЕВЕЛ»<br>
+            Fortuna travel LLC<br>
+            Reference No.: <%= reference_number %><br>
+            VOUCHER &amp; CONFIRMATION<br>
+            No. <%= invitation_number %>
           </td>
         </tr>
       </table>
 
-      <table class="inner small mt-5">
+      <table class="inner">
         <tr>
-          <td>
-            Voucher: №<%= voucher_number %>
-          </td>
+          <td class="lbl-en" style="width: 27%">Country / city</td>
+          <td colspan="3">Russia: <%= city_en %></td>
         </tr>
         <tr>
-          <td class="nowrap">
-            Country / City:
-            <br>
-            Russia: <%= city_en %>
-          </td>
+          <td class="lbl-en">Hotel(s)</td>
+          <td colspan="3"><%= hotels_en_html %></td>
         </tr>
         <tr>
-          <td>
-            Hotel: <%= hotels_en_html %>
-          </td>
-
+          <td class="lbl-en">Names</td>
+          <td colspan="3"><%= full_name %></td>
         </tr>
         <tr>
-          <td>Names: <%= @invitation.surname %> <%= @invitation.name %> <%= @invitation.middlename %></td>
+          <td class="lbl-en">Check in</td>
+          <td style="width: 23%"><%= arrival_date %></td>
+          <td class="lbl-en" style="width: 27%">Check out</td>
+          <td style="width: 23%"><%= departure_date %></td>
         </tr>
         <tr>
-          <td>Check in: <%= arrival_date %></td>
-        </tr>
-        <tr>
-          <td>Check out: <%= departure_date %></td>
-        </tr>
-        <tr>
-          <td>Accomodation: <%= @invitation.accomodation %></td>
-        </tr>
-        <tr>
-          <td>Meals: <%= @invitation.meals %></td>
-        </tr>
-        <tr>
-          <td>Remarks: FULLY PAID</td>
+          <td class="lbl-en">Accommodation</td>
+          <td><%= @invitation.accomodation %></td>
+          <td class="lbl-en">Meals</td>
+          <td><%= @invitation.meals %></td>
         </tr>
       </table>
 
-      <div class="company-block small">
-        <span class="b">Receiving company</span><br><br>
-        Gorodskoye Buro Puteshestviy. F-l 3<br>
-        Reference № 02027413<br>
-        TIN 7705796440<br>
-        119634, Sholokhova street, 10, 235, Moscow, Russia<br>
-        email: gorburoputeshestviy@gmail.com<br>
-        Tel.: +7 901 5168990
-      </div>
+      <div class="paid">FULLY PAID</div>
 
-      <div class="director-block small">
-        CEO:
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="vertical-align: top;">
+            <div class="company-block">
+              <span class="b">Receiving Company:</span><br>
+              Reference number: <%= reference_number %><br>
+              Fortuna travel LLC<br>
+              360030, Russia, Kabardino-Balkarian Republic, Nalchik Urban<br>
+              District, Nalchik, 19A Kulieva Avenue, Apt. 2<br>
+              Tel: +7 965 396 96 00<br>
+              E-mail: manager.fortunatravel@gmail.com<br>
+              TIN: 0700030427<br>
+              Date: <%= print_date_str %>
+            </div>
+          </td>
+          <td style="vertical-align: top; text-align: right; width: 120px;">
+            <img src="data:image/png;base64,<%= @qr_base64 %>" class="qr-img">
+          </td>
+        </tr>
+      </table>
 
-        <!-- Печать и подпись СПРАВА (симметрично, можно убрать, если не нужно) -->
-        <img src="data:image/png;base64,<%= @seal_2_base64 %>" class="stamp-img" style="opacity: 1;">
-
-<!--        <img src="<%#= asset_path('signature.png') %>" class="sign-img">-->
-
-        <div class="director-line">
-          _________________________ /Maslov K.V./
-        </div>
-
-        <div class="mt-30">
-          Date: <%= print_date.strftime('%d.%m.%Y') %>
-        </div>
+      <div class="director-block">
+        <div style="margin-top: 6px;">General Director:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/Irina Ahmatova/</div>
+        <img src="data:image/png;base64,<%= @seal_en_base64 %>" class="stamp-img" style="left: 120px; top: 12px;">
       </div>
     </td>
   </tr>

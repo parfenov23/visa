@@ -6,7 +6,10 @@ WORKDIR $APP_HOME
 ENV DEBCONF_NOWARNINGS yes
 
 RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash -
-RUN apt-get update && apt-get -y install cron nodejs libcurl4-openssl-dev cmake libjemalloc2
+RUN apt-get update && apt-get -y install cron nodejs libcurl4-openssl-dev cmake libjemalloc2 chromium fonts-dejavu fonts-liberation
+
+# Путь к headless-браузеру для Ferrum (генерация PDF)
+ENV FERRUM_BROWSER_PATH=/usr/bin/chromium
 
 ENV LD_PRELOAD='/usr/lib/x86_64-linux-gnu/libjemalloc.so.2'
 

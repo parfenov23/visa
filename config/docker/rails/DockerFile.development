@@ -19,7 +19,11 @@ RUN apt-get update && apt-get install -y \
   apt-transport-https \
   ca-certificates \
   dirmngr \
+  chromium fonts-dejavu fonts-liberation \
   && rm -rf /var/lib/apt/lists/*
+
+# Путь к headless-браузеру для Ferrum (генерация PDF)
+ENV FERRUM_BROWSER_PATH=/usr/bin/chromium
 
 # Ruby
 ENV BUNDLE_PATH /bundle

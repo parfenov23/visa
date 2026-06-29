@@ -41,6 +41,7 @@ ActiveAdmin.register Invitation do
   # -----------------------------
   # Фильтры в админке
   # -----------------------------
+  filter :id
   filter :surname
   filter :name
   filter :citizenship
@@ -89,7 +90,7 @@ ActiveAdmin.register Invitation do
       f.input :hotels
       f.input :hotels_ru
       f.input :accomodation, as: :select, collection: Invitation::ALL_ACCOMODATION
-      f.input :meals, as: :select, collection: Invitation::ALL_MEALS
+      f.input :meals, as: :select, collection: Invitation::ALL_MEALS, default: "RO"
       f.input :email
       f.input :promocode
       f.input :comments

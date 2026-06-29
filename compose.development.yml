@@ -21,7 +21,9 @@ services:
       context: .
       dockerfile: config/docker/rails/DockerFile.development
     container_name: rails
-    platform: linux/amd64
+    # No platform pin: build/run on the host arch so headless Chrome (Ferrum PDF)
+    # runs natively. amd64-Chromium under QEMU emulation on Apple Silicon fails
+    # with "lacks sse3" and won't start.
     ports:
       - '3000:3000'
     environment:

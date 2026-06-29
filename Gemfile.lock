@@ -80,6 +80,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.9)
+      public_suffix (>= 2.0.2, < 8.0)
     airbrussh (1.6.0)
       sshkit (>= 1.6.1, != 1.7.0)
     arbre (1.7.0)
@@ -127,6 +129,11 @@ GEM
       ruby2_keywords
     erubi (1.13.1)
     execjs (2.10.0)
+    ferrum (0.15)
+      addressable (~> 2.5)
+      concurrent-ruby (~> 1.1)
+      webrick (~> 1.7)
+      websocket-driver (~> 0.7)
     ffi (1.17.2)
     font-awesome-sass (6.7.2)
       sassc (~> 2.0)
@@ -208,6 +215,7 @@ GEM
     pry-byebug (3.10.1)
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
+    public_suffix (6.0.2)
     puma (7.1.0)
       nio4r (~> 2.0)
     pundit (2.5.2)
@@ -308,17 +316,14 @@ GEM
     uri (1.1.1)
     warden (1.2.9)
       rack (>= 2.0.9)
+    webrick (1.8.1)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     whenever (1.0.0)
       chronic (>= 0.6.3)
-    wicked_pdf (2.8.2)
-      activesupport
-      ostruct
     will_paginate (4.0.1)
-    wkhtmltopdf-binary (0.12.6.10)
     zeitwerk (2.6.18)
 
 PLATFORMS
@@ -333,6 +338,7 @@ DEPENDENCIES
   cloudflare-turnstile-rails
   devise
   draper
+  ferrum
   foreman
   jquery-rails
   net-http
@@ -351,9 +357,7 @@ DEPENDENCIES
   uglifier
   uri
   whenever (= 1.0.0)
-  wicked_pdf
   will_paginate
-  wkhtmltopdf-binary
 
 BUNDLED WITH
    2.5.4

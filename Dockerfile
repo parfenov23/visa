@@ -2,7 +2,12 @@ FROM ruby:3.1.3
 
 # зависимости
 RUN apt-get update -qq && apt-get install -y \
-  build-essential libpq-dev nodejs yarn
+  build-essential libpq-dev nodejs yarn \
+  chromium fonts-dejavu fonts-liberation \
+  && rm -rf /var/lib/apt/lists/*
+
+# Путь к headless-браузеру для Ferrum (генерация PDF)
+ENV FERRUM_BROWSER_PATH=/usr/bin/chromium
 
 WORKDIR /app
 # app

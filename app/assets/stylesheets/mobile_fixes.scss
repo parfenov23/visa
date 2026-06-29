@@ -1,0 +1,135 @@
+/* =====================================================================
+   MOBILE LAYOUT FIXES
+   Сгенерированный шаблон imCreator позиционирует всё абсолютно с фикс.
+   ширинами на каждом брейкпоинте. На узких экранах секции ломаются.
+   Здесь — точечные override (через !important, чтобы перебить инлайн-стили
+   и сгенерированные правила), которые переводят проблемные секции в поток.
+   Подключается последним в application.scss.
+   ===================================================================== */
+
+/* Кастомная мобильная навигация по умолчанию скрыта (на десктопе работает
+   штатное imCreator-меню). Показывается только внутри @media ниже. */
+nav.mobile-nav { display: none; }
+
+@media (max-width: 719px) {
+
+  /* ---------- ПОДВАЛ: всё в столбик, на всю ширину, по центру ---------- */
+  #imFooter {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background-color: #B00203 !important;
+    padding: 22px 12px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+  #imFooterBg { display: none !important; }
+
+  #imFooterObjects {
+    position: relative !important;
+    height: auto !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  #imFooter .template-object-wrapper {
+    position: relative !important;
+    top: auto !important; left: auto !important;
+    right: auto !important; bottom: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    z-index: auto !important;
+  }
+
+  #imFooter [id^="imFooter_imCell_"],
+  #imFooter [id^="imFooter_imCellStyle_"],
+  #imFooter [id$="_tab0"],
+  #imFooter .text-tab-content,
+  #imFooter .text-container {
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    border: 0 !important;
+  }
+
+  #imFooter .imHTMLObject {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Шаблон прячет большинство футер-объектов на мобиле (display:none).
+     Явно показываем нужные и задаём порядок; прячем пустые/дубли. */
+  #imFooter_imObjectImage_12_wrapper { display: block !important; order: 1 !important; } /* логотип */
+  #imFooter_imTextObject_14_wrapper  { display: block !important; order: 2 !important; } /* Fortuna Travel / invitation */
+  #imFooter_imHTMLObject_21_wrapper  { display: block !important; order: 3 !important; } /* Russian tourist voucher */
+  #imFooter_imHTMLObject_17_wrapper  { display: block !important; order: 4 !important; } /* Terms and conditions */
+  #imFooter_imTextObject_11_wrapper  { display: block !important; order: 5 !important; } /* © копирайт */
+
+  #imFooter_imObjectImage_08_wrapper { display: none !important; }   /* пустая соц-иконка */
+  #imFooter_imTextObject_13_wrapper  { display: none !important; }   /* служебный пустой */
+  #imFooter_imTextObject_19_wrapper  { display: none !important; }   /* дубль копирайта */
+
+  #imFooter_imObjectImage_12 { height: 70px !important; width: auto !important; }
+
+  #imFooter a.link,
+  #imFooter .imHTMLObject a {
+    color: #fff !important;
+    text-decoration: none !important;
+  }
+
+  /* ---------- ШАПКА: прячем сломанное imCreator-меню, показываем своё ---------- */
+  #imMnMnContainer { display: none !important; }
+
+  nav.mobile-nav {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 18px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 10px;
+    background-color: #6b0000;
+  }
+  nav.mobile-nav a {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* ---------- ЦЕНЫ: селектор валюты не помещался (USD уезжал за край) ---------- */
+  .currency-select {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px 10px !important;
+  }
+  .currency-select .margin_vertical_center { width: auto !important; }
+  .currency-select .font-20px { font-size: 16px !important; }
+
+  /* ---------- КОНТАКТЫ: двухколоночная группа в столбик ---------- */
+  #imGroup_18.imHGroup,
+  #imGroup_18 {
+    display: block !important;
+    width: 100% !important;
+  }
+  #imGroup_18 > [id^="imCell_"] {
+    width: 100% !important;
+    float: none !important;
+    display: block !important;
+    margin: 0 0 14px !important;
+    box-sizing: border-box !important;
+  }
+}
