@@ -29,8 +29,8 @@ class InvitationsController < ApplicationController
   def show
     @invitation = Invitation.find(params[:id])
 
-    @seal_ru_base64 = encode_image("fortuna_seal_ru.png")
-    @seal_en_base64 = encode_image("fortuna_seal_en.png")
+    @seal_ru_base64 = encode_sign(@invitation.seal_left)
+    @seal_en_base64 = encode_sign(@invitation.seal_right)
     @logo_base64    = encode_image("fortuna_logo.png")
     @qr_base64      = encode_image("fortuna_qr.png")
 
@@ -57,6 +57,14 @@ class InvitationsController < ApplicationController
 
   def encode_image(filename)
     Base64.strict_encode64(File.read(Rails.root.join("app/assets/images", filename)))
+  end
+
+  # Encodes a seal from public/signs/<n>.png. Falls back to a random valid seal
+  # for legacy invitations created before seals were persisted.
+  def encode_sign(number)
+    n = number.to_i
+    n = rand(1..Invitation::SEALS_COUNT) unless n.between?(1, Invitation::SEALS_COUNT)
+    Base64.strict_encode64(File.read(Rails.root.join("public/signs", "#{n}.png")))
   end
 
   def submission_rate_limited?

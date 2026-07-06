@@ -40,8 +40,15 @@ class PdfRenderer
       headless: true,
       timeout: 20,
       process_timeout: 20,
-      # Required when running as root inside a container.
-      browser_options: { "no-sandbox" => nil }
+      # Flags для запуска Chrome в контейнере:
+      #  no-sandbox            — обязателен под root в Docker
+      #  disable-dev-shm-usage — /dev/shm в контейнере мал, иначе Chrome падает
+      #  disable-gpu           — в headless GPU не нужен
+      browser_options: {
+        "no-sandbox" => nil,
+        "disable-dev-shm-usage" => nil,
+        "disable-gpu" => nil
+      }
     }
     path = ENV["FERRUM_BROWSER_PATH"].presence
     opts[:browser_path] = path if path

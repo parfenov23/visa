@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_04_30_000003) do
+ActiveRecord::Schema[7.0].define(version: 2026_07_06_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -82,6 +82,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_04_30_000003) do
     t.string "purpose", default: "tourism", null: false
     t.string "status", default: "in_progress", null: false
     t.text "additional_info"
+    t.integer "seal_left"
+    t.integer "seal_right"
     t.index ["status"], name: "index_invitations_on_status"
   end
 

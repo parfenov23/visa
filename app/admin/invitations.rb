@@ -4,7 +4,7 @@ ActiveAdmin.register Invitation do
                 :citizenship, :birthDate, :arival_date, :departure_date, :package,
                 :passport, :visa_obtain_place, :cities, :hotels, :hotels_ru,
                 :email, :promocode, :comments, :accomodation, :meals, :price, :currency, :tariff,
-                :purpose, :status, :additional_info
+                :purpose, :status, :additional_info, :seal_left, :seal_right
 
   action_item :pdf, only: :show do
     link_to "Invoice PDF", invitation_path(resource, format: :pdf), target: "_blank"
@@ -98,6 +98,11 @@ ActiveAdmin.register Invitation do
               as: :text,
               input_html: { rows: 3 },
               hint: 'Будет добавлено к строке "индивидуальный тур" в PDF (Дополнительные сведения).'
+      f.input :seal_left,  as: :select, collection: (1..Invitation::SEALS_COUNT).to_a,
+              include_blank: false, label: 'Печать (левая / RU)'
+      f.input :seal_right, as: :select, collection: (1..Invitation::SEALS_COUNT).to_a,
+              include_blank: false, label: 'Печать (правая / EN)',
+              hint: 'Печати должны быть разными.'
     end
 
     f.actions
@@ -134,6 +139,7 @@ ActiveAdmin.register Invitation do
       end
       row :comments
       row :additional_info
+      row('Печати (лев./прав.)') { |inv| "#{inv.seal_left} + #{inv.seal_right}" }
       row(:created_at) { |inv| inv.created_at&.strftime('%d.%m.%Y %H.%M.%S') }
       row(:updated_at) { |inv| inv.updated_at&.strftime('%d.%m.%Y %H.%M.%S') }
     end

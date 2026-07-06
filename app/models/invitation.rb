@@ -1,8 +1,42 @@
 class Invitation < ApplicationRecord
-  before_create :set_price, :set_accomodation, :set_meals
+  before_create :set_price, :set_accomodation, :set_meals, :assign_seals
 
   ALL_ACCOMODATION = ["Double (DBL)", "Twin (TWN)", "Single (SGL)"]
   ALL_MEALS = %w[BB RO HB FB AI UAI CB]
+
+  # Number of seal variants available in public/signs (1.png .. 6.png).
+  SEALS_COUNT = 6
+  # Default fixed-order pairs used when SEALS_MODE=fixed and SEALS_FIXED_PAIRS is unset.
+  DEFAULT_FIXED_SEAL_PAIRS = "1-2,3-4,5-6".freeze
+
+  # Two seals in one invitation must be different and within the available range.
+  validates :seal_left, :seal_right,
+            numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: SEALS_COUNT },
+            allow_nil: true
+  validate :seals_must_differ
+
+  # 'random' (default) — pick 2 distinct seals; 'fixed' — cycle predefined pairs.
+  def self.seals_mode
+    (ENV['SEALS_MODE'].presence || 'random').to_s.downcase
+  end
+
+  # Parsed fixed pairs, e.g. [[1,2],[3,4],[5,6]].
+  def self.fixed_seal_pairs
+    raw = ENV['SEALS_FIXED_PAIRS'].presence || DEFAULT_FIXED_SEAL_PAIRS
+    pairs = raw.split(',').map { |p| p.split('-').map { |n| n.strip.to_i } }
+    pairs.select { |pair| pair.size == 2 && pair.all? { |n| n.between?(1, SEALS_COUNT) } && pair.uniq.size == 2 }
+  end
+
+  # Returns [left, right] for the next invitation according to the configured mode.
+  def self.next_seal_pair
+    if seals_mode == 'fixed'
+      pairs = fixed_seal_pairs
+      pairs = [[1, 2]] if pairs.empty?
+      pairs[count % pairs.size]
+    else
+      (1..SEALS_COUNT).to_a.sample(2)
+    end
+  end
 
   PURPOSES = {
     'tourism'        => 'Tourism',
@@ -144,6 +178,16 @@ class Invitation < ApplicationRecord
   end
 
   private
+
+  def assign_seals
+    return if seal_left.present? && seal_right.present?
+    self.seal_left, self.seal_right = self.class.next_seal_pair
+  end
+
+  def seals_must_differ
+    return if seal_left.blank? || seal_right.blank?
+    errors.add(:seal_right, "must differ from the left seal") if seal_left == seal_right
+  end
 
   def set_price
     get_tariff_price = Invitation.tariff_price(currency: self.currency.to_sym, tariff: self.tariff.to_sym)
