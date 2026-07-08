@@ -2,7 +2,7 @@ class Invitation < ApplicationRecord
   before_create :set_price, :set_accomodation, :set_meals, :assign_seals
 
   ALL_ACCOMODATION = ["Double (DBL)", "Twin (TWN)", "Single (SGL)"]
-  ALL_MEALS = %w[BB RO HB FB AI UAI CB]
+  ALL_MEALS = %w[RO BB HB FB AI UAI CB]
 
   # Number of seal variants available in public/signs (1.png .. 6.png).
   SEALS_COUNT = 6

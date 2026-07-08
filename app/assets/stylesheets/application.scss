@@ -21,10 +21,20 @@
  *= require index
  *= require price_item
  *= require mobile_fixes
+ *= require site_header
+ *= require site_footer
+ *= require content_rows
+ *= require page_styles
  */
 
 @import 'vendor/block_modifier';
 @import 'vendor/btn_custom';
+
+/* Tourist-voucher preview image (decoupled from the old footer-image id). */
+.voucher-img {
+  width: 100%;
+  vertical-align: top;
+}
 
 /* затемнение на весь экран */
 #flash-overlay {

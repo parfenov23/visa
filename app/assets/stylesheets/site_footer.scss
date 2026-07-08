@@ -1,0 +1,107 @@
+/*
+ * Clean, self-contained footer.
+ * Replaces the old builder-exported footer, where the logo, brand text, links
+ * and copyright were separate absolutely-positioned objects re-declared per
+ * breakpoint. Scoped under `.site-footer`.
+ */
+
+/* The footer bg image (bg-footer_10.jpg) is 1922×164 but the footer is 200px
+ * tall, leaving a flat red band at the bottom. Scale it to cover the full height. */
+#imFooterBg {
+  background-size: cover;
+  background-position: center center;
+}
+
+.site-footer {
+  #imFooterObjects {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 100%;
+    padding: 12px 16px;
+    box-sizing: border-box;
+  }
+
+  &__inner {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__brand {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Roboto', Arial, sans-serif;
+    line-height: 1.2;
+  }
+
+  &__logo {
+    display: block;
+    width: 70px;
+    height: auto;
+    //margin-bottom: 4px;
+  }
+
+  &__title {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  &__sub {
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  &__online {
+    font-size: 13px;
+    //font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  &__link {
+    color: #fff;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 15px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__copy {
+    color: #fff;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+/* Tablet/mobile: stack everything and let the footer grow so nothing clips. */
+@media (max-width: 760px) {
+  .site-footer,
+  .site-footer #imFooterObjects {
+    height: auto;
+    min-height: 150px;
+  }
+
+  .site-footer__inner {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .site-footer__brand {
+    order: -1;
+  }
+}

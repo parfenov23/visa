@@ -1,5 +1,4 @@
 //= require jquery
-//= require_tree .
 $(document).ready(function(){
   $(document).on('click', '.js_select_package', function(){
     const select = document.querySelector("#invitation_type_id");
@@ -155,7 +154,7 @@ $(document).ready(function(){
     });
 
   })(jQuery);
-})
+});
 
 (function () {
   // высота фиксированной шапки (поставь свою)

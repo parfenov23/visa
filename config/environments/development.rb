@@ -24,6 +24,7 @@ Rails.application.configure do
   end
 
   config.hosts << /.*\.ngrok-free\.app/
+  config.hosts << "host.docker.internal"
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
