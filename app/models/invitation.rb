@@ -44,6 +44,12 @@ class Invitation < ApplicationRecord
     'target_tourism' => 'Target tourism'
   }.freeze
 
+  PURPOSES_RU = {
+    'tourism'        => 'Туризм',
+    'auto_tourism'   => 'Автотуризм',
+    'target_tourism' => 'Целевой туризм'
+  }.freeze
+
   STATUSES = {
     'in_progress' => 'In progress',
     'done'        => 'Done',
@@ -175,6 +181,10 @@ class Invitation < ApplicationRecord
       InvitationMailer.new_order(self, true).deliver_now
     rescue
     end
+  end
+
+  def get_purposes
+    PURPOSES_RU[purpose]
   end
 
   private

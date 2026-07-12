@@ -208,7 +208,7 @@
           <td class="lbl"><span class="ru">№ паспорта</span><br><span class="en">(passport №)</span></td>
           <td><%= @invitation.passport %></td>
           <td class="lbl"><span class="ru">Цель</span><br><span class="en">(purpouse of visit)</span></td>
-          <td>Туризм</td>
+          <td><%= @invitation.get_purposes %></td>
         </tr>
         <tr>
           <td class="lbl"><span class="ru">Маршрут и места размещения</span><br><span class="en">(route and hotel)</span></td>
