@@ -1,4 +1,5 @@
 //= require jquery
+//= require date_picker
 $(document).ready(function(){
   $(document).on('click', '.js_select_package', function(){
     const select = document.querySelector("#invitation_type_id");

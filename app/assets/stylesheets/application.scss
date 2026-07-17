@@ -11,13 +11,9 @@
  * It is generally better to create a new file per style scope.
  *
  *= require_self
- *= require reset.css
- *= require print.css
  *= require template.css
  *= require menu.css
  *= require style.css
- *= require banner-styles.css
- *= require iconochive.css
  *= require index
  *= require price_item
  *= require mobile_fixes
@@ -33,6 +29,7 @@
 /* Tourist-voucher preview image (decoupled from the old footer-image id). */
 .voucher-img {
   width: 100%;
+  height: auto;
   vertical-align: top;
 }
 

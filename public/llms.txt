@@ -1,0 +1,44 @@
+# Russvisa
+
+> Russvisa.com issues official tourist invitation letters (visa support) for Russian tourist visas online. An invitation consists of a tourist confirmation and a tourist voucher, is delivered by email within about 30 minutes, and is accepted by Russian embassies, consulates and visa application centers worldwide. Prices start at €9.99 / $12.
+
+Key facts:
+
+- A tourist invitation is required by Russian law for every foreign national applying for a Russian tourist visa. It consists of two documents: the tourist confirmation letter ("подтверждение о приеме иностранного туриста") and the travel (tourist) voucher.
+- The company has been providing visa support since 1992 and renews its accreditation with the Ministry of Economic Development of the Russian Federation every year; it is listed in the official registry of tour operators. Russvisa is a private consulting agency, not affiliated with any government or embassy.
+- Orders are placed through the online form on the homepage. The invitation is sent as a PDF directly to the customer's email, normally within 30 minutes.
+- For most consulates (India, Europe, US, Canada, Australia, New Zealand, Japan, China and others) a printed copy of the invitation is sufficient; the original is not required.
+- Invitations are available to citizens of most countries; for some citizenships the price can be higher.
+
+Pricing (standard tariff):
+
+- Tourist Single entry, visa up to 30 days (30/30): €9.99 / $12
+- Tourist Single entry, visa up to 90 days (90/90): €14.99 / $17
+- Tourist Double entry, visa up to 90 days (90/90): €14.99 / $17
+- Tourist Multiple entry, visa up to 180 days (90/180): €24.99 / $30
+- Tourist Multiple entry, 3 years (US citizens only): €44.99 / $49.99
+
+How to get a Russian visa with the invitation:
+
+1. Order and print the invitation from russvisa.com.
+2. Prepare a passport-size color photo (35x45 mm), health insurance and other documents required by the consulate or visa application center in your country.
+3. Fill out the electronic visa application form at visa.kdmid.ru, indicating tourism as the purpose of the trip and copying the travel organization name, address, reference and confirmation (voucher) numbers and the hotels exactly as listed in the invitation.
+4. Submit the application at the Russian consulate or visa application center; the visa is normally issued within 3-5 business days.
+
+Additional services: hotel booking assistance, airport transfers, and health insurance valid in Russia (international insurance policies are currently not accepted in Russia due to sanctions, so proper local coverage may be required).
+
+Contact: manager@russvisa.com. Offices: 204 W Spear St, Carson City, NV 89703, United States; Presnenskaya naberezhnaya 6, building 2, Moscow, 123317, Russia.
+
+## Pages
+
+- [Homepage and order form](https://russvisa.com/): service description, pricing, FAQ, contacts and the online application form (prices in EUR; USD via https://russvisa.com/?currency=usd)
+- [Sample tourist voucher](https://russvisa.com/russ_tourist): what the issued invitation/voucher looks like
+
+## Documents
+
+- [Terms and Conditions](https://russvisa.com/files/Terms_and_Conditions.pdf): service terms, refund and delivery policy
+- [Taxpayer Identification (TIN)](https://russvisa.com/files/TIN.pdf): company registration document
+
+## Optional
+
+- [Sitemap](https://russvisa.com/sitemap.xml): machine-readable list of site URLs

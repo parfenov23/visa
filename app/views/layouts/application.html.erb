@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -14,25 +15,19 @@
 
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-  <script src="/jquery.js"></script>
 
   <%= stylesheet_link_tag "application", media: "all" %>
-  <%= javascript_include_tag 'application' %>
-  <script src="/main.js"></script>
-  <script src="/ruffle.js"></script>
-  <script src="/bundle-playback.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
-  <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+  <%= javascript_include_tag 'application', defer: true %>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2/dist/css/tom-select.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2/dist/js/tom-select.base.min.js" defer></script>
 
-  <title>Russvisa: Tourist invitation for a Russian visa</title>
-  <meta charset="utf-8">
   <!--[if IE]>
   <meta http-equiv="ImageToolbar" content="False"/><![endif]-->
   <meta name="description" content="Our company's Russian letter of invitation just for <%= @meta_price || '€9.99' %> which consists of tourist confirmation and tourist voucher, will ensure you a Russian visa with 100% guarantee">
   <meta name="keywords" content="Invitation for Russia, russian invitation letter, invitation to russia, russia visa invitation, invitation for russian visa, visa to Russia, Tourist invitation for a Russian visa">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="/">
+  <meta property="og:url" content="https://russvisa.com<%= request.path %>">
   <meta property="og:title" content="Invitation to russia for <%= @meta_price || '€9.99' %> - fill out application form now">
   <meta property="og:site_name" content="">
   <meta property="og:description" content="Our company's Russian letter of invitation just for <%= @meta_price || '€9.99' %> which consists of tourist confirmation and tourist voucher, will ensure you a Russian visa with 100% guarantee">
@@ -57,15 +52,11 @@
 
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="alternate" hreflang="en-gb" href="/">
-  <link rel="alternate" hreflang="de-de" href="/de">
-  <link rel="alternate" hreflang="en-us" href="/us/">
-  <link rel="alternate" hreflang="fr-fr" href="/fr/">
   <meta name="robots" content="all, index, follow">
-  <link rel="canonical" href="/">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700,300italic,400italic,700italic&amp;subset=latin,cyrillic" rel="stylesheet" type="text/css">
+  <link rel="canonical" href="https://russvisa.com<%= request.path %>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -87,7 +78,7 @@
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5353C9M7"
+<noscript><iframe title="Google Tag Manager" src="https://www.googletagmanager.com/ns.html?id=GTM-5353C9M7"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
@@ -98,16 +89,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <% end %>
 
 <%= yield %>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PVFY0RW4FF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-PVFY0RW4FF');
-</script>
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
@@ -199,7 +180,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     fbq('init', '<%= fb_pixel_id %>');
     fbq('track', 'PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none"
+<noscript><img height="1" width="1" style="display:none" alt=""
                src="https://www.facebook.com/tr?id=<%= fb_pixel_id %>&ev=PageView&noscript=1"
     /></noscript>
 <!-- End Meta Pixel Code -->

@@ -6,13 +6,13 @@ div#imPage
 
   a.imHidden href="#imGoToCont" title="Skip the main menu"
     | Go to content
-  a#imGoToMenu href="/"
+  span#imGoToMenu
   p.imHidden
     | Main menu:
   = render 'header_menu'
-  div#imContentContainer
+  main#imContentContainer
     div#imContent
-      a#imGoToCont href="/"
+      span#imGoToCont
       div#imGroup_1.imVGroup
       = render "voucher"
     = render "footer"

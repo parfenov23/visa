@@ -14,8 +14,8 @@
           span.font-20px
             | Select currency:
         .display_flex.ml-8px
-          a.eur.mt-0px.default.display_flex href="/#pricing"
+          a.eur.mt-0px.default.display_flex href="/#pricing" aria-label="Show prices in euros"
             = render "/home/svg/eur"
-          a.usd.mt-0px.ml-8px.default.display_flex href="/?currency=usd#pricing"
+          a.usd.mt-0px.ml-8px.default.display_flex href="/?currency=usd#pricing" aria-label="Show prices in US dollars"
             = render "/home/svg/usd"
 
