@@ -65,7 +65,7 @@ div#imGroup_10.imHGroup.display_flex.center
                 label for="countrySelect"
                   | Citizenship*
                 br
-                select.form-control#countrySelect name="citizenship" required=""
+                select.form-control#countrySelect name="citizenship" required="" aria-label="Citizenship"
                   option value=""
                     | -
                   - Country.order(:title).each do |country|

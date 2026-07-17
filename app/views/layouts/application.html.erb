@@ -16,9 +16,11 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
+  <link rel="preload" href="<%= image_path("bg_icon.webp") %>" as="image" fetchpriority="high">
   <%= stylesheet_link_tag "application", media: "all" %>
   <%= javascript_include_tag 'application', defer: true %>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2/dist/css/tom-select.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2/dist/css/tom-select.min.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2/dist/css/tom-select.min.css"></noscript>
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2/dist/js/tom-select.base.min.js" defer></script>
 
   <!--[if IE]>
@@ -56,7 +58,8 @@
   <link rel="canonical" href="https://russvisa.com<%= request.path %>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet"></noscript>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
