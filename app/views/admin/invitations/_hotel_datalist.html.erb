@@ -7,7 +7,7 @@
   <% end %>
 </datalist>
 
-<script type="application/json" id="hotels_data"><%= raw hotels.to_json %></script>
+<script type="application/json" id="hotels_data"><%= raw hotels.to_json.gsub("</") { "<\\/" } %></script>
 
 <script>
   (function () {
