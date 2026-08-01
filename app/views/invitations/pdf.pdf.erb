@@ -116,6 +116,8 @@
           margin: 0 auto;
       }
       .qr-box .qr-img { display: block; width: 100%; height: 100%; }
+      /* Старый статичный QR (фича-флаг QR_VERIFY_ENABLED=false). */
+      .qr-static-img { height: 110px; }
       /* Бейдж поверх центра QR: белая иконка на красном круге.
          Белое кольцо (border) отделяет красный круг от модулей QR — так
          сканер увереннее читает. ~26% ширины — в пределах запаса коррекции. */
@@ -328,6 +330,7 @@
               Date: <%= print_date_str %>
             </div>
           </td>
+          <% if @qr_verify_enabled %>
           <td class="qr-cell" style="vertical-align: top;">
             <div class="qr-caption">SCAN TO VERIFY</div>
             <div class="qr-box">
@@ -335,6 +338,11 @@
               <img src="data:image/png;base64,<%= @qr_logo_base64 %>" class="qr-logo">
             </div>
           </td>
+          <% else %>
+          <td style="vertical-align: top; text-align: right; width: 120px;">
+            <img src="data:image/png;base64,<%= @qr_base64 %>" class="qr-static-img">
+          </td>
+          <% end %>
         </tr>
       </table>
 

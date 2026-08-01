@@ -33,12 +33,19 @@ class InvitationsController < ApplicationController
     @seal_ru_base64 = encode_sign(@invitation.seal_left)
     @seal_en_base64 = encode_sign(@invitation.seal_right)
     @logo_base64    = encode_image("fortuna_logo.png")
-    # Бейдж в центр QR: белая иконка на красном круге (без текста).
-    @qr_logo_base64 = encode_image("fortuna_qr_logo.png")
-    # QR ведёт на публичную страницу верификации (ссылка открывается штатной
-    # камерой любого телефона). Подписанный токен исключает перебор чужих
-    # приглашений по id. Лого накладывается поверх центра в шаблоне.
-    @qr_data_uri    = QrCodeGenerator.data_uri(verification_url(@invitation))
+
+    # Фича-флаг QR_VERIFY_ENABLED (по умолчанию включён — новый QR с верификацией).
+    # Установите QR_VERIFY_ENABLED=false, чтобы временно вернуть старый статичный QR.
+    @qr_verify_enabled = qr_verify_enabled?
+    if @qr_verify_enabled
+      # Новый QR: ведёт на публичную страницу верификации (ссылка открывается
+      # штатной камерой). Бейдж — белая иконка на красном круге поверх центра.
+      @qr_logo_base64 = encode_image("fortuna_qr_logo.png")
+      @qr_data_uri    = QrCodeGenerator.data_uri(verification_url(@invitation))
+    else
+      # Старый статичный QR (как было до правки).
+      @qr_base64 = encode_image("fortuna_qr.png")
+    end
 
     html = render_to_string(template: "invitations/pdf", formats: [:pdf], layout: false)
 
@@ -68,6 +75,12 @@ class InvitationsController < ApplicationController
   end
 
   private
+
+  # Фича-флаг нового QR с верификацией. По умолчанию включён.
+  # Выключить (вернуть старый статичный QR): QR_VERIFY_ENABLED=false.
+  def qr_verify_enabled?
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch("QR_VERIFY_ENABLED", "false"))
+  end
 
   # Абсолютный URL страницы верификации с подписанным токеном приглашения.
   # Домен: VERIFY_BASE_URL, иначе russvisa.com в проде и текущий хост в dev
