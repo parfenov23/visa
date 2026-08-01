@@ -1,0 +1,44 @@
+<%# Выпадающий список гостиниц из базы + JS-подстановка в поля hotels / hotels_ru. %>
+<% hotels = (defined?(Hotel) && Hotel.table_exists?) ? Hotel.picker_options : [] %>
+
+<datalist id="hotels_datalist">
+  <% hotels.each do |h| %>
+    <option value="<%= h[:label] %>"></option>
+  <% end %>
+</datalist>
+
+<script type="application/json" id="hotels_data"><%= raw hotels.to_json %></script>
+
+<script>
+  (function () {
+    function init() {
+      var picker = document.getElementById('hotel_picker_input');
+      var dataEl = document.getElementById('hotels_data');
+      if (!picker || !dataEl) return;
+
+      var hotels;
+      try { hotels = JSON.parse(dataEl.textContent) || []; } catch (e) { hotels = []; }
+
+      function apply() {
+        var val = picker.value.trim();
+        if (!val) return;
+        var match = hotels.find(function (h) { return h.label === val; });
+        if (!match) return;
+
+        var en = document.getElementById('invitation_hotels');
+        var ru = document.getElementById('invitation_hotels_ru');
+        if (en) en.value = match.en || '';
+        if (ru) ru.value = (match.ru || match.en || '');
+      }
+
+      picker.addEventListener('change', apply);
+      picker.addEventListener('input', apply);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
