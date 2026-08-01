@@ -33,7 +33,12 @@ class InvitationsController < ApplicationController
     @seal_ru_base64 = encode_sign(@invitation.seal_left)
     @seal_en_base64 = encode_sign(@invitation.seal_right)
     @logo_base64    = encode_image("fortuna_logo.png")
-    @qr_base64      = encode_image("fortuna_qr.png")
+    # Бейдж в центр QR: белая иконка на красном круге (без текста).
+    @qr_logo_base64 = encode_image("fortuna_qr_logo.png")
+    # QR ведёт на публичную страницу верификации (ссылка открывается штатной
+    # камерой любого телефона). Подписанный токен исключает перебор чужих
+    # приглашений по id. Лого накладывается поверх центра в шаблоне.
+    @qr_data_uri    = QrCodeGenerator.data_uri(verification_url(@invitation))
 
     html = render_to_string(template: "invitations/pdf", formats: [:pdf], layout: false)
 
@@ -54,7 +59,27 @@ class InvitationsController < ApplicationController
     end
   end
 
+  # Публичная страница верификации туриста (открывается по QR из приглашения).
+  def verify
+    @invitation = Invitation.find_by!(verify_token: params[:token])
+    render layout: false
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Invitation not found", status: :not_found
+  end
+
   private
+
+  # Абсолютный URL страницы верификации с подписанным токеном приглашения.
+  # Домен: VERIFY_BASE_URL, иначе russvisa.com в проде и текущий хост в dev
+  # (чтобы ссылку из QR можно было проверить локально — localhost/LAN/ngrok).
+  def verification_url(invitation)
+    base = (ENV["VERIFY_BASE_URL"].presence || default_verify_base).sub(%r{/+\z}, "")
+    "#{base}/verify/#{invitation.verify_token}"
+  end
+
+  def default_verify_base
+    Rails.env.production? ? "https://russvisa.com" : request.base_url
+  end
 
   def encode_image(filename)
     Base64.strict_encode64(File.read(Rails.root.join("app/assets/images", filename)))

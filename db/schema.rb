@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_07_06_000000) do
+ActiveRecord::Schema[7.0].define(version: 2026_08_01_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,17 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_06_000000) do
     t.index ["position"], name: "index_countries_on_position"
   end
 
+  create_table "hotels", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "name_ru"
+    t.string "city"
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city"], name: "index_hotels_on_city"
+    t.index ["name"], name: "index_hotels_on_name"
+  end
+
   create_table "invitations", force: :cascade do |t|
     t.string "tariff"
     t.string "package"
@@ -84,7 +95,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_06_000000) do
     t.text "additional_info"
     t.integer "seal_left"
     t.integer "seal_right"
+    t.string "verify_token"
     t.index ["status"], name: "index_invitations_on_status"
+    t.index ["verify_token"], name: "index_invitations_on_verify_token", unique: true
   end
 
 end

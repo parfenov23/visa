@@ -1,5 +1,8 @@
 class Invitation < ApplicationRecord
-  before_create :set_price, :set_accomodation, :set_meals, :assign_seals
+  # Виртуальное поле для выбора гостиницы из базы в админ-форме (не сохраняется).
+  attr_accessor :hotel_picker
+
+  before_create :set_price, :set_accomodation, :set_meals, :assign_seals, :assign_verify_token
 
   ALL_ACCOMODATION = ["Double (DBL)", "Twin (TWN)", "Single (SGL)"]
   ALL_MEALS = %w[RO BB HB FB AI UAI CB]
@@ -72,6 +75,14 @@ class Invitation < ApplicationRecord
 
   def self.ransackable_scopes(_auth_object = nil)
     [:created_in_period]
+  end
+
+  # Виртуальный 10-значный номер приглашения (ddmmyyHHMM) — тот же, что current_id.
+  # Приложение работает в фиксированном UTC+3 (без DST), created_at хранится в UTC,
+  # поэтому местное время = created_at + 3 часа. Позволяет фильтровать по номеру
+  # в админке обычным строковым фильтром (Ransack: invitation_number_eq / _cont).
+  ransacker :invitation_number do
+    Arel.sql("to_char(created_at + interval '3 hours', 'DDMMYYHH24MI')")
   end
 
   def self.tariff_price(currency: :eur, tariff: :default)
@@ -153,6 +164,7 @@ class Invitation < ApplicationRecord
       status
       created_at
       updated_at
+      invitation_number
     ]
   end
 
@@ -175,6 +187,11 @@ class Invitation < ApplicationRecord
     lang == :ru ? country.title_ru : country.title
   end
 
+  # Полное имя туриста для отображения (на странице верификации и т.п.).
+  def full_name
+    [surname, name, middlename].map { |p| p.to_s.strip }.reject(&:empty?).join(" ")
+  end
+
   def send_notify_email
     begin
       InvitationMailer.new_order(self).deliver_now
@@ -192,6 +209,15 @@ class Invitation < ApplicationRecord
   def assign_seals
     return if seal_left.present? && seal_right.present?
     self.seal_left, self.seal_right = self.class.next_seal_pair
+  end
+
+  # Короткий уникальный токен для публичной ссылки верификации (в QR).
+  def assign_verify_token
+    return if verify_token.present?
+    self.verify_token = loop do
+      token = SecureRandom.alphanumeric(10)
+      break token unless self.class.exists?(verify_token: token)
+    end
   end
 
   def seals_must_differ

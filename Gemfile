@@ -36,6 +36,9 @@ gem 'ferrum'
 gem "cloudflare-turnstile-rails"
 gem "redis"
 
+# QR-код с данными туриста в PDF-приглашении (чистый Ruby, без нативных расширений)
+gem 'rqrcode'
+
 # group :development, :test do
 # end
 #

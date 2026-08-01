@@ -2,7 +2,7 @@ ActiveAdmin.register Invitation do
   # Разрешённые параметры для формы
   permit_params :invitation_type_id, :surname, :name, :middlename, :sex,
                 :citizenship, :birthDate, :arival_date, :departure_date, :package,
-                :passport, :visa_obtain_place, :cities, :hotels, :hotels_ru,
+                :passport, :visa_obtain_place, :cities, :hotels, :hotels_ru, :hotel_picker,
                 :email, :promocode, :comments, :accomodation, :meals, :price, :currency, :tariff,
                 :purpose, :status, :additional_info, :seal_left, :seal_right
 
@@ -42,6 +42,10 @@ ActiveAdmin.register Invitation do
   # Фильтры в админке
   # -----------------------------
   filter :id
+  filter :email
+  filter :invitation_number,
+         as: :string,
+         label: 'Invitation number (10 цифр)'
   filter :surname
   filter :name
   filter :citizenship
@@ -71,6 +75,8 @@ ActiveAdmin.register Invitation do
   form do |f|
     f.semantic_errors
 
+    render partial: "admin/invitations/hotel_datalist"
+
     f.inputs "Invitation Details" do
       f.input :price
       f.input :package, as: :select, collection: Invitation.tariff_price(currency: f.object.currency.to_sym, tariff: f.object.tariff.to_sym).keys
@@ -87,8 +93,18 @@ ActiveAdmin.register Invitation do
       f.input :passport
       f.input :visa_obtain_place
       f.input :cities
-      f.input :hotels
-      f.input :hotels_ru
+      f.input :hotel_picker,
+              as: :string,
+              label: 'Гостиница из базы (поиск и подстановка)',
+              input_html: {
+                id: 'hotel_picker_input',
+                list: 'hotels_datalist',
+                autocomplete: 'off',
+                placeholder: 'Начните вводить название…'
+              },
+              hint: 'Выбор из базы автоматически заполнит поля Hotels (EN) и Hotels (RU) ниже. Базу можно вести в разделе «Hotels (база)».'
+      f.input :hotels, label: 'Hotels (EN)'
+      f.input :hotels_ru, label: 'Hotels (RU)'
       f.input :accomodation, as: :select, collection: Invitation::ALL_ACCOMODATION
       f.input :meals, as: :select, collection: Invitation::ALL_MEALS, default: "RO"
       f.input :email

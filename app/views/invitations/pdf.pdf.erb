@@ -98,7 +98,37 @@
          занимает всю высоту картинки, поэтому height изображения = диаметру.
          scale в PdfRenderer = 1.0, значит 40mm печатается ровно 40 мм. */
       .stamp-img { position: absolute; height: 40mm; opacity: 1; }
-      .qr-img { height: 110px; }
+      /* --- QR верификации --- */
+      .qr-cell { text-align: center; width: 140px; }
+      .qr-caption {
+          font-weight: bold;
+          font-size: 11px;
+          letter-spacing: 1px;
+          margin-bottom: 4px;
+      }
+      /* Квадратный контейнер; PNG-QR растягивается на 100%.
+         130px (~34 мм) выбрано так, чтобы код уверенно сканировался даже при
+         невысоком разрешении сканирования (проверено на 150 dpi). */
+      .qr-box {
+          position: relative;
+          width: 130px;
+          height: 130px;
+          margin: 0 auto;
+      }
+      .qr-box .qr-img { display: block; width: 100%; height: 100%; }
+      /* Бейдж поверх центра QR: белая иконка на красном круге.
+         Белое кольцо (border) отделяет красный круг от модулей QR — так
+         сканер увереннее читает. ~26% ширины — в пределах запаса коррекции. */
+      .qr-logo {
+          position: absolute;
+          top: 50%; left: 50%;
+          transform: translate(-50%, -50%);
+          width: 34px; height: 34px;
+          border-radius: 50%;
+          border: 3px solid #fff;
+          background: #fff;
+          object-fit: contain;
+      }
   </style>
 </head>
 <body>
@@ -224,7 +254,7 @@
         ООО "ФОРТУНА ТРЕВЕЛ",<br>
         360030, РОССИЯ, КАБАРДИНО-БАЛКАРСКАЯ РЕСП, НАЛЬЧИК Г.О., Г. НАЛЬЧИК,<br>
         ПР-КТ КУЛИЕВА, Д. 19А, КВ. 2.<br>
-        Тел.: +7 965 396 96 00<br>
+        Тел.: +7 993 158 42 10<br>
         E-mail: manager.fortunatravel@gmail.com<br>
         ИНН 0700030427<br>
         Реестровый (референс) номер: <%= reference_number %><br>
@@ -292,14 +322,18 @@
               Fortuna travel LLC<br>
               360030, Russia, Kabardino-Balkarian Republic, Nalchik Urban<br>
               District, Nalchik, 19A Kulieva Avenue, Apt. 2<br>
-              Tel: +7 965 396 96 00<br>
+              Tel: +7 993 158 42 10<br>
               E-mail: manager.fortunatravel@gmail.com<br>
               TIN: 0700030427<br>
               Date: <%= print_date_str %>
             </div>
           </td>
-          <td style="vertical-align: top; text-align: right; width: 120px;">
-            <img src="data:image/png;base64,<%= @qr_base64 %>" class="qr-img">
+          <td class="qr-cell" style="vertical-align: top;">
+            <div class="qr-caption">SCAN TO VERIFY</div>
+            <div class="qr-box">
+              <img src="<%= @qr_data_uri %>" class="qr-img">
+              <img src="data:image/png;base64,<%= @qr_logo_base64 %>" class="qr-logo">
+            </div>
           </td>
         </tr>
       </table>
