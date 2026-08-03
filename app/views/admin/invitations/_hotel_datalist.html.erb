@@ -19,16 +19,25 @@
       var hotels;
       try { hotels = JSON.parse(dataEl.textContent) || []; } catch (e) { hotels = []; }
 
+      // Добавляет строку в конец поля новой строчкой; дубликаты пропускает.
+      function appendLine(field, line) {
+        if (!field || !line) return;
+        var lines = field.value.split('\n').map(function (s) { return s.trim(); });
+        if (lines.indexOf(line.trim()) !== -1) return;
+        var current = field.value.replace(/\s+$/, '');
+        field.value = current ? current + '\n' + line : line;
+      }
+
       function apply() {
         var val = picker.value.trim();
         if (!val) return;
         var match = hotels.find(function (h) { return h.label === val; });
         if (!match) return;
 
-        var en = document.getElementById('invitation_hotels');
-        var ru = document.getElementById('invitation_hotels_ru');
-        if (en) en.value = match.en || '';
-        if (ru) ru.value = (match.ru || match.en || '');
+        appendLine(document.getElementById('invitation_hotels'), match.en || '');
+        appendLine(document.getElementById('invitation_hotels_ru'), match.ru || match.en || '');
+        // Очищаем поиск, чтобы сразу можно было выбрать следующую гостиницу.
+        picker.value = '';
       }
 
       picker.addEventListener('change', apply);

@@ -102,7 +102,7 @@ ActiveAdmin.register Invitation do
                 autocomplete: 'off',
                 placeholder: 'Начните вводить название…'
               },
-              hint: 'Выбор из базы автоматически заполнит поля Hotels (EN) и Hotels (RU) ниже. Базу можно вести в разделе «Hotels (база)».'
+              hint: 'Каждая выбранная гостиница добавляется новой строкой в поля Hotels (EN) и Hotels (RU) ниже — можно выбрать несколько подряд. Базу можно вести в разделе «Hotels (база)».'
       f.input :hotels, label: 'Hotels (EN)'
       f.input :hotels_ru, label: 'Hotels (RU)'
       f.input :accomodation, as: :select, collection: Invitation::ALL_ACCOMODATION

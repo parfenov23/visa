@@ -6,12 +6,18 @@ $(document).ready(function(){
     select.value = $(this).attr("data-value");
   });
 
-  new TomSelect("#countrySelect", {
-    create: false,      // запрет добавлять новые значения
-    sortField: "text",
-    maxOptions: null,
-    placeholder: "Start introducing citizenship..."
-  });
+  // TomSelect грузится с CDN и может не загрузиться (медленная сеть, блокировщик).
+  // Без try/catch ошибка здесь отключала бы датапикеры и валидацию всей формы.
+  try {
+    new TomSelect("#countrySelect", {
+      create: false,      // запрет добавлять новые значения
+      sortField: "text",
+      maxOptions: null,
+      placeholder: "Start introducing citizenship..."
+    });
+  } catch (e) {
+    console.warn("TomSelect init failed, falling back to native select", e);
+  }
 
   (function ($) {
     const year = new Date().getFullYear();

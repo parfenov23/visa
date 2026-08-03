@@ -3,6 +3,10 @@ class Invitation < ApplicationRecord
   attr_accessor :hotel_picker
 
   before_create :set_price, :set_accomodation, :set_meals, :assign_seals, :assign_verify_token
+  before_save :normalize_dates
+
+  # Строковые поля дат, заполняемые пользователем на форме заказа.
+  DATE_FIELDS = %w[birthDate arival_date departure_date].freeze
 
   ALL_ACCOMODATION = ["Double (DBL)", "Twin (TWN)", "Single (SGL)"]
   ALL_MEALS = %w[RO BB HB FB AI UAI CB]
@@ -177,6 +181,23 @@ class Invitation < ApplicationRecord
     []
   end
 
+  # Приводит введённую пользователем дату к "dd.mm.yyyy". Если JS-датапикер на
+  # форме не сработал, дата приходит в свободном формате: "20/08/2026",
+  # "04 12 1987", "20-08-2026", "2026-08-20" и т.п. Понимает разделители
+  # ". / - пробел" и порядок dd.mm.yyyy или yyyy-mm-dd.
+  # Возвращает nil, если строка не распознана как дата.
+  def self.normalize_date_string(value)
+    parts = value.to_s.strip.split(%r{[./\-\s]+})
+    return nil unless parts.size == 3 && parts.all? { |p| p.match?(/\A\d+\z/) }
+
+    day, month, year = parts
+    day, year = year, day if day.length == 4
+    return nil unless year.length == 4
+
+    date = Date.new(year.to_i, month.to_i, day.to_i) rescue nil
+    date&.strftime("%d.%m.%Y")
+  end
+
   def current_id
     created_at.strftime("%d%m%y%H%M")
   end
@@ -205,6 +226,14 @@ class Invitation < ApplicationRecord
   end
 
   private
+
+  # Не распознанные значения оставляем как есть, чтобы не терять данные.
+  def normalize_dates
+    DATE_FIELDS.each do |field|
+      normalized = self.class.normalize_date_string(self[field])
+      self[field] = normalized if normalized
+    end
+  end
 
   def assign_seals
     return if seal_left.present? && seal_right.present?
