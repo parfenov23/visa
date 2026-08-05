@@ -79,11 +79,11 @@ class InvitationsController < ApplicationController
   # Фича-флаг нового QR с верификацией. По умолчанию включён.
   # Выключить (вернуть старый статичный QR): QR_VERIFY_ENABLED=false.
   def qr_verify_enabled?
-    ActiveModel::Type::Boolean.new.cast(ENV.fetch("QR_VERIFY_ENABLED", "false"))
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch("QR_VERIFY_ENABLED", "true"))
   end
 
   # Абсолютный URL страницы верификации с подписанным токеном приглашения.
-  # Домен: VERIFY_BASE_URL, иначе russvisa.com в проде и текущий хост в dev
+  # Домен: VERIFY_BASE_URL, иначе выделенный QR-домен в проде и текущий хост в dev
   # (чтобы ссылку из QR можно было проверить локально — localhost/LAN/ngrok).
   def verification_url(invitation)
     base = (ENV["VERIFY_BASE_URL"].presence || default_verify_base).sub(%r{/+\z}, "")
@@ -91,7 +91,7 @@ class InvitationsController < ApplicationController
   end
 
   def default_verify_base
-    Rails.env.production? ? "https://russvisa.com" : request.base_url
+    Rails.env.production? ? "https://fortunatravel.in" : request.base_url
   end
 
   def encode_image(filename)
