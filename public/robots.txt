@@ -1,134 +1,49 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /admin_users/
+Disallow: /invitations/
+Allow: /*.js
+Allow: /*.css
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.webp
+Allow: /*.svg
+Allow: /*.ico
 
-  User-agent: *
-  Disallow: /admin/
-  Disallow: /api/
-  Disallow: /swagger/
-  Disallow: /orders/
-  Disallow: /tme/
-  Disallow: /system/
-  Disallow: /registrations
-  Disallow: /sign_in
-  Disallow: /profile
-  Disallow: /users/
-  Disallow: */analytics/themes/18
-  Disallow: */analytics/18
-  Disallow: */analytics/*/messages
-  Disallow: */analytics/*/mentions
-  Disallow: */channels/18
-  Disallow: */catalog/18
-  Disallow: */other_pages
-  Disallow: *?utm_
-  Disallow: *&utm_
-  Disallow: *?sort=
-  Disallow: *&sort=
-  Disallow: *?filter=
-  Disallow: *&filter=
-  Disallow: *openstat=
-  Disallow: *?page=
-  Disallow: */c/
-  Disallow: */n/
-  Disallow: */tme/
-  Allow: /*.js
-  Allow: /*.css
-  Allow: /*.png
-  Allow: /*.jpg
-  Allow: /*.jpeg
-  Allow: /*.gif
-  Allow: /*.webp
-  Allow: /*.svg
-  Allow: /*.ico
+User-agent: Yandex
+Disallow: /admin/
+Disallow: /admin_users/
+Disallow: /invitations/
+Allow: /*.js
+Allow: /*.css
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.webp
+Allow: /*.svg
+Allow: /*.ico
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content
+Clean-param: openstat
+Clean-param: tariff
+Clean-param: currency
 
-  User-agent: Yandex
-  Disallow: /admin/
-  Disallow: /api/
-  Disallow: /swagger/
-  Disallow: /orders/
-  Disallow: /tme/
-  Disallow: /system/
-  Disallow: /registrations
-  Disallow: /sign_in
-  Disallow: /profile
-  Disallow: /users/
-  Disallow: */analytics/themes/18
-  Disallow: */analytics/18
-  Disallow: */analytics/*/messages
-  Disallow: */analytics/*/mentions
-  Disallow: */channels/18
-  Disallow: */catalog/18
-  Disallow: */other_pages
-  Disallow: *?utm_
-  Disallow: *&utm_
-  Disallow: *?sort=
-  Disallow: *&sort=
-  Disallow: *?filter=
-  Disallow: *&filter=
-  Disallow: *openstat=
-  Disallow: *?page=
-  Disallow: */c/
-  Disallow: */n/
-  Disallow: */tme/
-  Allow: /*.js
-  Allow: /*.css
-  Allow: /*.png
-  Allow: /*.jpg
-  Allow: /*.jpeg
-  Allow: /*.gif
-  Allow: /*.webp
-  Allow: /*.svg
-  Allow: /*.ico
+# AI crawlers are welcome (see /llms.txt)
+User-agent: Google-Extended
+Allow: /
 
-  Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content
-  Clean-param: openstat
+User-agent: GoogleOther
+Allow: /
 
-  User-agent: GoogleBot
-  Disallow: /admin/
-  Disallow: /api/
-  Disallow: /swagger/
-  Disallow: /orders/
-  Disallow: /tme/
-  Disallow: /system/
-  Disallow: /registrations
-  Disallow: /sign_in
-  Disallow: /profile
-  Disallow: /users/
-  Disallow: */analytics/themes/18
-  Disallow: */analytics/18
-  Disallow: */analytics/*/messages
-  Disallow: */analytics/*/mentions
-  Disallow: */channels/18
-  Disallow: */catalog/18
-  Disallow: */other_pages
-  Disallow: *?utm_
-  Disallow: *&utm_
-  Disallow: *?sort=
-  Disallow: *&sort=
-  Disallow: *?filter=
-  Disallow: *&filter=
-  Disallow: *openstat=
-  Disallow: *?page=
+User-agent: GPTBot
+Allow: /
 
-  Allow: /*.js
-  Allow: /*.css
-  Allow: /*.png
-  Allow: /*.jpg
-  Allow: /*.jpeg
-  Allow: /*.gif
-  Allow: /*.webp
-  Allow: /*.svg
-  Allow: /*.ico
+User-agent: ClaudeBot
+Allow: /
 
-  # Google Special Case Crawlers
-  User-agent: Google-Extended
-  Allow: /
+User-agent: PerplexityBot
+Allow: /
 
-  User-agent: GoogleOther
-  Allow: /
-
-  User-agent: GoogleOther-Image
-  Allow: /
-
-  User-agent: GoogleOther-Video
-  Allow: /
-
-  Sitemap: https://russvisa.com/sitemap.xml
-
+Sitemap: https://russvisa.com/sitemap.xml

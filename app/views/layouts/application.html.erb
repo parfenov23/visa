@@ -10,7 +10,15 @@
   })(window,document,'script','dataLayer','GTM-5353C9M7');</script>
   <!-- End Google Tag Manager -->
 
-  <title><%= content_for?(:title) ? yield(:title) : "Russvisa: Tourist invitation for a Russian visa" %></title>
+  <%
+    # Единые SEO-переменные: страницы могут переопределять через content_for(:title/:description).
+    page_title = content_for?(:title) ? yield(:title) : "Russvisa: Tourist invitation for a Russian visa"
+    meta_description = content_for?(:description) ? yield(:description) : "Official Russian tourist visa invitation letter for #{@meta_price || '€9.99'}: tourist confirmation + tourist voucher by email within 30 minutes. Accepted by Russian embassies worldwide."
+    # /in и ?tariff= — рекламные дубли главной, каноникал ведёт на корень.
+    canonical_path = (request.path == '/in' || params[:tariff].present?) ? '/' : request.path
+    canonical_url = "https://russvisa.com#{canonical_path}"
+  %>
+  <title><%= page_title %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <%= csrf_meta_tags %>
@@ -25,18 +33,23 @@
 
   <!--[if IE]>
   <meta http-equiv="ImageToolbar" content="False"/><![endif]-->
-  <meta name="description" content="Our company's Russian letter of invitation just for <%= @meta_price || '€9.99' %> which consists of tourist confirmation and tourist voucher, will ensure you a Russian visa with 100% guarantee">
+  <meta name="description" content="<%= meta_description %>">
   <meta name="keywords" content="Invitation for Russia, russian invitation letter, invitation to russia, russia visa invitation, invitation for russian visa, visa to Russia, Tourist invitation for a Russian visa">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://russvisa.com<%= request.path %>">
-  <meta property="og:title" content="Invitation to russia for <%= @meta_price || '€9.99' %> - fill out application form now">
-  <meta property="og:site_name" content="">
-  <meta property="og:description" content="Our company's Russian letter of invitation just for <%= @meta_price || '€9.99' %> which consists of tourist confirmation and tourist voucher, will ensure you a Russian visa with 100% guarantee">
-  <meta property="og:image" content="/favicons/android-chrome-192x192.png">
+  <meta property="og:url" content="<%= canonical_url %>">
+  <meta property="og:title" content="<%= page_title %>">
+  <meta property="og:site_name" content="Russvisa">
+  <meta property="og:description" content="<%= meta_description %>">
+  <meta property="og:image" content="https://russvisa.com/og-image.png">
   <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="219">
-  <meta property="og:image:height" content="89">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Russvisa — Invitation for Russian visa from €9.99">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= page_title %>">
+  <meta name="twitter:description" content="<%= meta_description %>">
+  <meta name="twitter:image" content="https://russvisa.com/og-image.png">
 
   <!-- Основная иконка -->
   <link rel="icon" href="/favicons/favicon.ico" sizes="any">
@@ -54,8 +67,8 @@
 
   <meta name="theme-color" content="#ffffff">
 
-  <meta name="robots" content="all, index, follow">
-  <link rel="canonical" href="https://russvisa.com<%= request.path %>">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="<%= canonical_url %>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -155,17 +168,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": "https://russvisa.com/#organization",
   "name": "Russvisa",
   "url": "https://russvisa.com",
-  "logo": "https://russvisa.com/images/logo.png",
+  "logo": "https://russvisa.com/favicons/web-app-manifest-512x512.png",
+  "image": "https://russvisa.com/og-image.png",
   "description": "Russvisa.com provides official Russian tourist visa invitation letters for €9.99, accepted by all Russian embassies worldwide.",
+  "email": "manager@russvisa.com",
+  "foundingDate": "1992",
+  "address": [
+    {
+      "@type": "PostalAddress",
+      "streetAddress": "204 W Spear St",
+      "addressLocality": "Carson City",
+      "addressRegion": "NV",
+      "postalCode": "89703",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "PostalAddress",
+      "streetAddress": "Presnenskaya naberezhnaya 6, building 2",
+      "addressLocality": "Moscow",
+      "postalCode": "123317",
+      "addressCountry": "RU"
+    }
+  ],
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "customer support",
+    "email": "manager@russvisa.com",
     "availableLanguage": ["English"]
   },
   "areaServed": "Worldwide",
   "priceRange": "€"
+}
+</script>
+
+<!-- Structured Data: WebSite -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://russvisa.com/#website",
+  "url": "https://russvisa.com",
+  "name": "Russvisa",
+  "description": "Official Russian tourist visa invitation letters online",
+  "publisher": { "@id": "https://russvisa.com/#organization" },
+  "inLanguage": "en"
 }
 </script>
 
@@ -194,15 +243,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   "@context": "https://schema.org",
   "@type": "Service",
   "serviceType": "Russian Visa Invitation Letter",
-  "provider": {
-    "@type": "Organization",
-    "name": "Russvisa"
-  },
+  "provider": { "@id": "https://russvisa.com/#organization" },
+  "areaServed": "Worldwide",
   "offers": {
     "@type": "Offer",
     "price": "9.99",
     "priceCurrency": "EUR",
-    "availability": "https://schema.org/InStock"
+    "availability": "https://schema.org/InStock",
+    "url": "https://russvisa.com/"
   }
 }
 </script>

@@ -1,6 +1,8 @@
 # app/controllers/invitations_controller.rb
 class InvitationsController < ApplicationController
   skip_forgery_protection only: :create
+  # Личные документы и страница верификации не должны попадать в поисковый индекс.
+  before_action -> { response.set_header("X-Robots-Tag", "noindex, nofollow") }, only: [:show, :verify]
 
   RATE_LIMIT_WINDOW = 2.minutes
 
