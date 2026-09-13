@@ -11,4 +11,9 @@ class HomeController < ApplicationController
                   else "€9.99"
                   end
   end
+
+  def success_invitation
+    flash[:popup] = "submission_success"
+    redirect_to root_path(tariff: params[:tariff].presence)
+  end
 end

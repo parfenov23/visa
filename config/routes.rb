@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   resources :invitations, only: [:create, :show]
   get '/russ_tourist', to: 'home#russ_tourist'
+  get '/success_invitation', to: 'home#success_invitation'
   # Короткий алиас маркетинговой ссылки: /in — главная с тарифом custom_20
   # (эквивалент /?tariff=custom_20, URL в адресной строке остаётся /in).
   get '/in', to: 'home#index', defaults: { tariff: 'custom_20' }
