@@ -98,12 +98,6 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<% if flash[:popup].present? %>
-  <div id="flash-overlay">
-    <%= render "shared/flash_popup", kind: flash[:popup] %>
-  </div>
-<% end %>
-
 <%= yield %>
 
 <!-- Yandex.Metrika counter -->
@@ -254,6 +248,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 }
 </script>
+<% end %>
+<% if flash[:popup].present? %>
+  <div id="flash-overlay">
+    <%= render "shared/flash_popup", kind: flash[:popup] %>
+  </div>
 <% end %>
 </body>
 </html>
