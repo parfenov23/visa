@@ -17,7 +17,7 @@ class InvitationsController < ApplicationController
 
     popup = "submission_error"
     # Turnstile temporarily disabled; anti-spam is enforced via Redis rate-limit below.!
-    is_dev = true || Rails.env.development?
+    is_dev = Rails.env.development?
     cf_verify = (is_dev || verify_turnstile(model: @invitation))
     if (is_dev || cf_verify.success?) && @invitation.save
       @invitation.send_notify_email
