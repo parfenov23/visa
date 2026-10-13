@@ -56,5 +56,7 @@ gem 'rqrcode'
 group :development do
   gem "capistrano"
   gem "capistrano-rails"
+  gem 'ed25519', '>= 1.2', '< 2.0'
+  gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0'
   gem 'pry-byebug', '= 3.10.1'
 end

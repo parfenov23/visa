@@ -28,5 +28,8 @@ Rails.application.routes.draw do
   # Короткий алиас маркетинговой ссылки: /in — главная с тарифом custom_20
   # (эквивалент /?tariff=custom_20, URL в адресной строке остаётся /in).
   get '/in', to: 'home#index', defaults: { tariff: 'custom_20' }
+  # На домене russvisa.in главная работает так же, как /in (тариф custom_20).
+  in_domain_host = ->(req) { %w[russvisa.in www.russvisa.in].include?(req.host) }
+  get '/', to: 'home#index', defaults: { tariff: 'custom_20' }, constraints: in_domain_host
   root to: 'home#index'
 end
