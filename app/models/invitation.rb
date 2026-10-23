@@ -2,7 +2,8 @@ class Invitation < ApplicationRecord
   # Виртуальное поле для выбора гостиницы из базы в админ-форме (не сохраняется).
   attr_accessor :hotel_picker
 
-  before_create :set_price, :set_accomodation, :set_meals, :assign_seals, :assign_verify_token
+  before_create :set_price, :set_accomodation, :set_meals, :assign_seals, :assign_verify_token,
+                :assign_invitation_number
   before_save :normalize_dates
 
   # Строковые поля дат, заполняемые пользователем на форме заказа.
@@ -10,6 +11,9 @@ class Invitation < ApplicationRecord
 
   ALL_ACCOMODATION = ["Double (DBL)", "Twin (TWN)", "Single (SGL)"]
   ALL_MEALS = %w[RO BB HB FB AI UAI CB]
+
+  # Ключ pg_advisory_xact_lock для выдачи номеров приглашений.
+  INVITATION_NUMBER_LOCK = 2310261250
 
   # Number of seal variants available in public/signs (1.png .. 6.png).
   SEALS_COUNT = 6
@@ -81,12 +85,13 @@ class Invitation < ApplicationRecord
     [:created_in_period]
   end
 
-  # Виртуальный 10-значный номер приглашения (ddmmyyHHMM) — тот же, что current_id.
-  # Приложение работает в фиксированном UTC+3 (без DST), created_at хранится в UTC,
-  # поэтому местное время = created_at + 3 часа. Позволяет фильтровать по номеру
-  # в админке обычным строковым фильтром (Ransack: invitation_number_eq / _cont).
-  ransacker :invitation_number do
-    Arel.sql("to_char(created_at + interval '3 hours', 'DDMMYYHH24MI')")
+  # 10-значный номер приглашения: ddmmyyHHMM момента создания (UTC+3).
+  # Если номер уже занят (несколько заявок за одну минуту), берётся следующий
+  # свободный: 2310261250 -> 2310261251. Уникальность гарантирует индекс в БД.
+  validates :invitation_number, uniqueness: true, allow_nil: true
+
+  def self.next_number(number)
+    (number.to_i + 1).to_s.rjust(10, "0")
   end
 
   def self.tariff_price(currency: :eur, tariff: :default)
@@ -199,7 +204,7 @@ class Invitation < ApplicationRecord
   end
 
   def current_id
-    created_at.strftime("%d%m%y%H%M")
+    invitation_number || created_at.strftime("%d%m%y%H%M")
   end
 
   def citizenship_title(lang: :en)
@@ -247,6 +252,16 @@ class Invitation < ApplicationRecord
       token = SecureRandom.alphanumeric(10)
       break token unless self.class.exists?(verify_token: token)
     end
+  end
+
+  # Advisory-lock держится до конца транзакции create, поэтому параллельные
+  # заявки выбирают номер по очереди и не получают одинаковый.
+  def assign_invitation_number
+    return if invitation_number.present?
+    self.class.connection.execute("SELECT pg_advisory_xact_lock(#{INVITATION_NUMBER_LOCK})")
+    number = (created_at || Time.current).strftime("%d%m%y%H%M")
+    number = self.class.next_number(number) while self.class.exists?(invitation_number: number)
+    self.invitation_number = number
   end
 
   def seals_must_differ

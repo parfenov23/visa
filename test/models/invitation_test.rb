@@ -31,4 +31,20 @@ class InvitationTest < ActiveSupport::TestCase
     assert_equal "20.08.2026", invitation.arival_date
     assert_equal "not a date", invitation.departure_date
   end
+
+  test "invitations created in the same minute get distinct sequential numbers" do
+    travel_to Time.zone.local(2026, 10, 23, 12, 50, 47) do
+      attrs = { currency: "usd", tariff: "default", package: "single" }
+      first  = Invitation.create!(attrs)
+      second = Invitation.create!(attrs)
+
+      assert_equal "2310261250", first.invitation_number
+      assert_equal "2310261251", second.invitation_number
+      assert_equal "2310261251", second.current_id
+    end
+  end
+
+  test "next_number keeps leading zero" do
+    assert_equal "0510261547", Invitation.next_number("0510261546")
+  end
 end
