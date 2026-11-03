@@ -38,6 +38,28 @@
     font-size: 56px;
   }
 
+  // Цена должна стоять на одной линии во всех карточках. Заголовок
+  // ("Single or Double entry") может занимать 2 строки, а пояснение — 3,
+  // поэтому резервируем под них одинаковую высоту в каждой карточке.
+  @media (min-width: 720px) {
+    .description {
+      > div:first-child {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60px; // 2 строки по 30px
+
+        .font-24px { line-height: 30px; }
+      }
+
+      > span {
+        display: block;
+        min-height: 54px; // 3 строки по 18px
+        line-height: 18px;
+      }
+    }
+  }
+
   .title{
     position: absolute;
     width: 100%;

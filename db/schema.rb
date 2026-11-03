@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_10_23_000000) do
+ActiveRecord::Schema[7.0].define(version: 2026_11_03_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,6 +99,11 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_23_000000) do
     t.integer "seal_right"
     t.string "verify_token"
     t.string "invitation_number"
+    t.boolean "agency", default: false, null: false
+    t.boolean "seal_high", default: false, null: false
+    t.boolean "print_seal", default: true, null: false
+    t.text "cancel_reason"
+    t.index ["agency"], name: "index_invitations_on_agency"
     t.index ["invitation_number"], name: "index_invitations_on_invitation_number", unique: true
     t.index ["status"], name: "index_invitations_on_status"
     t.index ["verify_token"], name: "index_invitations_on_verify_token", unique: true

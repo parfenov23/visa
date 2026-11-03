@@ -98,6 +98,10 @@
          занимает всю высоту картинки, поэтому height изображения = диаметру.
          scale в PdfRenderer = 1.0, значит 40mm печатается ровно 40 мм. */
       .stamp-img { position: absolute; height: 40mm; opacity: 1; }
+      /* «Печать высоко» (галочка в заявке) — когда гостиниц много и документ
+         не помещается на страницу: блок подписи становится низким, а печати
+         поднимаются на текст реквизитов над ним. */
+      .director-block.seal-high { height: 12mm; }
       /* --- QR верификации --- */
       .qr-cell { text-align: center; width: 140px; }
       .qr-caption {
@@ -263,9 +267,11 @@
         Дата: <%= print_date_str %>
       </div>
 
-      <div class="director-block">
+      <div class="director-block<%= ' seal-high' if @seal_high %>">
         <div style="margin-top: 12px;">Генеральный директор&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ахматова И.В.</div>
-        <img src="data:image/png;base64,<%= @seal_ru_base64 %>" class="stamp-img" style="left: 150px; top: 20px;">
+        <% if @print_seal %>
+        <img src="data:image/png;base64,<%= @seal_ru_base64 %>" class="stamp-img" style="left: 150px; top: <%= @seal_high ? '-100px' : '20px' %>;">
+        <% end %>
       </div>
     </td>
 
@@ -346,9 +352,11 @@
         </tr>
       </table>
 
-      <div class="director-block">
+      <div class="director-block<%= ' seal-high' if @seal_high %>">
         <div style="margin-top: 6px;">General Director:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/Irina Ahmatova/</div>
-        <img src="data:image/png;base64,<%= @seal_en_base64 %>" class="stamp-img" style="left: 120px; top: 12px;">
+        <% if @print_seal %>
+        <img src="data:image/png;base64,<%= @seal_en_base64 %>" class="stamp-img" style="left: 120px; top: <%= @seal_high ? '-100px' : '12px' %>;">
+        <% end %>
       </div>
     </td>
   </tr>

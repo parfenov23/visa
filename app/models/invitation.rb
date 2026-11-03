@@ -64,8 +64,27 @@ class Invitation < ApplicationRecord
   STATUSES = {
     'in_progress' => 'In progress',
     'done'        => 'Done',
-    'correction'  => 'Correction'
+    'correction'  => 'Correction',
+    'duplicate'   => 'Duplicate (повторная)',
+    'cancelled'   => 'Cancelled (отказ)'
   }.freeze
+
+  # Цвета статусов в списке заявок админки (in_progress — синий по умолчанию).
+  STATUS_COLORS = {
+    'done'       => '#1f9d55',
+    'correction' => '#d97706',
+    'duplicate'  => '#6b7280',
+    'cancelled'  => '#dc2626'
+  }.freeze
+
+  # Аннулированные заявки не удаляются, но не учитываются в статистике и рассылках.
+  VOID_STATUSES = %w[duplicate cancelled].freeze
+
+  validates :status, inclusion: { in: STATUSES.keys }
+
+  scope :active,       -> { where.not(status: VOID_STATUSES) }
+  scope :void,         -> { where(status: VOID_STATUSES) }
+  scope :not_agency,   -> { where(agency: false) }
 
   scope :created_in_period, ->(period) {
     now = Time.zone.now
@@ -174,6 +193,10 @@ class Invitation < ApplicationRecord
       created_at
       updated_at
       invitation_number
+      agency
+      seal_high
+      print_seal
+      cancel_reason
     ]
   end
 
@@ -224,6 +247,10 @@ class Invitation < ApplicationRecord
       InvitationMailer.new_order(self, true).deliver_now
     rescue
     end
+  end
+
+  def void?
+    VOID_STATUSES.include?(status)
   end
 
   def get_purposes

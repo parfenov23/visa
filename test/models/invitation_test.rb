@@ -47,4 +47,39 @@ class InvitationTest < ActiveSupport::TestCase
   test "next_number keeps leading zero" do
     assert_equal "0510261547", Invitation.next_number("0510261546")
   end
+
+  test "new invitation defaults: not agency, seal printed, normal seal position" do
+    invitation = Invitation.create!(currency: "usd", tariff: "default", package: "single")
+
+    assert_not invitation.agency?
+    assert invitation.print_seal?
+    assert_not invitation.seal_high?
+  end
+
+  test "duplicate and cancelled invitations are excluded from active scope" do
+    attrs = { currency: "usd", tariff: "default", package: "single" }
+    done      = Invitation.create!(attrs.merge(status: "done"))
+    duplicate = Invitation.create!(attrs.merge(status: "duplicate"))
+    cancelled = Invitation.create!(attrs.merge(status: "cancelled", cancel_reason: "passport typo"))
+
+    assert_includes Invitation.active, done
+    assert_not_includes Invitation.active, duplicate
+    assert_not_includes Invitation.active, cancelled
+    assert duplicate.void?
+    assert cancelled.void?
+    assert_not done.void?
+  end
+
+  test "unknown status is rejected" do
+    invitation = Invitation.new(currency: "usd", tariff: "default", package: "single", status: "deleted")
+
+    assert_not invitation.valid?
+    assert invitation.errors[:status].any?
+  end
+
+  test "hotel picker option includes city" do
+    hotel = Hotel.new(name: "Cosmos", city: " Moscow ")
+
+    assert_equal "Moscow", hotel.as_picker_option[:city]
+  end
 end

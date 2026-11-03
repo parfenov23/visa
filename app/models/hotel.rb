@@ -31,7 +31,7 @@ class Hotel < ApplicationRecord
 
   # Данные для JS-подстановки в форме приглашения.
   def as_picker_option
-    { label: display_label, en: full_en, ru: full_ru }
+    { label: display_label, en: full_en, ru: full_ru, city: city.to_s.strip }
   end
 
   def self.picker_options
