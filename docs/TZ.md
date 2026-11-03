@@ -201,7 +201,9 @@
 
 **Приёмка.** Для Индии и Непала расчёт по 1.35, для остальных по 2. Заявка без полей, но с файлом проходит; без полей и без файла — ошибка. Заявка в админке, письма отправлены.
 
-**Вопросы.** Нужна ли онлайн-оплата или только заявка (оплата по счёту)? Есть ли минимальный срок страховки? Нужен ли выбор нескольких туристов в одной заявке?
+**Оплата.** Онлайн-оплата не нужна (решено): только заявка. На странице после отправки: «We will contact you by email with payment details and your policy». В админке у заявки статус оплаты меняется вручную.
+
+**Вопросы.** Есть ли минимальный срок страховки? Нужен ли выбор нескольких туристов в одной заявке?
 
 ---
 
@@ -251,7 +253,9 @@
 
 **Приёмка.** На `/in` — $1.35/day, на `/` и `/?currency=usd` — $2/day. Кнопки ведут куда нужно. Корректно на 375px.
 
-**Вопросы.** В макете логотип Fortuna Travel, а сайт — Russvisa: какой логотип ставить? Где на странице блок: сразу под шапкой или вместо текущего баннера?
+**Логотип.** Russvisa (решено), не Fortuna Travel из макета.
+
+**Вопрос.** Где на странице блок: сразу под шапкой или вместо текущего баннера?
 
 ---
 
@@ -311,7 +315,35 @@
 - Агентству и аннулированной заявке письмо не уходит.
 - Повторный Done после правки письмо не дублирует.
 
-**Вопросы.** Нужны 1–2 абзаца текста про встречу и ЖД билеты, сейчас текст только про страховку. Какой адрес отправителя и reply-to?
+**Тема письма:** `Your invitation is ready — important information about medical insurance and travel services`
+
+**Дополнительные абзацы после блока про страховку** (тексты подготовлены, заказчик может поправить):
+
+> **Airport Pickup in Russia**
+>
+> Arriving in Moscow or St. Petersburg for the first time? Let us meet you at the airport so you can start your trip without stress. We offer two options:
+>
+> - **Standard Transfer:** a licensed taxi with a fixed price, booked in advance. No queues, no haggling, no language barrier.
+> - **VIP Meet & Greet:** a personal English-speaking assistant meets you at the arrival hall with a name sign, helps with your luggage and escorts you to a business-class car.
+>
+> Just send us your flight number and arrival time — we will take care of the rest.
+>
+> [Book airport pickup →]
+>
+> **Train Tickets Across Russia**
+>
+> Planning to travel between cities? Russian Railways websites can be difficult to use with foreign cards and passports. We can book your train tickets for you — seated, compartment (4-berth) or first-class SV (2-berth) — on the date and time that suit you best. All we need is a copy of your passport and your travel details.
+>
+> [Book train tickets →]
+
+**Финальная фраза письма** вместо текущей последней:
+
+> If you have any questions or would like to arrange any of these services, simply reply to this email or submit a request on our website. We are happy to help make your trip to Russia smooth and comfortable.
+>
+> Best regards,
+> Russvisa Team
+
+**Вопрос.** Какой адрес отправителя и reply-to?
 
 ---
 
@@ -329,7 +361,7 @@
 
 **Приёмка.** Заявка с датой въезда через N дней получает одно письмо. Агентства, аннулированные и дубли — нет. Заявки с нераспознанной датой пропускаются и пишутся в лог.
 
-**Вопрос.** За сколько дней до приезда отправлять?
+**Вопрос (ждём ответа заказчика).** За сколько дней до приезда отправлять? До ответа закладываем N = 3 через ENV `ARRIVAL_REMINDER_DAYS`.
 
 ---
 
@@ -341,10 +373,10 @@
 4. Печать: привязка высоты к номерам 1 и 3 или отдельный переключатель «высоко»?
 5. Подпись — отдельное изображение или часть печати?
 6. Период отчёта: половины месяца или скользящие 15 дней?
-7. Страховка: онлайн-оплата или только заявка? Минимальный срок? Несколько туристов в одной заявке?
+7. Страховка: минимальный срок? Несколько туристов в одной заявке? (Онлайн-оплата — не нужна, решено.)
 8. ЖД: можно ли добавить станции и количество пассажиров?
 9. Встреча: цены и состав VIP.
-10. Логотип на блоке страховки: Fortuna Travel или Russvisa?
+10. ~~Логотип на блоке страховки~~ — решено: Russvisa.
 11. Что именно тестируем по ценам для Индии (варианты а / б / в)?
-12. Тексты про встречу и билеты для письма; адрес отправителя.
-13. За сколько дней до приезда слать напоминание?
+12. ~~Тексты про встречу и билеты~~ — черновик в задаче 15, нужно согласовать. Адрес отправителя — открыт.
+13. За сколько дней до приезда слать напоминание? — ждём ответа (пока N = 3).
