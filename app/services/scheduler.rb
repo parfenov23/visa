@@ -8,7 +8,9 @@
 #
 # Запуск: bin/scheduler
 class Scheduler
-  Job = Struct.new(:name, :at, :action, keyword_init: true)
+  # at: "HH:MM" — раз в день не раньше этого времени (отметка в Redis);
+  # every: секунды — периодическая задача (идемпотентность — на её стороне).
+  Job = Struct.new(:name, :at, :every, :action, keyword_init: true)
 
   # Время — московское (config.time_zone).
   JOBS = [
@@ -17,7 +19,13 @@ class Scheduler
     # Проверка раз в день; база IP-адресов скачивается, только если файлу > 30 дней
     # (или его нет — тогда сразу после первого запуска планировщика).
     Job.new(name: "geo_country_update", at: "00:00",
-            action: -> { GeoCountry.update_if_stale! })
+            action: -> { GeoCountry.update_if_stale! }),
+    # Напоминание «получили ли визу» за 3 дня до приезда.
+    Job.new(name: "arrival_reminders", at: "10:00",
+            action: -> { ArrivalReminder.deliver_due }),
+    # Письма с предложениями через 5 минут после Done (проверка раз в минуту).
+    Job.new(name: "offers_emails", every: 60,
+            action: -> { OffersDelivery.deliver_due })
   ].freeze
 
   MAX_ATTEMPTS_PER_DAY = 3
@@ -32,7 +40,7 @@ class Scheduler
   end
 
   def run
-    log "started, jobs: #{@jobs.map { |j| "#{j.name}@#{j.at}" }.join(', ')}"
+    log "started, jobs: #{@jobs.map { |j| j.every ? "#{j.name}/#{j.every}s" : "#{j.name}@#{j.at}" }.join(', ')}"
     loop do
       tick
       sleep TICK_SECONDS
@@ -41,10 +49,27 @@ class Scheduler
 
   # Одна проверка расписания; отдельно — для тестов.
   def tick(now = Time.zone.now)
-    @jobs.each { |job| run_job(job, now) if due?(job, now) }
+    @jobs.each do |job|
+      if job.every
+        run_periodic(job, now)
+      elsif due?(job, now)
+        run_job(job, now)
+      end
+    end
   end
 
   private
+
+  def run_periodic(job, now)
+    @last_run ||= {}
+    last = @last_run[job.name]
+    return if last && now - last < job.every
+
+    @last_run[job.name] = now
+    job.action.call
+  rescue StandardError => e
+    log "#{job.name}: failed: #{e.class}: #{e.message}", :error
+  end
 
   def due?(job, now)
     now.strftime("%H:%M") >= job.at &&

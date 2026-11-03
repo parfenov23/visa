@@ -5,7 +5,7 @@ ActiveAdmin.register Invitation do
                 :passport, :visa_obtain_place, :cities, :hotels, :hotels_ru, :hotel_picker,
                 :email, :promocode, :comments, :accomodation, :meals, :price, :currency, :tariff,
                 :purpose, :status, :additional_info, :seal_left, :seal_right,
-                :agency, :seal_high, :print_seal, :cancel_reason
+                :agency, :seal_high, :print_seal, :cancel_reason, offers: []
 
   # Заявки не удаляем — дубли и отказы помечаются статусами «Повторная» / «Отказ».
   actions :all, except: [:destroy]
@@ -17,6 +17,26 @@ ActiveAdmin.register Invitation do
   # Разовая выгрузка без печати и подписи (для оригиналов), не меняя саму заявку.
   action_item :pdf_no_seal, only: :show do
     link_to "PDF без печати", invitation_path(resource, format: :pdf, no_seal: 1), target: "_blank"
+  end
+
+  # Ручная отправка письма с предложениями (только ещё не отправленные блоки).
+  member_action :send_offers, method: :post do
+    keys = resource.deliver_offers!
+    if keys.any?
+      labels = keys.map { |k| Invitation::OFFERS.dig(k, :label) }.join(', ')
+      redirect_to resource_path, notice: "Письмо с предложениями отправлено: #{labels}"
+    else
+      redirect_to resource_path, alert: "Нечего отправлять: отметьте галочки в заявке (уже отправленные блоки повторно не уходят)."
+    end
+  rescue StandardError => e
+    redirect_to resource_path, alert: "Не удалось отправить письмо: #{e.message}"
+  end
+
+  action_item :send_offers, only: :show do
+    if resource.pending_offers.any?
+      link_to "Отправить предложения сейчас", send_offers_admin_invitation_path(resource), method: :post,
+              data: { confirm: "Отправить клиенту письмо с отмеченными предложениями?" }
+    end
   end
 
   batch_action :destroy, false
@@ -40,6 +60,16 @@ ActiveAdmin.register Invitation do
       status_tag label, style: "background-color: #{color}; color: #fff;"
     end
     column('Агентство') { |inv| inv.agency? ? status_tag('Агентство', style: 'background-color: #7c3aed; color: #fff;') : '' }
+    column('Предложения') do |inv|
+      # Зелёный — уже отправлено, серый — отмечено, но ещё не ушло.
+      Array(inv.offers).each do |key|
+        sent = Array(inv.offers_sent).include?(key)
+        label = Invitation::OFFERS.dig(key, :label).to_s.split(' ').first
+        status_tag(label, style: "background-color: #{sent ? '#1f9d55' : '#9ca3af'}; color: #fff; margin-right: 2px;",
+                          title: sent ? 'Отправлено' : 'Ещё не отправлено')
+      end
+      nil
+    end
     column :email
     column :tariff
     column :price
@@ -150,6 +180,14 @@ ActiveAdmin.register Invitation do
               hint: 'Снимите галочку для выдачи оригиналов — печать и подпись ставятся вручную.'
     end
 
+    f.inputs 'Предложить клиенту в письме' do
+      sent = Array(f.object.offers_sent)
+      f.input :offers, as: :check_boxes, label: false,
+              collection: Invitation.enabled_offers.map { |key, o| [sent.include?(key) ? "#{o[:label]} — уже отправлено" : o[:label], key] },
+              hint: "Письмо уходит клиенту через 5 минут после перевода заявки в Done — только с отмеченными блоками. " \
+                    "Турагентствам письмо не отправляется. Если отметить галочку позже — нажмите «Отправить предложения сейчас» в карточке заявки."
+    end
+
     f.actions
   end
 
@@ -189,6 +227,13 @@ ActiveAdmin.register Invitation do
       row('Печати (лев./прав.)') { |inv| "#{inv.seal_left} + #{inv.seal_right}" }
       row('Печать высоко') { |inv| inv.seal_high? ? 'Да' : 'Нет' }
       row('Печать и подпись в PDF') { |inv| inv.print_seal? ? 'Да' : 'Нет (оригинал)' }
+      row('Предложения в письме') do |inv|
+        sent = Array(inv.offers_sent)
+        Array(inv.offers).map { |k| "#{Invitation::OFFERS.dig(k, :label)}#{' ✅' if sent.include?(k)}" }.join(', ').presence || '—'
+      end
+      row('Письмо с предложениями') { |inv| inv.offers_sent_at ? inv.offers_sent_at.strftime('%d.%m.%Y %H:%M') : 'не отправлено' }
+      row('Done') { |inv| inv.done_at&.strftime('%d.%m.%Y %H:%M') }
+      row('Напоминание перед приездом') { |inv| inv.reminder_sent_at ? inv.reminder_sent_at.strftime('%d.%m.%Y %H:%M') : 'не отправлено' }
       row(:created_at) { |inv| inv.created_at&.strftime('%d.%m.%Y %H.%M.%S') }
       row(:updated_at) { |inv| inv.updated_at&.strftime('%d.%m.%Y %H.%M.%S') }
     end

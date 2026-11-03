@@ -1,0 +1,21 @@
+<h2 style="font-size:18px; margin:24px 0 8px; color:#10204a;">Medical Insurance for Russia</h2>
+<p>We would like to provide you with essential guidance regarding the medical insurance required to obtain a visa at the Embassy of the Russian Federation and to clear passport control upon arrival.</p>
+<p>Please be advised that due to current operational restrictions affecting major global financial and insurance networks, international travel insurance policies are temporarily not accepted within the Russian Federation. This applies even if your current policy specifies "Worldwide" or "Whole World" coverage.</p>
+<p>According to Federal Law No. 114-FZ "On the Procedure for Exit from the Russian Federation and Entry into the Russian Federation" (Subparagraph 5 of Part 1 of Article 27), foreign nationals are required to present a medical insurance policy that is fully functional locally, or entry may be officially denied.</p>
+<p>For your reference, the leading insurance providers currently operating and offering fully valid coverage inside Russia are AlfaStrakhovanie, Ingosstrakh, Euroins, RESO-Garantia, T-Insurance, and VSK.</p>
+<p>If your current provider does not have local validation, our team can assist you in securing an official policy issued by AlfaStrakhovanie.</p>
+<p style="margin-bottom:4px;"><b>Policy Details &amp; Approved Coverage:</b></p>
+<ul style="margin-top:4px;">
+  <li><b>Daily Rate:</b> USD <%= format('%.2f', rate).sub(/\.00\z/, '') %> per day</li>
+  <li><b>Sum Insured per Person:</b> USD <%= number_with_delimiter(ServiceRequest::INSURANCE_SUM_INSURED) %> (Meets the official embassy minimum)</li>
+</ul>
+<p style="margin-bottom:4px;"><b>Approved Coverage Includes:</b></p>
+<ul style="margin-top:4px;">
+  <li>Outpatient and inpatient medical treatment</li>
+  <li>Emergency medical assistance</li>
+  <li>Emergency medical evacuation and repatriation</li>
+  <li>Emergency dental care</li>
+  <li>Repatriation of remains</li>
+</ul>
+<p>If you require any assistance with verifying your current documentation or arranging a compliant policy, please reply directly to this email or fill out an application on our website.</p>
+<%= render "offers_mailer/button", text: "Get insurance online", url: site_link("/insurance", ref: invitation.verify_token) %>

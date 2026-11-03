@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_11_04_000001) do
+ActiveRecord::Schema[7.0].define(version: 2026_11_05_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -131,7 +131,13 @@ ActiveRecord::Schema[7.0].define(version: 2026_11_04_000001) do
     t.boolean "seal_high", default: false, null: false
     t.boolean "print_seal", default: true, null: false
     t.text "cancel_reason"
+    t.jsonb "offers", default: [], null: false
+    t.jsonb "offers_sent", default: [], null: false
+    t.datetime "offers_sent_at"
+    t.datetime "done_at"
+    t.datetime "reminder_sent_at"
     t.index ["agency"], name: "index_invitations_on_agency"
+    t.index ["done_at"], name: "index_invitations_on_done_at"
     t.index ["invitation_number"], name: "index_invitations_on_invitation_number", unique: true
     t.index ["status"], name: "index_invitations_on_status"
     t.index ["verify_token"], name: "index_invitations_on_verify_token", unique: true

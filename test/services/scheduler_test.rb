@@ -39,4 +39,17 @@ class SchedulerTest < ActiveSupport::TestCase
 
     assert_equal 3, attempts
   end
+
+  test "periodic job runs at most once per interval" do
+    runs = 0
+    job = Scheduler::Job.new(name: "every_minute", every: 60, action: -> { runs += 1 })
+    scheduler = Scheduler.new(jobs: [job], redis: FakeRedis.new, logger: Logger.new(nil))
+    start = Time.zone.local(2026, 11, 3, 12, 0, 0)
+
+    scheduler.tick(start)
+    scheduler.tick(start + 30)
+    scheduler.tick(start + 61)
+
+    assert_equal 2, runs
+  end
 end
