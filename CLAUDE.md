@@ -45,6 +45,8 @@ bundle exec cap production deploy
 - **Bot protection:** Cloudflare Turnstile verification on form submission in `InvitationsController#create`.
 - **Admin panel:** ActiveAdmin at dynamic path (`ENV['ADMIN_URL']`, default `/admin`). Devise authentication for admin users.
 - **Pricing helper:** `ApplicationHelper#all_price_items` generates pricing tiers used in the landing page views.
+- **Daily report:** `InvitationsReport` (app/services) — invitations by citizenship from the 1st of the month, compared with the same days of the previous month; void statuses (duplicate/cancelled) excluded. Shown in ActiveAdmin page "Сводка по заявкам" and emailed daily by `ReportMailer` (`REPORT_TO_EMAIL`, fallback `SMTP_TO_EMAIL`).
+- **Scheduler:** `bin/scheduler` runs `Scheduler` (app/services/scheduler.rb) as the `scheduler` service in `compose.production.yml`; daily jobs are deduplicated via Redis keys. Manual run: `bundle exec rails reports:daily`.
 - **Country data:** `lib/country.rb` provides country lookup used for citizenship fields.
 
 ## Key Configuration

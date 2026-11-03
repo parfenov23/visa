@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# Процесс фоновых задач по расписанию (ежедневная сводка и т.п.). См. app/services/scheduler.rb.
+require_relative "../config/environment"
+
+$stdout.sync = true
+Scheduler.new.run

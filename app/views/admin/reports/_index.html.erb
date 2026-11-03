@@ -1,0 +1,30 @@
+<%
+  today = Time.zone.today
+  presets = [
+    ["С начала месяца", today.beginning_of_month, today],
+    ["Вчерашняя сводка", (today - 1).beginning_of_month, today - 1],
+    ["Прошлый месяц", today.prev_month.beginning_of_month, today.prev_month.end_of_month],
+    ["Последние 15 дней", today - 14, today]
+  ]
+%>
+<div class="panel">
+  <h3>Период</h3>
+  <div class="panel_contents" style="padding: 12px;">
+    <%= form_tag admin_reports_path, method: :get, style: "display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;" do %>
+      <label>С<br><%= date_field_tag :from, report.from %></label>
+      <label>По<br><%= date_field_tag :to, report.to %></label>
+      <%= submit_tag "Показать", name: nil %>
+    <% end %>
+    <div style="margin-top: 10px;">
+      <% presets.each do |label, from, to| %>
+        <%= link_to label, admin_reports_path(from: from, to: to), style: "margin-right: 14px;" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel_contents" style="padding: 16px; background: #fff;">
+    <%= render partial: "reports/invitations_summary", locals: { report: report } %>
+  </div>
+</div>
