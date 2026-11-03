@@ -83,6 +83,17 @@ module ApplicationHelper
     "#{curr_currency} #{curr_price}"
   end
 
+  # Индийская страница (/in, russvisa.in, тариф custom_20) — там страховка дешевле.
+  def india_pricing?
+    @tariff.to_s == "custom_20"
+  end
+
+  # Цена страховки за сутки для блока на главной: «$1.35 / day» или «$2 / day».
+  def insurance_rate_label
+    rate = india_pricing? ? ServiceRequest.insurance_rate("IN") : ServiceRequest::INSURANCE_DEFAULT_RATE
+    "$ #{format('%.2f', rate).sub(/\.00\z/, '')} / day"
+  end
+
   def all_country
 
   end

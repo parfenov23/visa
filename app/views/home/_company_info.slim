@@ -1,25 +1,42 @@
 div#imPageRow_1.imPageRow
   div#imPageRowContent_1.imContentDataContainer
     .im-hero
-      h1.myh
-        | Invitation for Russian visa online
-      .mb-12px
-        b.im-hero__lead
-          | Easy way to get it in 2 clicks for
-        a.btn.blue.ml-8px.font-20px.bold.border-white href="#pricing"
-          = raw default_price(currency: @currency, tariff: @tariff)
-      p.im-hero__text
-        | Our company's Russian letter of invitation just for
-        b.im-hero__price.ml-4px.mr-4px
-          = raw default_price(currency: @currency, tariff: @tariff)
-        | which consists of
-        b.ml-4px.mr-4px
-          | tourist confirmation
-        | and
-        b.ml-4px
-          | tourist voucher
-        |, the documents required to apply for a Russian tourist visa.
-      p.im-hero__text
-        | Russvisa is a private consulting agency, not affiliated with any government or embassy, and is listed in the official registry of tour operators.
-      a.btn.blue.big.border-white href="#invitationForm"
-        | GET INVITATION ONLINE
+      .im-hero__main
+        h1.myh
+          | Invitation for Russian visa online
+        .mb-12px
+          b.im-hero__lead
+            | Easy way to get it in 2 clicks for
+          a.btn.blue.ml-8px.font-20px.bold.border-white href="#pricing"
+            = raw default_price(currency: @currency, tariff: @tariff)
+        p.im-hero__text
+          | Our company's Russian letter of invitation just for
+          b.im-hero__price.ml-4px.mr-4px
+            = raw default_price(currency: @currency, tariff: @tariff)
+          | which consists of
+          b.ml-4px.mr-4px
+            | tourist confirmation
+          | and
+          b.ml-4px
+            | tourist voucher
+          |, the documents required to apply for a Russian tourist visa.
+        p.im-hero__text
+          | Russvisa is a private consulting agency, not affiliated with any government or embassy, and is listed in the official registry of tour operators.
+        a.btn.blue.big.border-white href="#invitationForm"
+          | GET INVITATION ONLINE
+      / Блок страховки по макету заказчика: $1.35/день на индийской странице, $2 — на остальных.
+      aside.im-hero__side
+        .im-ins-card
+          .im-ins-card__head
+            svg.im-ins-card__icon viewBox="0 0 48 56" width="40" height="46" aria-hidden="true"
+              path d="M24 2 4 9v16c0 13.5 8.6 24.6 20 29 11.4-4.4 20-15.5 20-29V9L24 2z" fill="#1d6fd8"
+              path d="M20 18h8v8h8v8h-8v8h-8v-8h-8v-8h8z" fill="#fff"
+            .im-ins-card__label INSURANCE
+          h2.im-ins-card__title
+            | Medical Insurance for Russia
+            span.im-ins-card__online Online
+          .im-ins-card__price = insurance_rate_label
+          p.im-ins-card__text
+            | Official health insurance policy fully functional inside Russia. Meets all consular requirements.
+          a.im-ins-card__btn href="/insurance"
+            | GET INSURANCE ONLINE &rarr;
