@@ -252,18 +252,41 @@
 
 **URL:** `/airport-transfer`.
 
+**Решения заказчика.**
+- Работаем только по **Москве**. Аэропорт в форме не выбирается: менеджер определяет его по номеру рейса.
+- Главный продукт — **VIP Meet-and-Greet & Border Support, USD 220**. VIP — это не машина бизнес-класса, а подготовка дополнительных документов для границы и ожидание в аэропорту с табличкой до 3 часов. Довод для клиента: в аэропорту не работает иностранный интернет и Uber, паспортный контроль занимает 1–3 часа, а такси на месте стоит в 3 раза дороже.
+
+**Варианты на странице:**
+1. **VIP Meet-and-Greet & Border Support — USD 220.** Основная карточка, выделена. В неё входит:
+   - **Personal Arrival Meeting:** встреча в зале прилёта с именной табличкой, ожидание до 3 часов от посадки рейса.
+   - **Comfortable Transfer:** индивидуальный трансфер из аэропорта до отеля.
+   - **Pre-Arrival Document Audit & Border Letter:** до вылета проверяем документы (приглашение совпадает с выданной визой) и готовим официальное письмо от туроператора для Пограничной службы ФСБ о маршруте туриста и о том, что наш представитель встречает его в аэропорту. Если до поездки меняются отель или даты — бесплатно обновляем приглашение.
+   - **24/7 Dedicated Border Support:** дежурный менеджер на связи во время прилёта и при необходимости даёт пояснения пограничной службе.
+2. **Обычное такси** — встреча и трансфер без документов и поддержки. Цена — по запросу или фиксированная (уточнить, см. вопросы).
+
+**Тексты.** Описание VIP на странице — по тексту заказчика (ниже, в задаче 15). Перед формой — короткий блок «Why book in advance?»:
+- Foreign mobile internet and ride-hailing apps (Uber etc.) often do not work at Russian airports.
+- Passport control can take 1 to 3 hours — a pre-booked taxi will not wait that long.
+- On-site airport taxis charge up to 3 times the market rate.
+
 **Форма:**
-- аэропорт (список: SVO, DME, VKO, LED + «другой»);
+- вариант: VIP (по умолчанию) / обычное такси;
 - дата и время прилёта, номер рейса;
-- вариант: **1. Обычное такси**, **2. VIP-встреча** — с описанием, что входит;
-- адрес назначения, количество пассажиров и багажа;
-- ФИО, email, телефон / WhatsApp.
+- адрес отеля или проживания в Москве;
+- количество пассажиров;
+- ФИО, email, телефон / WhatsApp / Telegram;
+- для VIP: копия паспорта и копия визы (файлы; визу можно приложить позже, ответив на письмо) и номер приглашения, если оно оформлено у нас — для проверки документов;
+- комментарий.
 
-**Приёмка.** Как в задаче 10.
+**Заявка в админке.** У VIP-заявок отдельный чек-лист менеджера:
+- документы проверены;
+- письмо для ФСБ подготовлено;
+- встречающий назначен;
+- дежурный менеджер назначен.
 
-**Вопрос.** Цены на оба варианта и состав VIP-встречи (табличка, помощь с багажом, авто бизнес-класса…).
-
----
+**Приёмка.**
+- Заявка создаётся, файлы видны в админке, письма уходят.
+- На странице указана цена VIP $220 и полный состав услуги, нет выбора аэропорта и других городов.
 
 ## Задача 12. Блок страховки на главных страницах (п. 14, макет)
 
@@ -345,18 +368,20 @@
 
 **Тема письма:** `Your invitation is ready — important information about medical insurance and travel services`
 
-**Дополнительные абзацы после блока про страховку** (тексты подготовлены, заказчик может поправить):
+**Дополнительные абзацы после блока про страховку.** Текст про VIP-встречу — от заказчика (сокращён для общего письма). Текст про ЖД подготовили мы, заказчик может поправить:
 
-> **Airport Pickup in Russia**
+> **VIP Meet-and-Greet & Border Support in Moscow — USD 220**
 >
-> Arriving in Moscow or St. Petersburg for the first time? Let us meet you at the airport so you can start your trip without stress. We offer two options:
+> Please be advised that foreign mobile internet networks and popular ride-hailing apps (such as Uber) are frequently non-functional at Russian airports. Furthermore, arranging a standard local taxi in advance on your own is highly impractical, as passing through passport control can unpredictably take anywhere between 1 to 3 hours, and local on-site airport taxis routinely charge up to 3 times the actual market rate.
 >
-> - **Standard Transfer:** a licensed taxi with a fixed price, booked in advance. No queues, no haggling, no language barrier.
-> - **VIP Meet & Greet:** a personal English-speaking assistant meets you at the arrival hall with a name sign, helps with your luggage and escorts you to a business-class car.
+> Our premium package includes:
 >
-> Just send us your flight number and arrival time — we will take care of the rest.
+> - **Personal Arrival Meeting:** our staff member will meet you in the arrivals hall holding a sign with your name, with up to 3 hours of waiting time from your flight's landing.
+> - **Comfortable Transfer:** a private vehicle transfer from the airport directly to your hotel.
+> - **Pre-Arrival Document Audit & Border Letter:** our team will audit your travel documents to ensure your invitation perfectly matches your visa, and prepare an official supporting letter from our licensed tour operator for the FSB Border Service. Any last-minute changes to your invitation (hotel or dates) are free of charge.
+> - **24/7 Dedicated Border Support:** a dedicated manager remains on call during your arrival to provide official clarifications to the Border Service if requested.
 >
-> [Book airport pickup →]
+> [Book VIP airport meeting →]
 >
 > **Train Tickets Across Russia**
 >
@@ -372,6 +397,28 @@
 > Russvisa Team
 
 **Отправитель:** текущий SMTP-адрес сайта, тот же, что у писем о заявке (решено).
+
+**Отдельное письмо про VIP-встречу (текст заказчика).** Можно отправлять менеджером вручную из админки (кнопка «Отправить VIP-предложение» в заявке) или автоматически — вместе с напоминанием задачи 16, если VIP ещё не заказан:
+
+> Dear Customer,
+>
+> We are delighted that you have chosen our company to assist with your upcoming journey to the Russian Federation.
+>
+> To ensure your arrival is seamless and stress-free, we highly recommend booking our VIP Meet-and-Greet & Border Support Service in advance. Please be advised that foreign mobile internet networks and popular ride-hailing apps (such as Uber) are frequently non-functional at Russian airports. Furthermore, arranging a standard local taxi in advance on your own is highly impractical, as passing through passport control can unpredictably take anywhere between 1 to 3 hours, and local on-site airport taxis routinely charge up to 3 times the actual market rate.
+>
+> Our comprehensive premium package is available for USD 220 and includes the following dedicated services:
+>
+> - **Personal Arrival Meeting:** Our staff member will meet you directly in the airport arrivals hall holding a personalized sign with your name. This service includes up to 3 hours of waiting time from your flight's landing.
+> - **Comfortable Transfer:** A private vehicle transfer from the airport directly to your hotel or accommodation.
+> - **Pre-Arrival Document Audit & Border Letter:** Prior to your departure, our legal team will thoroughly audit all your travel documentation to ensure your invitation perfectly matches your issued visa. We will also prepare an official supporting letter from our licensed tour operator for the FSB Border Service, detailing your tourist itinerary and officially notifying authorities that our representative is on-site to receive you. If any last-minute adjustments are needed (such as a change in hotel or travel dates), we will update your invitation free of charge.
+> - **24/7 Dedicated Border Support:** International flights arrive at all hours, well outside standard business operations. We will assign a dedicated manager who will remain on call specifically for your arrival to provide any necessary official clarifications directly to the FSB Border Service of the Russian Federation if requested.
+>
+> Our ultimate goal is to ensure that your entry into the country is completely secure, straightforward, and comfortable.
+>
+> If you would like to add this VIP service to your booking, please reply to this email, and we will gladly arrange it for you.
+>
+> [Book VIP airport meeting →]
+
 
 ---
 
@@ -409,6 +456,7 @@
 - Город гостиницы в Cities — только по-английски, через запятую (задача 3).
 - Срок страховки — от 1 до 180 дней (задача 9).
 - Индия по IP: в мета-тегах тоже $15 (задача 13).
+- Встреча — только Москва, без выбора аэропорта; VIP $220 по тексту заказчика (задачи 11, 15).
 - ЖД билеты: цены на странице не показываем, цену сообщает менеджер.
 - Подпись директора входит в изображение печати (`public/signs/*.png`) — проверено по коду.
 
@@ -416,7 +464,6 @@
 
 1. Как отличить заявку от турагентства или фирмы, чтобы не слать ей автоматические письма: отмечать вручную или есть список email/доменов?
 2. ЖД: можно добавить в форму станции отправления и назначения, количество пассажиров и телефон?
-3. Встреча: цены на обычное такси и VIP-встречу.
-4. Встреча: подходит ли предложенный состав VIP (ассистент с табличкой, помощь с багажом, авто бизнес-класса)?
-5. Встреча: какие аэропорты обслуживаем — только Москва и Санкт-Петербург или другие города?
-6. Согласовать тексты абзацев про встречу и ЖД в письме (задача 15).
+3. Встреча: нужен ли вариант «обычное такси» и по какой цене — или оставляем только VIP за $220?
+4. VIP-письмо: отправлять вручную из админки или автоматически (например, за 3 дня до приезда вместе с напоминанием, если VIP не заказан)?
+5. Согласовать текст абзаца про ЖД билеты в письме (задача 15).
