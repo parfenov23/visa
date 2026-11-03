@@ -1,0 +1,81 @@
+- content_for :title, "Train Tickets in Russia — Russvisa"
+- content_for :description, "We book train tickets across Russia for foreign travellers: seated, compartment or first-class SV. Send us your route and travel date — we will reply with options and prices."
+- f_req = @service_request
+- today = Time.zone.today
+
+= render layout: "service_requests/page" do
+  section.svc-hero
+    .svc-hero__label TRAIN TICKETS
+    h1.svc-hero__title Train Tickets Across Russia
+    p.svc-hero__text
+      | Russian Railways websites can be difficult to use with foreign cards and passports. Tell us where and when
+      |  you want to travel — we will book the tickets for you.
+
+  = render "service_requests/messages", service_request: f_req
+
+  .svc-grid
+    aside.svc-card.svc-info
+      h2 How it works
+      ol.svc-steps
+        li Fill out the short form: cities, date, preferred time and class.
+        li Attach a copy of your passport — it is required to buy a ticket in Russia.
+        li We send you the available trains and the exact price by email.
+        li After your confirmation we book the tickets and send them to you.
+      h3 Price
+      p The ticket price depends on the route, date and class. We will send you the available options and the exact price by email.
+      h3 Classes
+      ul.svc-checks
+        li
+          b Seated
+          |  — a seat in a day train (e.g. Sapsan Moscow — St. Petersburg)
+        li
+          b Compartment
+          |  — 4-berth sleeping compartment
+        li
+          b SV
+          |  — first class, 2-berth sleeping compartment
+
+    .svc-card
+      = form_with model: f_req, url: service_requests_path, local: true, multipart: true,
+          html: { class: "contact_form svc-form", id: "trainForm" } do |f|
+        = hidden_field_tag :kind, "train"
+        - if @ref.present?
+          = hidden_field_tag :ref, @ref
+        h2.form-section-title Your trip
+        .svc-row.svc-row--half
+          div
+            = f.label :from_city, "From (city)*"
+            = f.text_field :from_city, required: true, placeholder: "e.g. Moscow"
+          div
+            = f.label :to_city, "To (city)*"
+            = f.text_field :to_city, required: true, placeholder: "e.g. Saint Petersburg"
+        .svc-row.svc-row--half
+          div
+            = f.label :date_from, "Travel date*"
+            = f.date_field :date_from, required: true, min: today
+          div
+            = f.label :departure_time, "Preferred departure time"
+            = f.select :departure_time, ServiceRequest::DEPARTURE_TIMES.invert, { selected: f.object.departure_time || "any" }, { class: "form-control" }
+        .svc-row.svc-row--half
+          div
+            = f.label :seat_class, "Class*"
+            = f.select :seat_class, ServiceRequest::SEAT_CLASSES.invert, { include_blank: "-" }, { class: "form-control", required: true }
+          div
+            = f.label :passengers, "Passengers*"
+            = f.number_field :passengers, value: f.object.passengers || 1, min: 1, max: ServiceRequest::MAX_PASSENGERS, required: true
+        .svc-row
+          = f.label :passport_copy, "Copy of your passport*"
+          = f.file_field :passport_copy, accept: "image/*,application/pdf", required: true, class: "svc-file"
+          span.svc-hint JPG, PNG, HEIC or PDF, up to 10 MB. For several passengers, send the other passports in reply to our email.
+
+        h2.form-section-title Contacts
+        .svc-row
+          = f.label :email, "Email*"
+          = f.email_field :email, required: true, placeholder: "john_doe@example.com"
+        .svc-row
+          = f.label :comments, "Comments"
+          = f.text_area :comments, rows: 3, placeholder: "Optional"
+
+        .svc-row
+          = cloudflare_turnstile_tag
+        button.btn.blue.big type="submit" REQUEST TRAIN TICKETS

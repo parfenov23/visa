@@ -1,0 +1,172 @@
+// Страницы доп. услуг: /insurance, /train-tickets, /airport-transfer.
+@import 'vendor/mixin/colors';
+
+.svc-page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  color: #1f2937;
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  h2 { font-size: 20px; margin: 0 0 12px; }
+  h3 { font-size: 16px; margin: 20px 0 8px; }
+  p  { margin: 0 0 10px; line-height: 1.5; }
+}
+
+.svc-hero {
+  text-align: center;
+  margin-bottom: 24px;
+
+  &__label {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: $red;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  &__title {
+    font-size: 32px;
+    line-height: 1.2;
+    margin: 0 0 10px;
+    color: #111827;
+  }
+  &__text {
+    max-width: 640px;
+    margin: 0 auto 14px !important;
+    font-size: 16px;
+  }
+  &__prices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    align-items: center;
+    justify-content: center;
+  }
+  &__note { font-size: 14px; color: #4b5563; }
+}
+
+.svc-badge {
+  display: inline-block;
+  background: $blue_origin;
+  color: #fff;
+  font-weight: bold;
+  font-size: 22px;
+  padding: 8px 22px;
+  border-radius: 999px;
+}
+
+.svc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: 24px;
+  align-items: start;
+
+  @media (max-width: 860px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.svc-card {
+  background: #fff;
+  border: 2px solid $blue_origin;
+  border-radius: 6px;
+  padding: 24px;
+
+  @media (max-width: 480px) { padding: 16px; }
+}
+
+.svc-info {
+  border-color: #e5e7eb;
+  background: #f8fafc;
+  font-size: 15px;
+}
+
+.svc-facts {
+  margin: 0;
+  dt { font-weight: bold; margin-top: 10px; }
+  dd { margin: 2px 0 0; line-height: 1.5; }
+}
+
+.svc-checks, .svc-warn, .svc-steps {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding: 4px 0 4px 26px;
+    line-height: 1.45;
+  }
+}
+.svc-checks li::before { content: "✔"; position: absolute; left: 2px; color: #15803d; }
+.svc-warn li::before   { content: "!"; position: absolute; left: 6px; color: $red; font-weight: bold; }
+.svc-steps { counter-reset: svc-step; }
+.svc-steps li { counter-increment: svc-step; }
+.svc-steps li::before {
+  content: counter(svc-step);
+  position: absolute; left: 0; top: 5px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: $blue_origin; color: #fff; font-size: 11px; text-align: center; line-height: 18px;
+}
+
+// Форма: используем стили .contact_form с главной, поправляем отступы под карточку.
+.contact_form.svc-form {
+  h2.form-section-title {
+    display: block;
+    margin: 18px 0 6px;
+    &:first-of-type { margin-top: 0; }
+  }
+  label { font-size: 15px; padding-bottom: 4px; }
+  input, select, textarea { width: 100%; font-size: 15px; }
+  input { height: auto; min-height: 36px; }
+  select.form-control { min-height: 38px; padding: 6px 8px; border: 1px solid #aaa; border-radius: 2px; background: #fff; }
+  input[type="file"].svc-file {
+    height: auto; box-shadow: none; border: 1px dashed #9ca3af; background: #fff !important; padding: 8px !important;
+  }
+  button[type="submit"] { width: 100%; margin-top: 12px; white-space: normal; }
+}
+
+.svc-row {
+  margin-bottom: 12px;
+
+  &--half {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+
+    @media (max-width: 480px) { grid-template-columns: 1fr; }
+  }
+}
+
+.svc-hint {
+  display: block;
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.svc-total {
+  margin: 4px 0 8px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: $blue_origin;
+  font-weight: bold;
+  font-size: 17px;
+
+  &--error { background: #fef2f2; color: #b91c1c; }
+}
+
+.svc-alert {
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 15px;
+
+  ul { margin: 6px 0 0 18px; padding: 0; }
+  &--ok    { background: #f0fdf4; border: 1px solid #86efac; color: #14532d; }
+  &--error { background: #fef2f2; border: 1px solid #fca5a5; color: #7f1d1d; }
+}

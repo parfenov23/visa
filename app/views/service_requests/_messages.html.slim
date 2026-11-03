@@ -1,0 +1,9 @@
+- if flash[:notice].present?
+  .svc-alert.svc-alert--ok role="status"
+    = flash[:notice]
+- if service_request.errors.any?
+  .svc-alert.svc-alert--error role="alert"
+    b Please check the form:
+    ul
+      - service_request.errors.full_messages.each do |message|
+        li = message

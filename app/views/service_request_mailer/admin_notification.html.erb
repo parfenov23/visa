@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Новая заявка</title></head>
+<body style="margin:0; padding:24px 12px; background:#f6f7fb; font-family: Arial, sans-serif; color:#111827;">
+  <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:12px; padding:24px; line-height:1.6;">
+    <h2 style="margin:0 0 8px;">Новая заявка: <%= @service_request.kind_title %></h2>
+    <div style="color:#6b7280; font-size:13px;">
+      № <%= @service_request.id %> от <%= l(@service_request.created_at, format: :long) %>
+      <% if @service_request.invitation %> · по приглашению № <%= @service_request.invitation.current_id %><% end %>
+    </div>
+    <%= render partial: "service_request_mailer/lines", locals: { service_request: @service_request } %>
+    <% if @service_request.passport_copy.attached? || @service_request.visa_copy.attached? %>
+      <p style="font-size:13px; color:#6b7280;">Копии документов — во вложениях.</p>
+    <% end %>
+    <p style="margin-top:20px;">
+      <a href="<%= @admin_url %>" style="display:inline-block; background:#2563eb; color:#fff; padding:10px 18px; border-radius:8px; text-decoration:none;">Открыть в админке</a>
+    </p>
+  </div>
+</body>
+</html>

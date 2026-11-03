@@ -1,0 +1,130 @@
+- content_for :title, "Medical Insurance for Russia Online — Russvisa"
+- content_for :description, "Official medical insurance policy by AlfaStrakhovanie, fully functional inside Russia. Sum insured USD 30,000, meets embassy requirements. USD 2 per day (USD 1.35 for citizens of India and Nepal)."
+- f_req = @service_request
+- today = Time.zone.today
+
+= render layout: "service_requests/page" do
+  section.svc-hero
+    .svc-hero__label MEDICAL INSURANCE
+    h1.svc-hero__title Medical Insurance for Russia Online
+    p.svc-hero__text
+      | Official health insurance policy fully functional inside Russia. Meets all consular requirements.
+    .svc-hero__prices
+      span.svc-badge USD 2 / day
+      span.svc-hero__note USD 1.35 / day for citizens of India and Nepal
+
+  = render "service_requests/messages", service_request: f_req
+
+  .svc-grid
+    aside.svc-card.svc-info
+      h2 Policy details
+      dl.svc-facts
+        dt Insurance company
+        dd AlfaStrakhovanie
+        dt Sum insured per person
+        dd = "USD #{number_with_delimiter(ServiceRequest::INSURANCE_SUM_INSURED)} (meets the embassy's minimum requirement)"
+        dt Insurance period
+        dd = "From 1 to #{ServiceRequest::INSURANCE_MAX_DAYS} days"
+      h3 Insurance coverage
+      ul.svc-checks
+        li Outpatient and inpatient medical treatment
+        li Emergency medical assistance
+        li Emergency medical evacuation and repatriation
+        li Emergency dental care
+        li Repatriation of remains
+      h3 Why local insurance?
+      p
+        | International travel insurance policies are temporarily not accepted in Russia, even if your policy says
+        |  "Worldwide". According to Federal Law No. 114-FZ, foreign nationals must present a medical insurance policy
+        |  that is fully functional locally.
+
+    .svc-card
+      = form_with model: f_req, url: service_requests_path, local: true, multipart: true,
+          html: { class: "contact_form svc-form", id: "insuranceForm" } do |f|
+        = hidden_field_tag :kind, "insurance"
+        - if @ref.present?
+          = hidden_field_tag :ref, @ref
+        h2.form-section-title Trip information
+        .svc-row
+          label for="countrySelect" Citizenship*
+          = render "service_requests/country_select", f: f, required: true
+        .svc-row.svc-row--half
+          div
+            = f.label :date_from, "Start date*"
+            = f.date_field :date_from, required: true, min: today, id: "insDateFrom"
+          div
+            = f.label :date_to, "End date*"
+            = f.date_field :date_to, required: true, min: today, id: "insDateTo"
+        .svc-total#insTotal aria-live="polite"
+          | Choose your citizenship and travel dates to see the price.
+
+        h2.form-section-title Traveller
+        p.svc-hint Fill in your details as in your passport — or simply attach a photo of your passport.
+        .svc-row
+          = f.label :full_name, "Full name"
+          = f.text_field :full_name, placeholder: "As in passport"
+        .svc-row
+          = f.label :passport_number, "Passport number"
+          = f.text_field :passport_number, placeholder: "As in passport"
+        .svc-row
+          = f.label :passport_copy, "…or attach a copy of your passport"
+          = f.file_field :passport_copy, accept: "image/*,application/pdf", class: "svc-file"
+          span.svc-hint JPG, PNG, HEIC or PDF, up to 10 MB
+
+        h2.form-section-title Contacts
+        .svc-row
+          = f.label :email, "Email*"
+          = f.email_field :email, required: true, placeholder: "john_doe@example.com"
+        .svc-row
+          = f.label :comments, "Comments"
+          = f.text_area :comments, rows: 3, placeholder: "Optional"
+
+        .svc-row
+          = cloudflare_turnstile_tag
+        p.svc-hint No online payment is needed now — we will contact you by email with payment details and your policy.
+        button.btn.blue.big type="submit" GET INSURANCE
+
+javascript:
+  (function () {
+    var MAX_DAYS = #{ServiceRequest::INSURANCE_MAX_DAYS};
+    var DEFAULT_RATE = #{ServiceRequest::INSURANCE_DEFAULT_RATE};
+    var country = document.getElementById('countrySelect');
+    var from = document.getElementById('insDateFrom');
+    var to = document.getElementById('insDateTo');
+    var out = document.getElementById('insTotal');
+    if (!country || !from || !to || !out) return;
+
+    function parse(v) { return v ? new Date(v + 'T00:00:00Z') : null; }
+    function iso(d) { return d.toISOString().slice(0, 10); }
+    function money(n) { return (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, ''); }
+
+    function update() {
+      var opt = country.options[country.selectedIndex];
+      var rate = opt && opt.value ? parseFloat(opt.getAttribute('data-rate')) || DEFAULT_RATE : null;
+      var a = parse(from.value), b = parse(to.value);
+
+      if (a) {
+        to.min = iso(a);
+        to.max = iso(new Date(a.getTime() + (MAX_DAYS - 1) * 86400000));
+      }
+      if (!rate || !a || !b) {
+        out.textContent = 'Choose your citizenship and travel dates to see the price.';
+        out.classList.remove('svc-total--error');
+        return;
+      }
+      var days = Math.round((b - a) / 86400000) + 1;
+      if (days < 1 || days > MAX_DAYS) {
+        out.textContent = 'Insurance period must be from 1 to ' + MAX_DAYS + ' days.';
+        out.classList.add('svc-total--error');
+        return;
+      }
+      out.classList.remove('svc-total--error');
+      out.textContent = days + (days === 1 ? ' day' : ' days') + ' × USD ' + money(rate) + ' = USD ' + money(days * rate);
+    }
+
+    [country, from, to].forEach(function (el) {
+      el.addEventListener('change', update);
+      el.addEventListener('input', update);
+    });
+    update();
+  })();

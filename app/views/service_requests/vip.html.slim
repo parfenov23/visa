@@ -1,0 +1,93 @@
+- content_for :title, "VIP Airport Meet-and-Greet in Moscow — Russvisa"
+- content_for :description, "VIP Meet-and-Greet & Border Support at Moscow airports: personal meeting with a name sign, up to 3 hours of waiting, private transfer, document audit and a letter for the FSB Border Service. USD 220."
+- f_req = @service_request
+- today = Time.zone.today
+
+= render layout: "service_requests/page" do
+  section.svc-hero
+    .svc-hero__label MOSCOW AIRPORTS
+    h1.svc-hero__title VIP Meet-and-Greet & Border Support
+    p.svc-hero__text
+      | Make your arrival in Russia secure, straightforward and comfortable — we meet you at the airport and
+      |  support you at the border.
+    .svc-hero__prices
+      span.svc-badge = "USD #{ServiceRequest::VIP_PRICE}"
+
+  = render "service_requests/messages", service_request: f_req
+
+  .svc-grid
+    aside.svc-card.svc-info
+      h2 Why book in advance?
+      ul.svc-warn
+        li Foreign mobile internet and ride-hailing apps (such as Uber) are frequently non-functional at Russian airports.
+        li Passport control can take anywhere between 1 and 3 hours — a taxi booked on your own will not wait that long.
+        li On-site airport taxis routinely charge up to 3 times the actual market rate.
+      h3 The package includes
+      dl.svc-facts
+        dt Personal Arrival Meeting
+        dd Our staff member meets you in the arrivals hall holding a sign with your name. Up to 3 hours of waiting time from your flight's landing.
+        dt Comfortable Transfer
+        dd A private vehicle transfer from the airport directly to your hotel or accommodation.
+        dt Pre-Arrival Document Audit & Border Letter
+        dd
+          | Before your departure we audit your travel documents to ensure your invitation perfectly matches your visa,
+          |  and prepare an official supporting letter from our licensed tour operator for the FSB Border Service.
+          |  Last-minute changes to your invitation (hotel or dates) are free of charge.
+        dt 24/7 Dedicated Border Support
+        dd A dedicated manager remains on call during your arrival to provide official clarifications to the Border Service if requested.
+
+    .svc-card
+      = form_with model: f_req, url: service_requests_path, local: true, multipart: true,
+          html: { class: "contact_form svc-form", id: "vipForm" } do |f|
+        = hidden_field_tag :kind, "vip"
+        - if @ref.present?
+          = hidden_field_tag :ref, @ref
+        h2.form-section-title Your arrival in Moscow
+        .svc-row.svc-row--half
+          div
+            = f.label :date_from, "Arrival date*"
+            = f.date_field :date_from, required: true, min: today
+          div
+            = f.label :arrival_time, "Arrival time*"
+            = f.time_field :arrival_time, required: true
+        .svc-row.svc-row--half
+          div
+            = f.label :flight_number, "Flight number*"
+            = f.text_field :flight_number, required: true, placeholder: "e.g. SU 233"
+          div
+            = f.label :passengers, "Passengers*"
+            = f.number_field :passengers, value: f.object.passengers || 1, min: 1, max: ServiceRequest::MAX_PASSENGERS, required: true
+        .svc-row
+          = f.label :hotel_address, "Hotel or address in Moscow*"
+          = f.text_field :hotel_address, required: true
+
+        h2.form-section-title Traveller and documents
+        .svc-row
+          = f.label :full_name, "Full name*"
+          = f.text_field :full_name, required: true, placeholder: "As in passport"
+        .svc-row
+          = f.label :passport_copy, "Copy of your passport*"
+          = f.file_field :passport_copy, accept: "image/*,application/pdf", required: true, class: "svc-file"
+        .svc-row
+          = f.label :visa_copy, "Copy of your visa"
+          = f.file_field :visa_copy, accept: "image/*,application/pdf", class: "svc-file"
+          span.svc-hint If you don't have your visa yet, send it later in reply to our email.
+        .svc-row
+          = f.label :invitation_ref, "Invitation number (if issued by us)"
+          = f.text_field :invitation_ref, placeholder: "10 digits, e.g. 0311261200"
+
+        h2.form-section-title Contacts
+        .svc-row
+          = f.label :email, "Email*"
+          = f.email_field :email, required: true, placeholder: "john_doe@example.com"
+        .svc-row
+          = f.label :phone, "Phone / WhatsApp / Telegram"
+          = f.text_field :phone, placeholder: "+91 ..."
+        .svc-row
+          = f.label :comments, "Comments"
+          = f.text_area :comments, rows: 3, placeholder: "Optional"
+
+        .svc-row
+          = cloudflare_turnstile_tag
+        p.svc-hint No online payment is needed now — our manager will contact you by email to confirm the details.
+        button.btn.red.big type="submit" BOOK VIP MEETING — USD 220
