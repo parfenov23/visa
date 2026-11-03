@@ -13,7 +13,11 @@ class Scheduler
   # Время — московское (config.time_zone).
   JOBS = [
     Job.new(name: "daily_invitations_report", at: "09:00",
-            action: -> { InvitationsReport.daily.deliver })
+            action: -> { InvitationsReport.daily.deliver }),
+    # Проверка раз в день; база IP-адресов скачивается, только если файлу > 30 дней
+    # (или его нет — тогда сразу после первого запуска планировщика).
+    Job.new(name: "geo_country_update", at: "00:00",
+            action: -> { GeoCountry.update_if_stale! })
   ].freeze
 
   MAX_ATTEMPTS_PER_DAY = 3
