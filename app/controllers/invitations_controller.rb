@@ -32,8 +32,13 @@ class InvitationsController < ApplicationController
   def show
     @invitation = Invitation.find(params[:id])
 
-    @seal_ru_base64 = encode_sign(@invitation.seal_left)
-    @seal_en_base64 = encode_sign(@invitation.seal_right)
+    # Печать с подписью можно отключить в заявке (оригиналы) или разово — ?no_seal=1.
+    @print_seal = @invitation.print_seal? && params[:no_seal].blank?
+    @seal_high  = @invitation.seal_high?
+    if @print_seal
+      @seal_ru_base64 = encode_sign(@invitation.seal_left)
+      @seal_en_base64 = encode_sign(@invitation.seal_right)
+    end
     @logo_base64    = encode_image("fortuna_logo.png")
 
     # Фича-флаг QR_VERIFY_ENABLED (по умолчанию включён — новый QR с верификацией).

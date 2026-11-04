@@ -1,0 +1,15 @@
+/ Обёртка страниц доп. услуг: шапка, меню и подвал сайта как на главной.
+div#imHeaderBg
+div#imFooterBg
+div#imPage
+  = render 'home/site_header'
+  a.imHidden href="#imGoToCont" title="Skip the main menu"
+    | Go to content
+  span#imGoToMenu
+  = render 'home/header_menu'
+  main#imContentContainer
+    div#imContent
+      span#imGoToCont
+      .svc-page
+        = yield
+  = render 'home/footer'

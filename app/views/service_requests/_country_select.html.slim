@@ -1,0 +1,5 @@
+- selected = f.object.citizenship
+= f.select :citizenship,
+    options_for_select(Country.order(:title).map { |c| ["#{c.flag} #{c.title}".strip, c.code, { "data-rate" => ServiceRequest.insurance_rate(c.code) }] }, selected),
+    { include_blank: "-" },
+    { id: "countrySelect", class: "form-control", required: required }

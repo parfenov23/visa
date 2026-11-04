@@ -4,7 +4,7 @@ class Invitation < ApplicationRecord
 
   before_create :set_price, :set_accomodation, :set_meals, :assign_seals, :assign_verify_token,
                 :assign_invitation_number
-  before_save :normalize_dates
+  before_save :normalize_dates, :normalize_offers, :stamp_done_at
 
   # Строковые поля дат, заполняемые пользователем на форме заказа.
   DATE_FIELDS = %w[birthDate arival_date departure_date].freeze
@@ -64,8 +64,56 @@ class Invitation < ApplicationRecord
   STATUSES = {
     'in_progress' => 'In progress',
     'done'        => 'Done',
-    'correction'  => 'Correction'
+    'correction'  => 'Correction',
+    'duplicate'   => 'Duplicate (повторная)',
+    'cancelled'   => 'Cancelled (отказ)'
   }.freeze
+
+  # Цвета статусов в списке заявок админки (in_progress — синий по умолчанию).
+  STATUS_COLORS = {
+    'done'       => '#1f9d55',
+    'correction' => '#d97706',
+    'duplicate'  => '#6b7280',
+    'cancelled'  => '#dc2626'
+  }.freeze
+
+  # Аннулированные заявки не удаляются, но не учитываются в статистике и рассылках.
+  VOID_STATUSES = %w[duplicate cancelled].freeze
+
+  validates :status, inclusion: { in: STATUSES.keys }
+
+  scope :active,       -> { where.not(status: VOID_STATUSES) }
+  scope :void,         -> { where(status: VOID_STATUSES) }
+  scope :not_agency,   -> { where(agency: false) }
+
+  # --- Письмо с предложениями (галочки в заявке) ----------------------------
+  # Порядок = порядок блоков в письме. enabled: false — галочка скрыта, пока
+  # нет текста и страницы. Новое предложение: запись здесь + partial
+  # app/views/offers_mailer/_<key>.html.erb.
+  OFFERS = {
+    'insurance'         => { label: 'Страховка',                          path: '/insurance',        enabled: true },
+    'vip'               => { label: 'VIP-встреча в Москве ($220)',        path: '/airport-transfer', enabled: true },
+    'train'             => { label: 'ЖД билеты',                          path: '/train-tickets',    enabled: true },
+    'hotel'             => { label: 'Бронирование гостиницы',             path: nil,                 enabled: false },
+    'sim'               => { label: 'Российская SIM / eSIM',              path: nil,                 enabled: false },
+    'registration'      => { label: 'Регистрация по месту пребывания',    path: nil,                 enabled: false },
+    'invitation_change' => { label: 'Продление / изменение приглашения', path: nil,                 enabled: false }
+  }.freeze
+
+  # Через сколько после Done уходит письмо с предложениями.
+  OFFERS_DELAY = 5.minutes
+
+  def self.enabled_offers
+    OFFERS.select { |_, o| o[:enabled] }
+  end
+
+  # Заявки, которым пора отправить письмо с предложениями.
+  scope :offers_due, lambda {
+    where(status: 'done', agency: false, offers_sent_at: nil)
+      .where.not(email: [nil, ''])
+      .where('done_at <= ?', OFFERS_DELAY.ago)
+      .where("jsonb_array_length(offers) > 0")
+  }
 
   scope :created_in_period, ->(period) {
     now = Time.zone.now
@@ -174,6 +222,10 @@ class Invitation < ApplicationRecord
       created_at
       updated_at
       invitation_number
+      agency
+      seal_high
+      print_seal
+      cancel_reason
     ]
   end
 
@@ -226,11 +278,51 @@ class Invitation < ApplicationRecord
     end
   end
 
+  # Отмеченные, но ещё не отправленные предложения (в порядке OFFERS).
+  def pending_offers
+    (Array(offers) - Array(offers_sent)) & self.class.enabled_offers.keys
+  end
+
+  # Отправляет письмо с ещё не отправленными предложениями.
+  # Возвращает список отправленных ключей ([] — отправлять нечего).
+  def deliver_offers!
+    with_lock do
+      keys = email.present? ? pending_offers : []
+      if keys.any?
+        OffersMailer.offers(self, keys).deliver_now
+        update_columns(offers_sent: (Array(offers_sent) | keys), offers_sent_at: Time.current, updated_at: Time.current)
+      end
+      keys
+    end
+  end
+
+  # Дата приезда как Date (arival_date хранится строкой dd.mm.yyyy); nil, если не распознана.
+  def arrival_on
+    Date.strptime(arival_date.to_s, '%d.%m.%Y')
+  rescue ArgumentError
+    nil
+  end
+
+  def void?
+    VOID_STATUSES.include?(status)
+  end
+
   def get_purposes
     PURPOSES_RU[purpose]
   end
 
   private
+
+  # Из админки галочки приходят массивом строк с пустым элементом.
+  def normalize_offers
+    self.offers = Array(offers).map(&:to_s).reject(&:blank?).uniq & OFFERS.keys
+    self.offers_sent = Array(offers_sent).map(&:to_s).uniq
+  end
+
+  # Момент первого перевода в Done: от него отсчитываются 5 минут до письма.
+  def stamp_done_at
+    self.done_at ||= Time.current if status == 'done'
+  end
 
   # Не распознанные значения оставляем как есть, чтобы не терять данные.
   def normalize_dates

@@ -105,3 +105,21 @@
     order: -1;
   }
 }
+
+/* Ссылки на доп. услуги (страховка, VIP-встреча, ЖД билеты). */
+.site-footer__services {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px;
+  margin-top: 12px;
+}
+
+.site-footer__attribution {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 11px;
+  opacity: .7;
+
+  a { color: inherit; }
+}

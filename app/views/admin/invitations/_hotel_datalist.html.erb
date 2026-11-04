@@ -1,4 +1,4 @@
-<%# Выпадающий список гостиниц из базы + JS-подстановка в поля hotels / hotels_ru. %>
+<%# Выпадающий список гостиниц из базы + JS-подстановка в поля hotels / hotels_ru и города в cities. %>
 <% hotels = (defined?(Hotel) && Hotel.table_exists?) ? Hotel.picker_options : [] %>
 
 <datalist id="hotels_datalist">
@@ -28,6 +28,21 @@
         field.value = current ? current + '\n' + line : line;
       }
 
+      // Заглушки, которые клиент пишет в поле городов, когда маршрут не решён.
+      var CITY_PLACEHOLDERS = ['not decided', 'not decided yet', 'undecided', '-', '—'];
+
+      // Дописывает город в поле Cities через запятую (в PDF: «Russia: Moscow, Saint Petersburg»).
+      // Дубликаты без учёта регистра пропускает, заглушку «NOT DECIDED» заменяет.
+      function appendCity(field, city) {
+        if (!field || !city) return;
+        var cities = field.value.split(/[,\n]+/)
+          .map(function (s) { return s.trim(); })
+          .filter(function (s) { return s && CITY_PLACEHOLDERS.indexOf(s.toLowerCase()) === -1; });
+        var exists = cities.some(function (c) { return c.toLowerCase() === city.toLowerCase(); });
+        if (!exists) cities.push(city);
+        field.value = cities.join(', ');
+      }
+
       function apply() {
         var val = picker.value.trim();
         if (!val) return;
@@ -36,6 +51,7 @@
 
         appendLine(document.getElementById('invitation_hotels'), match.en || '');
         appendLine(document.getElementById('invitation_hotels_ru'), match.ru || match.en || '');
+        appendCity(document.getElementById('invitation_cities'), (match.city || '').trim());
         // Очищаем поиск, чтобы сразу можно было выбрать следующую гостиницу.
         picker.value = '';
       }

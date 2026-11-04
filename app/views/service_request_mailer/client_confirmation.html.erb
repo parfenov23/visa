@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Russvisa</title></head>
+<body style="margin:0; padding:24px 12px; background:#f6f7fb; font-family: Arial, sans-serif; color:#111827;">
+  <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:12px; padding:24px; line-height:1.6;">
+    <p style="font-size:16px; margin-top:0;">Dear Customer,</p>
+    <p>Thank you! We have received your request: <b><%= @service_request.kind_title_en %></b>.</p>
+    <% case @service_request.kind %>
+    <% when "insurance" %>
+      <p>Your policy will be issued by <b>AlfaStrakhovanie</b> (sum insured USD <%= number_with_delimiter(ServiceRequest::INSURANCE_SUM_INSURED) %>).
+         We will contact you by email with payment details and your policy.</p>
+    <% when "train" %>
+      <p>The ticket price depends on the route, date and class. We will send you the available options and the exact price by email.</p>
+    <% when "vip" %>
+      <p>Our manager will contact you shortly to confirm the details of your arrival and to audit your travel documents.
+         If you have not attached a copy of your visa yet, simply reply to this email with it.</p>
+    <% end %>
+    <%= render partial: "service_request_mailer/lines", locals: { service_request: @service_request } %>
+    <p style="margin-top:20px;">If you have any questions, simply reply to this email.</p>
+    <p>Best regards,<br>Russvisa Team</p>
+  </div>
+</body>
+</html>

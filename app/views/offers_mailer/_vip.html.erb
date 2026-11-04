@@ -1,0 +1,10 @@
+<h2 style="font-size:18px; margin:24px 0 8px; color:#10204a;">VIP Meet-and-Greet &amp; Border Support in Moscow — USD <%= ServiceRequest::VIP_PRICE %></h2>
+<p>Please be advised that foreign mobile internet networks and popular ride-hailing apps (such as Uber) are frequently non-functional at Russian airports. Furthermore, arranging a standard local taxi in advance on your own is highly impractical, as passing through passport control can unpredictably take anywhere between 1 to 3 hours, and local on-site airport taxis routinely charge up to 3 times the actual market rate.</p>
+<p style="margin-bottom:4px;">Our premium package includes:</p>
+<ul style="margin-top:4px;">
+  <li><b>Personal Arrival Meeting:</b> our staff member will meet you in the arrivals hall holding a sign with your name, with up to 3 hours of waiting time from your flight's landing.</li>
+  <li><b>Comfortable Transfer:</b> a private vehicle transfer from the airport directly to your hotel.</li>
+  <li><b>Pre-Arrival Document Audit &amp; Border Letter:</b> our team will audit your travel documents to ensure your invitation perfectly matches your visa, and prepare an official supporting letter from our licensed tour operator for the FSB Border Service. Any last-minute changes to your invitation (hotel or dates) are free of charge.</li>
+  <li><b>24/7 Dedicated Border Support:</b> a dedicated manager remains on call during your arrival to provide official clarifications to the Border Service if requested.</li>
+</ul>
+<%= render "offers_mailer/button", text: "Book VIP airport meeting", url: site_link("/airport-transfer", ref: invitation.verify_token) %>

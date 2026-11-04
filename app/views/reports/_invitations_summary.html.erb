@@ -1,0 +1,87 @@
+<%# Сводка по приглашениям. Стили инлайновые — используется и в письме, и в админке. %>
+<%
+  delta_cell = lambda do |delta|
+    color = delta.positive? ? "#15803d" : (delta.negative? ? "#b91c1c" : "#6b7280")
+    text  = delta.positive? ? "+#{delta}" : delta.to_s
+    %(<span style="color:#{color}; font-weight:bold;">#{text}</span>).html_safe
+  end
+  th = "text-align:left; padding:6px 8px; border-bottom:2px solid #e5e7eb; font-size:13px; color:#374151;"
+  td = "padding:6px 8px; border-bottom:1px solid #f1f5f9; font-size:14px;"
+  revenue = report.revenue.map { |cur, sum| "#{format('%.2f', sum).sub(/\.00\z/, '')} #{cur.upcase}" }.join(", ")
+%>
+<h2 style="margin:0 0 4px; font-size:20px;">Сводка по приглашениям</h2>
+<div style="color:#6b7280; font-size:13px; margin-bottom:16px;">
+  Период: <b><%= report.period_label %></b> · сравнение с <%= report.prev_period_label %>.
+  Без повторных и аннулированных заявок.
+</div>
+
+<table cellpadding="0" cellspacing="0" style="margin-bottom:16px; font-size:14px;">
+  <tr>
+    <td style="padding:4px 16px 4px 0;">Всего заявок:</td>
+    <td style="padding:4px 8px 4px 0;"><b style="font-size:18px;"><%= report.total %></b></td>
+    <td style="padding:4px 0;">(было <%= report.prev_total %>, <%= delta_cell.call(report.total - report.prev_total) %>)</td>
+  </tr>
+  <% if revenue.present? %>
+  <tr>
+    <td style="padding:4px 16px 4px 0;">Сумма заказов:</td>
+    <td colspan="2" style="padding:4px 0;"><b><%= revenue %></b></td>
+  </tr>
+  <% end %>
+</table>
+
+<% if report.added.any? || report.gone.any? || report.new_on_last_day.any? %>
+<table cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:16px; border-collapse:collapse;">
+  <% if report.new_on_last_day.any? %>
+  <tr>
+    <td style="padding:8px; background:#eff6ff; font-size:14px;">
+      <b>🆕 Новые страны за <%= report.to.strftime('%d.%m') %>:</b>
+      <%= report.new_on_last_day.map { |r| "#{r.title} (#{r.count})" }.join(", ") %>
+    </td>
+  </tr>
+  <% end %>
+  <% if report.added.any? %>
+  <tr>
+    <td style="padding:8px; background:#f0fdf4; font-size:14px;">
+      <b>➕ Добавились</b> (не было в прошлом периоде):
+      <%= report.added.map { |r| "#{r.title} (#{r.count})" }.join(", ") %>
+    </td>
+  </tr>
+  <% end %>
+  <% if report.gone.any? %>
+  <tr>
+    <td style="padding:8px; background:#fef2f2; font-size:14px;">
+      <b>➖ Ушли</b> (были в прошлом периоде, сейчас 0):
+      <%= report.gone.map { |r| "#{r.title} (было #{r.prev_count})" }.join(", ") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+<% end %>
+
+<% if report.rows.empty? %>
+  <p style="color:#6b7280;">За период заявок нет.</p>
+<% else %>
+<table cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+  <thead>
+    <tr>
+      <th style="<%= th %> width:32px;">#</th>
+      <th style="<%= th %>">Гражданство</th>
+      <th style="<%= th %> text-align:right;">Сейчас</th>
+      <th style="<%= th %> text-align:right;">Было</th>
+      <th style="<%= th %> text-align:right;">Δ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% report.rows.each_with_index do |row, i| %>
+    <% bg = row.added? ? "#f0fdf4" : (row.gone? ? "#fef2f2" : "#ffffff") %>
+    <tr style="background:<%= bg %>;">
+      <td style="<%= td %> color:#9ca3af;"><%= row.count.positive? ? i + 1 : "" %></td>
+      <td style="<%= td %>"><%= row.title %></td>
+      <td style="<%= td %> text-align:right;"><b><%= row.count %></b></td>
+      <td style="<%= td %> text-align:right; color:#6b7280;"><%= row.prev_count %></td>
+      <td style="<%= td %> text-align:right;"><%= delta_cell.call(row.delta) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

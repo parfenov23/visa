@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: visa-app:latest
     env_file:
       - /home/visa/shared/.env.production
     volumes:
@@ -14,6 +15,20 @@ services:
       - db
       - redis
     command: bash -lc "mkdir -p tmp/pids tmp/cache tmp/sockets && bundle exec puma -C config/puma.rb"
+
+  # Фоновые задачи по расписанию (ежедневная сводка по заявкам и т.п.).
+  # Тот же образ, что у web; см. app/services/scheduler.rb.
+  scheduler:
+    image: visa-app:latest
+    env_file:
+      - /home/visa/shared/.env.production
+    volumes:
+      - /home/visa/shared/log:/app/log
+    depends_on:
+      - db
+      - redis
+    restart: unless-stopped
+    command: bash -lc "bundle exec bin/scheduler"
 
   db:
     image: postgres:15

@@ -1,0 +1,13 @@
+<%# Полный текст заказчика — когда в письме только VIP-встреча. %>
+<p>We are delighted that you have chosen our company to assist with your upcoming journey to the Russian Federation.</p>
+<p>To ensure your arrival is seamless and stress-free, we highly recommend booking our VIP Meet-and-Greet &amp; Border Support Service in advance. Please be advised that foreign mobile internet networks and popular ride-hailing apps (such as Uber) are frequently non-functional at Russian airports. Furthermore, arranging a standard local taxi in advance on your own is highly impractical, as passing through passport control can unpredictably take anywhere between 1 to 3 hours, and local on-site airport taxis routinely charge up to 3 times the actual market rate.</p>
+<p style="margin-bottom:4px;">Our comprehensive premium package is available for USD <%= ServiceRequest::VIP_PRICE %> and includes the following dedicated services:</p>
+<ul style="margin-top:4px;">
+  <li><b>Personal Arrival Meeting:</b> Our staff member will meet you directly in the airport arrivals hall holding a personalized sign with your name. This service includes up to 3 hours of waiting time from your flight's landing.</li>
+  <li><b>Comfortable Transfer:</b> A private vehicle transfer from the airport directly to your hotel or accommodation.</li>
+  <li><b>Pre-Arrival Document Audit &amp; Border Letter:</b> Prior to your departure, our legal team will thoroughly audit all your travel documentation to ensure your invitation perfectly matches your issued visa. We will also prepare an official supporting letter from our licensed tour operator for the FSB Border Service, detailing your tourist itinerary and officially notifying authorities that our representative is on-site to receive you. If any last-minute adjustments are needed (such as a change in hotel or travel dates), we will update your invitation free of charge.</li>
+  <li><b>24/7 Dedicated Border Support:</b> International flights arrive at all hours, well outside standard business operations. We will assign a dedicated manager who will remain on call specifically for your arrival to provide any necessary official clarifications directly to the FSB Border Service of the Russian Federation if requested.</li>
+</ul>
+<p>Our ultimate goal is to ensure that your entry into the country is completely secure, straightforward, and comfortable.</p>
+<p>If you would like to add this VIP service to your booking, please reply to this email, and we will gladly arrange it for you.</p>
+<%= render "offers_mailer/button", text: "Book VIP airport meeting", url: site_link("/airport-transfer", ref: invitation.verify_token) %>

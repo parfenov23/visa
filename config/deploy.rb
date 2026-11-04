@@ -30,7 +30,7 @@ namespace :deploy do
   task :docker_up do
     on roles(:app) do
       within release_path do
-        execute :docker, compose("pull || true")
+        execute :docker, compose("pull --ignore-pull-failures || true")
         execute :docker, compose("build")
         execute :docker, compose("up -d")
       end
@@ -46,11 +46,11 @@ namespace :deploy do
     end
   end
 
-  desc "Restart web container"
+  desc "Restart web and scheduler containers"
   task :restart_docker do
     on roles(:app) do
       within release_path do
-        execute :docker, compose("restart web")
+        execute :docker, compose("restart web scheduler")
       end
     end
   end

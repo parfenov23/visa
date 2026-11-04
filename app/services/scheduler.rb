@@ -1,0 +1,132 @@
+# frozen_string_literal: true
+
+# Простой планировщик фоновых задач: отдельный процесс (сервис `scheduler` в
+# compose.production.yml), который раз в ~30 секунд проверяет, не пора ли
+# запустить задачу. Каждая задача выполняется не чаще одного раза в день:
+# отметка «выполнено» хранится в Redis (ключ живёт 3 дня). Если процесс
+# перезапустился после времени запуска — задача выполнится сразу, в тот же день.
+#
+# Запуск: bin/scheduler
+class Scheduler
+  # at: "HH:MM" — раз в день не раньше этого времени (отметка в Redis);
+  # every: секунды — периодическая задача (идемпотентность — на её стороне).
+  Job = Struct.new(:name, :at, :every, :action, keyword_init: true)
+
+  # Время — московское (config.time_zone).
+  JOBS = [
+    Job.new(name: "daily_invitations_report", at: "09:00",
+            action: -> { InvitationsReport.daily.deliver }),
+    # Проверка раз в день; база IP-адресов скачивается, только если файлу > 30 дней
+    # (или его нет — тогда сразу после первого запуска планировщика).
+    Job.new(name: "geo_country_update", at: "00:00",
+            action: -> { GeoCountry.update_if_stale! }),
+    # Напоминание «получили ли визу» за 3 дня до приезда.
+    Job.new(name: "arrival_reminders", at: "10:00",
+            action: -> { ArrivalReminder.deliver_due }),
+    # Письма с предложениями через 5 минут после Done (проверка раз в минуту).
+    Job.new(name: "offers_emails", every: 60,
+            action: -> { OffersDelivery.deliver_due })
+  ].freeze
+
+  MAX_ATTEMPTS_PER_DAY = 3
+  TICK_SECONDS = 30
+
+  def initialize(jobs: JOBS, redis: nil, logger: Rails.logger)
+    @jobs     = jobs
+    @redis    = redis
+    @logger   = logger
+    @memory   = {} # запасная отметка, если Redis недоступен
+    @attempts = Hash.new(0)
+  end
+
+  def run
+    log "started, jobs: #{@jobs.map { |j| j.every ? "#{j.name}/#{j.every}s" : "#{j.name}@#{j.at}" }.join(', ')}"
+    loop do
+      tick
+      sleep TICK_SECONDS
+    end
+  end
+
+  # Одна проверка расписания; отдельно — для тестов.
+  def tick(now = Time.zone.now)
+    @jobs.each do |job|
+      if job.every
+        run_periodic(job, now)
+      elsif due?(job, now)
+        run_job(job, now)
+      end
+    end
+  end
+
+  private
+
+  def run_periodic(job, now)
+    @last_run ||= {}
+    last = @last_run[job.name]
+    return if last && now - last < job.every
+
+    @last_run[job.name] = now
+    job.action.call
+  rescue StandardError => e
+    log "#{job.name}: failed: #{e.class}: #{e.message}", :error
+  end
+
+  def due?(job, now)
+    now.strftime("%H:%M") >= job.at &&
+      @attempts[attempt_key(job, now)] < MAX_ATTEMPTS_PER_DAY &&
+      !done?(job, now)
+  end
+
+  def run_job(job, now)
+    return unless mark_done(job, now)
+
+    log "#{job.name}: running"
+    job.action.call
+    log "#{job.name}: done"
+  rescue StandardError => e
+    @attempts[attempt_key(job, now)] += 1
+    unmark_done(job, now)
+    log "#{job.name}: failed (attempt #{@attempts[attempt_key(job, now)]}): #{e.class}: #{e.message}", :error
+  end
+
+  def done_key(job, now)
+    "scheduler:#{job.name}:#{now.to_date.iso8601}"
+  end
+  alias attempt_key done_key
+
+  def done?(job, now)
+    with_redis(-> { @memory[done_key(job, now)] }) { |r| r.exists?(done_key(job, now)) }
+  end
+
+  # true — если отметку поставили мы (задачу ещё никто не выполнял сегодня).
+  def mark_done(job, now)
+    key = done_key(job, now)
+    with_redis(-> { @memory[key] ? false : (@memory[key] = true) }) do |r|
+      r.set(key, Time.zone.now.iso8601, nx: true, ex: 3 * 24 * 3600)
+    end
+  end
+
+  def unmark_done(job, now)
+    key = done_key(job, now)
+    @memory.delete(key)
+    with_redis(-> {}) { |r| r.del(key) }
+  end
+
+  def with_redis(fallback)
+    yield redis
+  rescue Redis::BaseError => e
+    log "redis unavailable, using in-memory marks: #{e.message}", :warn unless @redis_warned
+    @redis_warned = true
+    fallback.call
+  end
+
+  def redis
+    @redis ||= Redis.new(url: ENV.fetch("REDIS_URL", "redis://localhost:6379/2"))
+  end
+
+  def log(message, level = :info)
+    line = "[scheduler] #{message}"
+    @logger.public_send(level, line)
+    puts line
+  end
+end

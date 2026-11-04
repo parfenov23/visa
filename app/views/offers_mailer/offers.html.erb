@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Russvisa</title></head>
+<body style="margin:0; padding:24px 12px; background:#f6f7fb; font-family: Arial, sans-serif; color:#111827;">
+  <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:12px; padding:24px; line-height:1.6; font-size:15px;">
+    <p style="margin-top:0;">Dear Customer,</p>
+    <% if @only_vip %>
+      <%= render "offers_mailer/vip_full", invitation: @invitation %>
+    <% else %>
+      <p>Your invitation for a Russian visa has been sent to you in a separate email. As you prepare for your upcoming travels, we would like to share some important information and services that will make your trip to Russia smooth and comfortable.</p>
+      <% @keys.each do |key| %>
+        <%= render "offers_mailer/#{key}", invitation: @invitation, rate: @rate %>
+      <% end %>
+      <p>If you have any questions or would like to arrange any of these services, simply reply to this email or submit a request on our website. We are happy to help make your trip to Russia smooth and comfortable.</p>
+    <% end %>
+    <p>Best regards,<br>Russvisa Team</p>
+  </div>
+</body>
+</html>

@@ -25,6 +25,12 @@ Rails.application.routes.draw do
   resources :invitations, only: [:create, :show]
   get '/russ_tourist', to: 'home#russ_tourist'
   get '/success_invitation', to: 'home#success_invitation'
+
+  # Доп. услуги: страховка, ЖД билеты, VIP-встреча в аэропорту.
+  get  '/insurance',        to: 'service_requests#insurance', as: :insurance
+  get  '/train-tickets',    to: 'service_requests#train',     as: :train_tickets
+  get  '/airport-transfer', to: 'service_requests#vip',       as: :airport_transfer
+  post '/service_requests', to: 'service_requests#create',    as: :service_requests
   # Короткий алиас маркетинговой ссылки: /in — главная с тарифом custom_20
   # (эквивалент /?tariff=custom_20, URL в адресной строке остаётся /in).
   get '/in', to: 'home#index', defaults: { tariff: 'custom_20' }
