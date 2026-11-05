@@ -1,0 +1,16 @@
+/ ФИО по частям — как на основной форме заявки (home/_contact_form).
+/ locals: f, required — обязательна ли фамилия.
+.svc-row
+  = f.label :surname, (required ? "Surname*" : "Surname")
+  = f.text_field :surname, required: required, placeholder: "e.g. SHARMA", autocomplete: "family-name", autocapitalize: "characters", spellcheck: false, "aria-describedby": (india_pricing? ? "svcSurnameHint" : nil)
+  - if india_pricing?
+    span.svc-hint#svcSurnameHint Put a dash (-) if you have no surname.
+.svc-row.svc-row--half
+  div
+    = f.label :given_name, "Given name(s)"
+    = f.text_field :given_name, placeholder: "e.g. RAHUL", autocomplete: "given-name", autocapitalize: "characters", spellcheck: false
+  div
+    = f.label :middle_name, "Middle name"
+    = f.text_field :middle_name, placeholder: "If shown in passport", autocomplete: "additional-name", autocapitalize: "characters", spellcheck: false, "aria-describedby": (india_pricing? ? "svcMiddleHint" : nil)
+    - if india_pricing?
+      span.svc-hint#svcMiddleHint If you have no middle name, leave this field empty.

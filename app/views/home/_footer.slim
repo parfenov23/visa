@@ -1,20 +1,19 @@
-- add_tariff = params[:tariff].present? ? "?tariff=#{params[:tariff]}" : ""
 div#imFooter.site-footer
   div#imFooterObjects
     div.site-footer__inner
-      a.site-footer__link href="/russ_tourist#{add_tariff}"
+      a.site-footer__link href=with_tariff("/russ_tourist")
         | Russian tourist voucher
-      a.site-footer__brand href="/"
+      a.site-footer__brand href=with_tariff("/")
         = image_tag("logo_up_03.png", alt: "Fortuna Travel", width: 85, height: 86, class: "site-footer__logo")
         span.site-footer__title Fortuna Travel
         span.site-footer__sub invitation to Russia
         span.site-footer__online online
-      a.site-footer__link href="files/Terms_and_Conditions.pdf" target="_blank"
+      a.site-footer__link href="/files/Terms_and_Conditions.pdf" target="_blank"
         | Terms and conditions
     div.site-footer__services
-      a.site-footer__link href="/insurance" Medical insurance
-      a.site-footer__link href="/airport-transfer" VIP airport meeting
-      a.site-footer__link href="/train-tickets" Train tickets
+      a.site-footer__link href=with_tariff("/insurance") Medical insurance
+      a.site-footer__link href=with_tariff("/airport-transfer") VIP airport meeting
+      a.site-footer__link href=with_tariff("/train-tickets") Train tickets
     div.site-footer__copy © 2026
     / База IP → страна по лицензии CC BY 4.0 требует ссылку на DB-IP.
     div.site-footer__attribution

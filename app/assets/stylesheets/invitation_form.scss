@@ -1,0 +1,232 @@
+// Форма заявки на главной (#invitationForm.contact_form.inv-form).
+// Базовые стили полей (рамка, тень) — из .contact_form в index.scss
+// в index.scss; здесь — группировка, размеры тач-целей, подсказки и ошибки.
+@import 'vendor/mixin/colors';
+@import 'vendor/mixin/ui';
+
+$inv-text:    #252525;
+$inv-muted:   #5f6368;
+$inv-error:   #b03535;
+$inv-error-bg: #fdf2f2;
+$inv-line:    #d5d8dc;
+$inv-mobile:  479px;
+
+.contact_form.inv-form {
+  margin: 40px 20px 10px;
+  font-family: "Roboto", sans-serif;
+  color: $inv-text;
+
+  @media (max-width: $inv-mobile) { margin: 24px 12px 10px; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  // Поля: единая высота, не меньше 44px для пальца, 16px — без авто-зума iOS.
+  input:not([type="hidden"]),
+  select.form-control,
+  textarea {
+    width: 100%;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+  }
+  input:not([type="hidden"]),
+  select.form-control {
+    height: auto;
+    min-height: 44px;
+  }
+  input:not([type="hidden"]) { padding: 10px 12px !important; }
+  textarea { padding: 10px 12px; resize: vertical; }
+
+  select.form-control { padding: 8px 10px; background-color: #fff; }
+
+  // Датапикер: три селекта в ряд, месяц шире.
+  .date-picker-holder {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+
+    select {
+      flex: 1 1 0;
+      min-width: 0;
+      width: auto !important;
+      margin: 0 !important;
+    }
+    select:nth-child(2) { flex-grow: 1.7; }
+  }
+
+  // tom-select (гражданство): та же высота, что у остальных полей;
+  // его внутренний input не должен получать оформление обычного поля.
+  .ts-wrapper.form-control { min-height: 0; height: auto; }
+  .ts-control { min-height: 44px; padding: 8px 12px; font-size: 16px; align-items: center; }
+  .ts-control input {
+    min-height: 0;
+    padding: 0 !important;
+    border: 0;
+    box-shadow: none;
+    background: none !important;
+    font-size: 16px;
+  }
+}
+
+.inv-form__required-note {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: $inv-muted;
+}
+
+.inv-req {
+  color: $red;
+  margin-left: 2px;
+  font-weight: 700;
+}
+
+.inv-group {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin: 20px 0 12px;
+    padding: 0 0 8px;
+    border-bottom: 1px solid #777;
+    font-size: 18px;
+    font-weight: 700;
+    color: $inv-text;
+  }
+
+  &__num {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: $blue_origin;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &__hint {
+    margin: -4px 0 10px;
+    font-size: 14px;
+    color: $inv-muted;
+  }
+}
+
+.inv-field {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.contact_form .inv-label {
+  display: block;
+  margin: 0;
+  padding-bottom: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.inv-hint {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: $inv-muted;
+
+  &--accent { color: $accent_blue; font-weight: 500; }
+  &[hidden] { display: none; }
+}
+
+// Ошибка у поля.
+.inv-error {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: $inv-error;
+
+  &::before { content: "! "; font-weight: 700; }
+}
+
+// #imPage — чтобы перебить `#imPage input[type="text"]` из шаблона imCreator.
+.contact_form .inv-field--invalid,
+#imPage .contact_form .inv-field--invalid {
+  input:not([type="hidden"]),
+  select.form-control,
+  textarea,
+  .ts-control {
+    border-color: $inv-error;
+    box-shadow: 0 0 0 1px $inv-error;
+    background-color: $inv-error-bg;
+    background-image: none;
+  }
+}
+
+// Итог и кнопка отправки.
+.inv-submit {
+  margin-top: 20px;
+  text-align: center;
+
+  .center_button { margin: 12px 0 14px; }
+}
+
+.inv-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 12px 16px;
+  border: 1px solid $inv-line;
+  border-left: 4px solid $accent_blue;
+  border-radius: 4px;
+  background: #fafafa;
+  text-align: left;
+
+  &[hidden] { display: none; }
+
+  &__label { font-size: 15px; }
+  &__price {
+    font-size: 15px;
+    white-space: nowrap;
+
+    b { @include price-pill(15pt); margin-left: 6px; }
+  }
+}
+
+.inv-turnstile {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.inv-form__error-summary {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  background: $inv-error-bg;
+  color: $inv-error;
+  font-size: 15px;
+  text-align: left;
+
+  &[hidden] { display: none; }
+}
+
+.contact_form .inv-submit__btn {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+
+  &:disabled,
+  &[aria-busy="true"] {
+    opacity: .75;
+    cursor: progress;
+  }
+}

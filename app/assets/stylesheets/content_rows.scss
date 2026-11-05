@@ -6,6 +6,12 @@
  * .imContentDataContainer.
  */
 
+@import 'vendor/mixin/ui';
+
+$ins-navy:  #10204a;  // заголовки карточки страховки
+$ins-blue:  $accent_blue;  // акцент карточки страховки
+$text-body: #363636;  // основной текст (как #imPage в style.css)
+
 /* The row background (#imPageRowGraphics_*) is position:absolute and, being a
  * positioned element, paints above static content. The builder kept content
  * visible by giving every cell position:relative;z-index. Since the reworked
@@ -102,7 +108,7 @@
 /* Карточка страховки в баннере главной (макет «Medical Insurance for Russia Online»). */
 .im-ins-card {
   background: #fff;
-  color: #10204a;
+  color: $ins-navy;
   border-radius: 10px;
   padding: 24px 24px 22px;
   text-align: center;
@@ -122,7 +128,7 @@
     font-size: 20pt;
     font-weight: 800;
     letter-spacing: 1px;
-    color: #10204a;
+    color: $ins-navy;
   }
 
   &__title {
@@ -130,45 +136,32 @@
     font-size: 18pt;
     line-height: 1.25;
     font-weight: 700;
-    color: #10204a;
+    color: $ins-navy;
   }
 
   &__online {
     display: block;
-    color: #1d6fd8;
+    color: $ins-blue;
   }
 
   &__price {
-    display: inline-block;
+    @include price-pill;
     margin-bottom: 14px;
-    padding: 8px 28px;
-    border-radius: 999px;
-    background: #1d6fd8;
-    color: #fff;
-    font-size: 22pt;
-    font-weight: 700;
-    white-space: nowrap;
   }
 
   &__text {
     margin: 0 0 18px;
     font-size: 12pt;
     line-height: 1.5;
-    color: #10204a;
+    color: $ins-navy;
   }
 
   &__btn {
+    @include ui-button;
+    @include ui-button-color($accent_blue, $accent_blue_hover);
     display: block;
     padding: 14px 16px;
-    border-radius: 10px;
-    background: #1d6fd8;
-    color: #fff !important;
     font-size: 13pt;
-    font-weight: 700;
-    text-decoration: none;
-    letter-spacing: .5px;
-
-    &:hover { background: #155bb5; }
   }
 }
 
@@ -209,7 +202,7 @@
   &__text {
     margin: 0;
     font-size: 11pt;
-    color: #363636;
+    color: $text-body;
     line-height: 1.5;
   }
 }
@@ -226,7 +219,7 @@
   min-width: 300px;
   margin: 0;
   font-size: 11pt;
-  color: #363636;
+  color: $text-body;
   line-height: 1.5;
 }
 
@@ -248,7 +241,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 28px 40px;
-  color: #363636;
+  color: $text-body;
   margin-bottom: 48px;
 }
 

@@ -142,6 +142,20 @@ class Invitation < ApplicationRecord
     (number.to_i + 1).to_s.rjust(10, "0")
   end
 
+  # Граждане Индии и Непала платят по индийскому тарифу (как на /in), даже если
+  # заявку подали с основной главной. Коды в БД трёхбуквенные; двухбуквенные — на всякий случай.
+  INDIA_CITIZENSHIPS = %w[IND NPL IN NP].freeze
+  INDIA_TARIFF = :custom_20
+
+  def self.india_citizen?(code)
+    INDIA_CITIZENSHIPS.include?(code.to_s.strip.upcase)
+  end
+
+  # Цена пакета по индийскому тарифу или nil, если пакета в нём нет (multi_usa).
+  def self.india_price(package)
+    tariff_price(currency: :usd, tariff: INDIA_TARIFF).dig(package.to_s.to_sym, :price)
+  end
+
   def self.tariff_price(currency: :eur, tariff: :default)
     all_tariffs = {
       eur: {
@@ -362,8 +376,19 @@ class Invitation < ApplicationRecord
   end
 
   def set_price
+    apply_india_citizen_tariff
     get_tariff_price = Invitation.tariff_price(currency: self.currency.to_sym, tariff: self.tariff.to_sym)
     self.price = get_tariff_price.dig(self.package.to_sym, :price)
+  end
+
+  # Только для базового тарифа: акционные и агентские тарифы не трогаем.
+  def apply_india_citizen_tariff
+    return unless self.class.india_citizen?(citizenship)
+    return unless tariff.blank? || tariff.to_s == "default"
+    return if self.class.india_price(package).blank?
+
+    self.tariff = INDIA_TARIFF.to_s
+    self.currency = "usd"
   end
 
   def set_accomodation

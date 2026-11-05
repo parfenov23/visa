@@ -36,8 +36,6 @@
   border: 0;
   border-radius: $border;
   -webkit-border-radius: $border;
-  //border-top-left-radius: $border !important;
-  //border-top-right-radius: $border !important;
 }
 
 @mixin set_focus(){
@@ -202,38 +200,6 @@
     font-size: ($size - 6px);
   }
 }
-
-// @mixin tag {
-//   .tag {
-//     display: flex;
-//     flex-wrap: wrap;
-
-//     &-item {
-//       color: $white;
-//       padding: 8px 16px;
-//       margin: 16px 16px 0 0;
-//       background: $caprion;
-//       @include transition;
-//       @include border-radius(8px);
-//       @include raleway(12px, 12px, 500);
-
-//       @include adaptive(mobile) {
-//         margin-top: 8px;
-//       }
-
-//       @include adaptive(hover) {
-
-//         &:hover {
-//           background: $headline;
-//         }
-//       }
-
-//       span {
-//         color: $light-blue-air;
-//       }
-//     }
-//   }
-// }
 
 @mixin border($bt: 1px, $br: 1px, $bb: 1px, $bl: 1px, $color: $caprion, $opacity: 1 ) {
   border-top: $bt solid $color;

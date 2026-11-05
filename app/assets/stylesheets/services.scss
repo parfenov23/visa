@@ -1,5 +1,11 @@
 // Страницы доп. услуг: /insurance, /train-tickets, /airport-transfer.
 @import 'vendor/mixin/colors';
+@import 'vendor/mixin/ui';
+
+$svc-text:   #1f2937;
+$svc-muted:  #6b7280;
+$svc-border: #e5e7eb;
+$svc-mobile: 480px;
 
 .svc-page {
   max-width: 1040px;
@@ -7,7 +13,7 @@
   padding: 32px 16px 48px;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
-  color: #1f2937;
+  color: $svc-text;
 
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -20,10 +26,14 @@
   text-align: center;
   margin-bottom: 24px;
 
+  // Hero лежит на красном фоне шапки (как на главной) — текст белый.
+  color: #fff;
+
   &__label {
     font-size: 13px;
     letter-spacing: 2px;
-    color: $red;
+    color: #fff;
+    opacity: .85;
     font-weight: bold;
     margin-bottom: 6px;
   }
@@ -31,7 +41,10 @@
     font-size: 32px;
     line-height: 1.2;
     margin: 0 0 10px;
-    color: #111827;
+    color: #fff;
+    text-wrap: balance;
+
+    @media (max-width: $svc-mobile) { font-size: 26px; }
   }
   &__text {
     max-width: 640px;
@@ -45,18 +58,10 @@
     align-items: center;
     justify-content: center;
   }
-  &__note { font-size: 14px; color: #4b5563; }
+  &__note { font-size: 14px; color: #fff; }
 }
 
-.svc-badge {
-  display: inline-block;
-  background: $blue_origin;
-  color: #fff;
-  font-weight: bold;
-  font-size: 22px;
-  padding: 8px 22px;
-  border-radius: 999px;
-}
+.svc-badge { @include price-pill; }
 
 .svc-grid {
   display: grid;
@@ -75,11 +80,11 @@
   border-radius: 6px;
   padding: 24px;
 
-  @media (max-width: 480px) { padding: 16px; }
+  @media (max-width: $svc-mobile) { padding: 16px; }
 }
 
 .svc-info {
-  border-color: #e5e7eb;
+  border-color: $svc-border;
   background: #f8fafc;
   font-size: 15px;
 }
@@ -137,14 +142,14 @@
     grid-template-columns: 1fr 1fr;
     gap: 12px;
 
-    @media (max-width: 480px) { grid-template-columns: 1fr; }
+    @media (max-width: $svc-mobile) { grid-template-columns: 1fr; }
   }
 }
 
 .svc-hint {
   display: block;
   font-size: 13px;
-  color: #6b7280;
+  color: $svc-muted;
   margin-top: 4px;
 }
 

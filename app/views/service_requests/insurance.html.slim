@@ -10,8 +10,12 @@
     p.svc-hero__text
       | Official health insurance policy fully functional inside Russia. Meets all consular requirements.
     .svc-hero__prices
-      span.svc-badge USD 2 / day
-      span.svc-hero__note USD 1.35 / day for citizens of India and Nepal
+      - if india_pricing?
+        span.svc-badge USD 1.35 / day
+        span.svc-hero__note Special rate for citizens of India and Nepal
+      - else
+        span.svc-badge USD 2 / day
+        span.svc-hero__note USD 1.35 / day for citizens of India and Nepal
 
   = render "service_requests/messages", service_request: f_req
 
@@ -42,6 +46,8 @@
       = form_with model: f_req, url: service_requests_path, local: true, multipart: true,
           html: { class: "contact_form svc-form", id: "insuranceForm" } do |f|
         = hidden_field_tag :kind, "insurance"
+        - if current_tariff_param
+          = hidden_field_tag :tariff, current_tariff_param
         - if @ref.present?
           = hidden_field_tag :ref, @ref
         h2.form-section-title Trip information
@@ -60,12 +66,10 @@
 
         h2.form-section-title Traveller
         p.svc-hint Fill in your details as in your passport — or simply attach a photo of your passport.
-        .svc-row
-          = f.label :full_name, "Full name"
-          = f.text_field :full_name, placeholder: "As in passport"
+        = render "service_requests/name_fields", f: f, required: false
         .svc-row
           = f.label :passport_number, "Passport number"
-          = f.text_field :passport_number, placeholder: "As in passport"
+          = f.text_field :passport_number, placeholder: "As in passport", autocomplete: "off", spellcheck: false
         .svc-row
           = f.label :passport_copy, "…or attach a copy of your passport"
           = f.file_field :passport_copy, accept: "image/*,application/pdf", class: "svc-file"
@@ -74,7 +78,7 @@
         h2.form-section-title Contacts
         .svc-row
           = f.label :email, "Email*"
-          = f.email_field :email, required: true, placeholder: "john_doe@example.com"
+          = f.email_field :email, required: true, placeholder: "john_doe@example.com", autocomplete: "email", spellcheck: false
         .svc-row
           = f.label :comments, "Comments"
           = f.text_area :comments, rows: 3, placeholder: "Optional"

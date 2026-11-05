@@ -1,42 +1,18 @@
 /* General purpose WSX5's required classes */
 .imClear { visibility: hidden; clear: both; border: 0; margin: 0; padding: 0; }
 .imHidden { display: none; }
-.alert { padding: 5px 7px; margin: 5px 0 10px 0; border-radius: 5px; border: 1px solid; font: inherit; }
-.text-center { text-align: center; }
-
 
 /* Page default */
 #imPage { font: normal normal normal 11pt 'Roboto'; color: #363636; background-color: transparent; text-align: left; text-decoration: none; }
 .text-tab-content { text-align: left; }
 
-
-/* Page Title */
-
-
-/* Breadcrumb */
-
-
 /* Links */
 .imCssLink:link, .imCssLink { background-color: transparent; color: #BB0204; text-decoration: underline; }
 .imCssLink:visited { background-color: transparent; color: #BB0204; text-decoration: none; }
-.imCssLink:hover, .imCssLink:active, .imCssLink:hover, .imCssLink:active { background-color: transparent; color: #BB0204; text-decoration: none; }
-
+.imCssLink:hover, .imCssLink:active { background-color: transparent; color: #BB0204; text-decoration: none; }
 
 /* Bottom Menu */
 #imBtMnContainer, #imBtMn { display: none; }
-#imPage input[type=text], #imPage input[type=password], textarea { font: inherit; border: 1px solid #A9A9A9; background-color: #FFFFFF; color: #000000; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; padding-left: 1px; padding-right: 1px; }
+#imPage input[type=text], #imPage input[type=password], textarea { font: inherit; border: 1px solid #A9A9A9; background-color: #FFFFFF; color: #000000; border-radius: 2px; padding-left: 1px; padding-right: 1px; }
 textarea { resize: none; }
-#imPage input[type=button], #imPage input[type=submit] {padding: 4px 8px; cursor: pointer; font: inherit; border: 1px solid #253A58; background-color: #567EB6; color: #FFFFFF; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; box-sizing: content-box; }
-
-/* Tip */
-
-
-/* Date Picker */
-
-
-/* Popup */
-
-
-/* Splash Box */
-@-webkit-keyframes imLoadCircleFadeDelay { 0%, 39%, 100% { opacity: 0; } 40% { opacity: 1; }}
-@keyframes imLoadCircleFadeDelay { 0%, 39%, 100% { opacity: 0; } 40% { opacity: 1; } }
+#imPage input[type=button], #imPage input[type=submit] { padding: 4px 8px; cursor: pointer; font: inherit; border: 1px solid #253A58; background-color: #567EB6; color: #FFFFFF; border-radius: 2px; box-sizing: content-box; }

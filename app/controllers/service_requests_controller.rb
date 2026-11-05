@@ -12,6 +12,8 @@ class ServiceRequestsController < ApplicationController
   }.freeze
 
   before_action -> { response.set_header("X-Robots-Tag", "noindex") }, only: :create
+  # Тариф (/in → custom_20) переносится по ссылкам, чтобы не сбрасывались цены.
+  before_action -> { @tariff = (params[:tariff].presence || (INDIA_TARIFF if india_domain?))&.to_sym }
 
   def insurance
     show_page('insurance')
@@ -40,7 +42,7 @@ class ServiceRequestsController < ApplicationController
 
     if cf_ok && @service_request.save
       @service_request.notify!
-      redirect_to page_path(kind), notice: success_message(@service_request)
+      redirect_to page_path(kind, tariff: params[:tariff].presence), notice: success_message(@service_request)
     else
       @ref = params[:ref]
       render PAGES[kind], status: :unprocessable_entity
@@ -53,13 +55,17 @@ class ServiceRequestsController < ApplicationController
     @ref = params[:ref].presence
     @service_request = ServiceRequest.new(kind: kind)
     prefill_from_invitation(@service_request, Invitation.find_by(verify_token: @ref)) if @ref
+    # На индийской странице гражданство Индии подставлено заранее (его можно сменить).
+    @service_request.citizenship ||= "IND" if helpers.india_pricing? && Country.exists?(code: "IND")
     render PAGES[kind]
   end
 
   def prefill_from_invitation(service_request, invitation)
     return unless invitation
 
-    service_request.full_name   = invitation.full_name
+    service_request.surname     = invitation.surname.presence
+    service_request.given_name  = invitation.name.presence
+    service_request.middle_name = invitation.middlename.presence
     service_request.citizenship = invitation.citizenship
     arrival   = parse_date(invitation.arival_date)
     departure = parse_date(invitation.departure_date)
@@ -74,8 +80,9 @@ class ServiceRequestsController < ApplicationController
     nil
   end
 
-  def page_path(kind)
-    { 'insurance' => insurance_path, 'train' => train_tickets_path, 'vip' => airport_transfer_path }[kind]
+  def page_path(kind, **query)
+    query = query.compact
+    { 'insurance' => insurance_path(query), 'train' => train_tickets_path(query), 'vip' => airport_transfer_path(query) }[kind]
   end
 
   def success_message(service_request)
@@ -93,7 +100,7 @@ class ServiceRequestsController < ApplicationController
 
   def service_request_params
     params.fetch(:service_request, {}).permit(
-      :full_name, :email, :phone, :citizenship, :passport_number, :date_from, :date_to, :comments,
+      :surname, :given_name, :middle_name, :email, :phone, :citizenship, :passport_number, :date_from, :date_to, :comments,
       :from_city, :to_city, :departure_time, :seat_class, :passengers,
       :arrival_time, :flight_number, :hotel_address, :invitation_ref,
       :passport_copy, :visa_copy

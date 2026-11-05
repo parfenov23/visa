@@ -82,4 +82,23 @@ class InvitationTest < ActiveSupport::TestCase
 
     assert_equal "Moscow", hotel.as_picker_option[:city]
   end
+
+  test "citizens of India and Nepal get the India tariff on the default page" do
+    ind = Invitation.create!(currency: "eur", tariff: "default", package: "single", citizenship: "IND")
+    assert_equal ["custom_20", "usd", 15.0], [ind.tariff, ind.currency, ind.price]
+
+    npl = Invitation.create!(currency: "eur", tariff: "default", package: "multi", citizenship: "NPL")
+    assert_equal ["custom_20", "usd", 30.0], [npl.tariff, npl.currency, npl.price]
+  end
+
+  test "India tariff is not applied to other citizens, special tariffs or packages it lacks" do
+    other = Invitation.create!(currency: "eur", tariff: "default", package: "single", citizenship: "DEU")
+    assert_equal ["default", 9.99], [other.tariff, other.price]
+
+    sale = Invitation.create!(currency: "usd", tariff: "sale_10", package: "single", citizenship: "IND")
+    assert_equal ["sale_10", 10.0], [sale.tariff, sale.price]
+
+    usa = Invitation.create!(currency: "eur", tariff: "default", package: "multi_usa", citizenship: "IND")
+    assert_equal ["default", 44.99], [usa.tariff, usa.price]
+  end
 end

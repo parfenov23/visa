@@ -120,9 +120,13 @@
         throw new Error('year range start must be greater than end');
       }
       yearSelect.append('<option value="">Year:</option>');
-      for (var year = end; year >= start; year--) {
+      // yearsAscending: ближайшие годы сверху (даты поездки); иначе — от новых к старым (дата рождения).
+      var years = [];
+      for (var y = start; y <= end; y++) years.push(y);
+      if (!options.yearsAscending) years.reverse();
+      years.forEach(function(year){
         yearSelect.append('<option value="' + year + '">' + year + '</option>');
-      }
+      });
     }
     if (options.startYear && options.endYear) {
       datePicker.setYearRange(options.startYear, options.endYear);

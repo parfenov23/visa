@@ -3,7 +3,11 @@
 ActiveAdmin.register_page "Reports" do
   menu priority: 2, label: "Сводка по заявкам"
 
-  helper do
+  controller do
+    helper_method :current_report
+
+    private
+
     def report_date_param(key, default)
       Date.parse(params[key].to_s)
     rescue ArgumentError

@@ -14,7 +14,7 @@ module ApplicationHelper
       price: current_tariff.dig(package, :price),
       currency: curr_currency,
       li: [
-        "Ready in <b>30 minutes</b>",
+        "Ready in <b>60 minutes</b>",
         "For a visa up to <b>30 days</b>",
         "Invitation sent directly to <b>your email</b>"
       ]
@@ -42,7 +42,7 @@ module ApplicationHelper
       price: current_tariff.dig(package, :price),
       currency: curr_currency,
       li: [
-        "Ready in <b>30 minutes</b>",
+        "Ready in <b>60 minutes</b>",
         "For a visa up to <b>90 days</b>",
         "Invitation sent directly to <b>your email</b>"
       ]
@@ -56,7 +56,7 @@ module ApplicationHelper
       price: current_tariff.dig(package, :price),
       currency: curr_currency,
       li: [
-        "Ready in <b>30 minutes</b>",
+        "Ready in <b>60 minutes</b>",
         "For a visa up to <b>180 days</b>",
         "Invitation sent directly to <b>your email</b>"
       ]
@@ -83,6 +83,23 @@ module ApplicationHelper
     "#{curr_currency} #{curr_price}"
   end
 
+  # Тариф текущей страницы для ссылок по сайту: из URL (?tariff=, /in) или
+  # определённый по IP на главной. Без него при переходе по меню тариф терялся.
+  def current_tariff_param
+    tariff = params[:tariff].presence || @tariff.to_s
+    return nil if tariff.blank? || tariff == "default"
+    # На russvisa.in индийский тариф и так по умолчанию — ссылки без ?tariff=.
+    return nil if india_domain? && tariff == ApplicationController::INDIA_TARIFF
+
+    tariff
+  end
+
+  # with_tariff("/insurance") → "/insurance?tariff=custom_20" (или "/insurance").
+  def with_tariff(path)
+    tariff = current_tariff_param
+    tariff ? "#{path}?#{{ tariff: tariff }.to_query}" : path
+  end
+
   # Индийская страница (/in, russvisa.in, тариф custom_20) — там страховка дешевле.
   def india_pricing?
     @tariff.to_s == "custom_20"
@@ -90,7 +107,7 @@ module ApplicationHelper
 
   # Цена страховки за сутки для блока на главной: «$1.35 / day» или «$2 / day».
   def insurance_rate_label
-    rate = india_pricing? ? ServiceRequest.insurance_rate("IN") : ServiceRequest::INSURANCE_DEFAULT_RATE
+    rate = india_pricing? ? ServiceRequest.insurance_rate("IND") : ServiceRequest::INSURANCE_DEFAULT_RATE
     "$ #{format('%.2f', rate).sub(/\.00\z/, '')} / day"
   end
 
@@ -108,7 +125,7 @@ module ApplicationHelper
       price: current_tariff.dig(package, :price),
       currency: curr_currency,
       li: [
-        "Ready in <b>30 minutes</b>",
+        "Ready in <b>60 minutes</b>",
         "For a visa up to <b>180 days</b>",
         "Invitation sent directly to <b>your email</b>"
       ]

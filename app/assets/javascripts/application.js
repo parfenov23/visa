@@ -1,22 +1,38 @@
 //= require jquery
 //= require date_picker
+//= require invitation_form
 $(document).ready(function(){
   $(document).on('click', '.js_select_package', function(){
     const select = document.querySelector("#invitation_type_id");
     select.value = $(this).attr("data-value");
+    // Обновить итоговую цену у кнопки отправки (invitation_form.js).
+    select.dispatchEvent(new Event("change", { bubbles: true }));
   });
 
   // TomSelect грузится с CDN и может не загрузиться (медленная сеть, блокировщик).
   // Без try/catch ошибка здесь отключала бы датапикеры и валидацию всей формы.
-  try {
-    new TomSelect("#countrySelect", {
-      create: false,      // запрет добавлять новые значения
-      sortField: "text",
-      maxOptions: null,
-      placeholder: "Start introducing citizenship..."
-    });
-  } catch (e) {
-    console.warn("TomSelect init failed, falling back to native select", e);
+  // jQuery ready в deferred-скрипте срабатывает раньше, чем выполнится следующий
+  // deferred-скрипт tom-select с CDN. Нативный DOMContentLoaded наступает только
+  // после всех deferred-скриптов — пробуем ещё раз на нём (и на load как запасной).
+  function initCountrySelect() {
+    const el = document.querySelector("#countrySelect");
+    if (!el || el.tomselect) return true;
+    if (typeof TomSelect === "undefined") return false;
+    try {
+      new TomSelect(el, {
+        create: false,      // запрет добавлять новые значения
+        sortField: "text",
+        maxOptions: null,
+        placeholder: "Start introducing citizenship..."
+      });
+    } catch (e) {
+      console.warn("TomSelect init failed, falling back to native select", e);
+    }
+    return true;
+  }
+  if (!initCountrySelect()) {
+    document.addEventListener("DOMContentLoaded", initCountrySelect, { once: true });
+    window.addEventListener("load", initCountrySelect, { once: true });
   }
 
   (function ($) {
@@ -25,16 +41,17 @@ $(document).ready(function(){
   // --- Datepickers ---------------------------------------
     const dateConfigs = [
       { selector: '#birthDate',       start: year - 100, end: year,       required: true  },
-      { selector: '#arival_date',     start: year,       end: year + 10, required: true  },
-      { selector: '#departure_date',  start: year,       end: year + 10, required: true  },
-      { selector: '#passportExpire',  start: year,       end: year + 40, required: false }
+      { selector: '#arival_date',     start: year,       end: year + 10, required: true,  ascending: true },
+      { selector: '#departure_date',  start: year,       end: year + 10, required: true,  ascending: true },
+      { selector: '#passportExpire',  start: year,       end: year + 40, required: false, ascending: true }
     ];
 
     dateConfigs.forEach(cfg => {
       $(cfg.selector).datePicker({
         startYear: cfg.start,
         endYear:   cfg.end,
-        required:  cfg.required
+        required:  cfg.required,
+        yearsAscending: !!cfg.ascending
       });
     });
 
@@ -45,8 +62,14 @@ $(document).ready(function(){
 
       if (item.hasClass("active_block")) {
         item.removeClass("active_block");
+        $(this).attr("aria-expanded", "false");
         info.slideUp();
       } else {
+        item
+        .siblings(".active_block")
+        .find(".title_block")
+        .attr("aria-expanded", "false");
+
         item
         .addClass("active_block")
         .siblings(".active_block")
@@ -55,112 +78,21 @@ $(document).ready(function(){
         .stop(true, true)
         .slideUp();
 
+        $(this).attr("aria-expanded", "true");
         info.stop(true, true).slideDown();
+      }
+    });
+
+    // Заголовки FAQ — role="button": открываются с клавиатуры (Enter / Space).
+    $(".title_block").on("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        $(this).trigger("click");
       }
     });
 
   })(jQuery);
 
-  // ============= FORM REQUEST
-
-  (function ($) {
-
-  // ---------------------------------------------------------
-  // UNIVERSAL FIELD VALIDATION
-  // ---------------------------------------------------------
-    function setValidation($field, message, rule) {
-      const $group = $field.closest('.form-group');
-      $group.find(".invalid-feedback").remove();
-
-      const valid = rule($field);
-
-      $field.toggleClass('is-valid', valid);
-      $field.toggleClass('is-invalid', !valid);
-
-      if (!valid && message)
-        $group.append(`<div class="invalid-feedback">${message}</div>`);
-
-      return valid;
-    }
-
-    const validateRequired = f => !!f.val().trim();
-    const validateEmail = f => /^[a-zA-Z0-9_.+-]+@([\w-]+\.)+[a-zA-Z0-9]{2,}$/.test(f.val());
-
-  // ---------------------------------------------------------
-  // MAIN FORM VALIDATION
-  // ---------------------------------------------------------
-    function validateForm() {
-      let valid = true;
-
-      valid &= setValidation($("#invitation_type_id"), "Please select invitation type", f =>
-        f.val() !== "0"
-        );
-
-      valid &= setValidation($("#email"), "Please provide a valid e-mail address", validateEmail);
-      valid &= setValidation($("#arival_date"), "Please provide arrival date", validateRequired);
-      valid &= setValidation($("#departure_date"), "Please provide departure date", validateRequired);
-
-      $("#persons .person").each(function () {
-        const $p = $(this);
-
-        valid &= setValidation($p.find("[name=surname]"), "Surname required", validateRequired);
-        valid &= setValidation($p.find("[name=sex]"), "Sex required", f => f.val() !== "-1");
-        valid &= setValidation($p.find("[name=birthDate]"), "Birth date required", validateRequired);
-        valid &= setValidation($p.find("[name=citizenship]"), "Citizenship required", validateRequired);
-        valid &= setValidation($p.find("[name=passport]"), "Passport required", validateRequired);
-      });
-
-      return !!valid;
-    }
-
-  // ---------------------------------------------------------
-  // DOCUMENT READY
-  // ---------------------------------------------------------
-    $(function () {
-
-      $("#persons").on("click", ".removePerson", function () {
-        $(this).closest(".person").remove();
-      });
-
-      $("#submitInvitation").on("click", function (e) {
-        e.preventDefault();
-
-        if (!validateForm()) return;
-
-        $(this).prop("disabled", true).text("Please wait...");
-
-        const result = {
-          invitation_type_id: $("#invitation_type_id").val(),
-          email: $("#email").val(),
-          arrival_date: $("#arival_date").val(),
-          departure_date: $("#departure_date").val(),
-          visa_obtain_place: $("#visa_obtain_place").val(),
-          cities: $("#cities").val(),
-          hotels: $("#hotels").val(),
-          comments: $("#comments").val(),
-          persons: []
-        };
-
-        $("#persons .person").each(function () {
-          const $p = $(this);
-          result.persons.push({
-            surname: $p.find("[name=surname]").val(),
-            name: $p.find("[name=name]").val(),
-            middle_name: $p.find("[name=middlename]").val(),
-            sex: $p.find("[name=sex]").val(),
-            citizenship: $p.find("[name=citizenship]").val(),
-            passport: $p.find("[name=passport]").val(),
-            passportExpire: $p.find("[name=passportExpire]").val(),
-            date_of_birth: $p.find("[name=birthDate]").val()
-          });
-        });
-
-        console.log(JSON.stringify(result));
-      });
-
-    });
-
-  })(jQuery);
 });
 
 (function () {
@@ -173,9 +105,10 @@ $(document).ready(function(){
 
     const top = el.getBoundingClientRect().top + window.pageYOffset - OFFSET;
 
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({
       top,
-      behavior: "smooth"
+      behavior: reduceMotion ? "auto" : "smooth"
     });
   }
 

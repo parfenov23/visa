@@ -75,4 +75,24 @@ class ServiceRequestTest < ActiveSupport::TestCase
     assert_equal false, req.fsb_letter_ready
     assert_equal false, req.greeter_assigned
   end
+
+  test "name is entered in parts and full_name is built from them" do
+    req = insurance(full_name: nil, surname: " Sharma ", given_name: "Rahul", middle_name: "")
+    req.save!
+    assert_equal "Sharma Rahul", req.full_name
+    assert_equal "Sharma", req.surname
+
+    # Дальше full_name правят в админке — части его не перезаписывают.
+    req.update!(full_name: "SHARMA RAHUL KUMAR")
+    assert_equal "SHARMA RAHUL KUMAR", req.reload.full_name
+  end
+
+  test "vip request without a surname is invalid" do
+    req = ServiceRequest.new(kind: "vip", email: "a@example.com", given_name: "",
+                             date_from: Date.current + 3, arrival_time: "04:35", flight_number: "SU 233",
+                             hotel_address: "Cosmos Hotel, Moscow")
+    req.passport_copy.attach(passport_file)
+    assert_not req.valid?
+    assert req.errors[:surname].any?
+  end
 end

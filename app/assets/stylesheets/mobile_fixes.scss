@@ -36,57 +36,6 @@ nav.mobile-nav { display: none; }
     gap: 6px !important;
   }
 
-  #imFooter .template-object-wrapper {
-    position: relative !important;
-    top: auto !important; left: auto !important;
-    right: auto !important; bottom: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    margin: 0 !important;
-    overflow: visible !important;
-    z-index: auto !important;
-  }
-
-  #imFooter [id^="imFooter_imCell_"],
-  #imFooter [id^="imFooter_imCellStyle_"],
-  #imFooter [id$="_tab0"],
-  #imFooter .text-tab-content,
-  #imFooter .text-container {
-    width: 100% !important;
-    min-height: 0 !important;
-    height: auto !important;
-    overflow: visible !important;
-    text-align: center !important;
-    box-sizing: border-box !important;
-    border: 0 !important;
-  }
-
-  #imFooter .imHTMLObject {
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  /* Шаблон прячет большинство футер-объектов на мобиле (display:none).
-     Явно показываем нужные и задаём порядок; прячем пустые/дубли. */
-  #imFooter_imObjectImage_12_wrapper { display: block !important; order: 1 !important; } /* логотип */
-  #imFooter_imTextObject_14_wrapper  { display: block !important; order: 2 !important; } /* Fortuna Travel / invitation */
-  #imFooter_imHTMLObject_21_wrapper  { display: block !important; order: 3 !important; } /* Russian tourist voucher */
-  #imFooter_imHTMLObject_17_wrapper  { display: block !important; order: 4 !important; } /* Terms and conditions */
-  #imFooter_imTextObject_11_wrapper  { display: block !important; order: 5 !important; } /* © копирайт */
-
-  #imFooter_imObjectImage_08_wrapper { display: none !important; }   /* пустая соц-иконка */
-  #imFooter_imTextObject_13_wrapper  { display: none !important; }   /* служебный пустой */
-  #imFooter_imTextObject_19_wrapper  { display: none !important; }   /* дубль копирайта */
-
-  #imFooter_imObjectImage_12 { height: 70px !important; width: auto !important; }
-
-  #imFooter a.link,
-  #imFooter .imHTMLObject a {
-    color: #fff !important;
-    text-decoration: none !important;
-  }
-
   /* ---------- ШАПКА: прячем сломанное imCreator-меню, показываем своё ---------- */
   #imMnMnContainer { display: none !important; }
 

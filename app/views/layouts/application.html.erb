@@ -13,9 +13,9 @@
   <%
     # Единые SEO-переменные: страницы могут переопределять через content_for(:title/:description).
     page_title = content_for?(:title) ? yield(:title) : "Russvisa: Tourist invitation for a Russian visa"
-    meta_description = content_for?(:description) ? yield(:description) : "Official Russian tourist visa invitation letter for #{@meta_price || '€9.99'}: tourist confirmation + tourist voucher by email within 30 minutes. Accepted by Russian embassies worldwide."
+    meta_description = content_for?(:description) ? yield(:description) : "Official Russian tourist visa invitation letter for #{@meta_price || '€9.99'}: tourist confirmation + tourist voucher by email within 60 minutes. Accepted by Russian embassies worldwide."
     # /in и ?tariff= — рекламные дубли главной, каноникал ведёт на корень.
-    canonical_path = (request.path == '/in' || params[:tariff].present?) ? '/' : request.path
+    canonical_path = request.path == '/in' ? '/' : request.path
     canonical_url = "https://russvisa.com#{canonical_path}"
   %>
   <title><%= page_title %></title>

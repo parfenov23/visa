@@ -1,3 +1,7 @@
+// Фон шапки/подвала из шаблона imCreator.
+$site-red:      #B00203;
+$site-red-dark: #A70101;
+
 html { position: relative; margin: 0; padding: 0; }
 body { margin: 0; padding: 0; text-align: left; }
 #imPage { position: relative; width: 100%; }
@@ -9,10 +13,10 @@ body { margin: 0; padding: 0; text-align: left; }
 #imFooPad { float: left; margin: 0 auto; }
 #imBtMnContainer { clear: both; }
 .imPageRow { position: relative; clear: both; overflow: hidden; float: left; width: 100%; }
-.imHGroup:after, .imUGroup:after, .imVGroup:after, .imPageRow:after { content: ""; display: table; clear: both; }
+.imHGroup:after, .imVGroup:after, .imPageRow:after { content: ""; display: table; clear: both; }
 #imFooterBg { position: absolute; left: 0; bottom: 0; width: 100%; }
 #imFooter { position: relative; }
-#imMnMn.static-menu { height: 58px; margin: 0; background-image: none; background-color: #800000; }
+
 @media (min-width: 1100px) {
     html { background-image: url(asset-path("bg_main_01_black_02.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: transparent; }
     #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 1100px; }
@@ -26,7 +30,7 @@ body { margin: 0; padding: 0; text-align: left; }
     #imMnMnGraphics { display: none; }
     #imContent { min-height: 520px; padding: 15px 0 0px 0; }
     #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
-    #imFooterBg { height: 200px; background-image: url(asset-path("bg-footer_10.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #B00203; }
+    #imFooterBg { height: 200px; background-image: url(asset-path("bg-footer_10.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: $site-red; }
     #imFooter { margin-left: auto; margin-right: auto; height: 200px; background-image: none; background-color: transparent; }
     #imFooterObjects { position: relative; height: 200px; }
     #imFooPad { height: 520px; }
@@ -36,7 +40,7 @@ body { margin: 0; padding: 0; text-align: left; }
 
 }
 @media (max-width: 1099px) and (min-width: 720px) {
-    html { background-image: url(asset-path("bg-1100.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #A70101; }
+    html { background-image: url(asset-path("bg-1100.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: $site-red-dark; }
     #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 720px; }
     #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
     #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: transparent; }
@@ -48,8 +52,8 @@ body { margin: 0; padding: 0; text-align: left; }
     #imMnMnGraphics { display: none; }
     #imContent { min-height: 520px; padding: 15px 0 15px 0; }
     #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
-    #imFooterBg { height: 170px; background-image: none; background-color: #A70101; }
-    #imFooter { margin-left: auto; margin-right: auto; height: 170px; background-image: none; background-color: #A70101; }
+    #imFooterBg { height: 170px; background-image: none; background-color: $site-red-dark; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 170px; background-image: none; background-color: $site-red-dark; }
     #imFooterObjects { position: relative; height: 170px; }
     #imFooPad { height: 520px; }
     #imHeader, #imMnMnContainer, #imFooter { width: 720px; }
@@ -58,7 +62,7 @@ body { margin: 0; padding: 0; text-align: left; }
 
 }
 @media (max-width: 719px) and (min-width: 480px) {
-    html { background-image: url(asset-path("bg-720.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #B00203; }
+    html { background-image: url(asset-path("bg-720.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: $site-red; }
     #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 480px; }
     #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
     #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: transparent; }
@@ -70,8 +74,8 @@ body { margin: 0; padding: 0; text-align: left; }
     #imMnMnGraphics { display: none; }
     #imContent { min-height: 520px; padding: 15px 0 15px 0; }
     #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
-    #imFooterBg { height: 150px; background-image: none; background-color: #B00203; }
-    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: #B00203; }
+    #imFooterBg { height: 150px; background-image: none; background-color: $site-red; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: $site-red; }
     #imFooterObjects { position: relative; height: 150px; }
     #imFooPad { height: 520px; }
     #imHeader, #imMnMnContainer, #imFooter { width: 480px; }
@@ -80,7 +84,7 @@ body { margin: 0; padding: 0; text-align: left; }
 
 }
 @media (max-width: 479px) and (min-width: 360px) {
-    html { background-image: url(asset-path("bg-480.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #B00203; }
+    html { background-image: url(asset-path("bg-480.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: $site-red; }
     #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 360px; }
     #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
     #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 120px; background-image: none; background-color: transparent; }
@@ -92,8 +96,8 @@ body { margin: 0; padding: 0; text-align: left; }
     #imMnMnGraphics { display: none; }
     #imContent { min-height: 520px; padding: 15px 0 15px 0; }
     #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
-    #imFooterBg { height: 150px; background-image: none; background-color: #B00203; }
-    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: #B00203; }
+    #imFooterBg { height: 150px; background-image: none; background-color: $site-red; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: $site-red; }
     #imFooterObjects { position: relative; height: 150px; }
     #imFooPad { height: 520px; }
     #imHeader, #imMnMnContainer, #imFooter { width: 360px; }
@@ -102,7 +106,7 @@ body { margin: 0; padding: 0; text-align: left; }
 
 }
 @media (max-width: 359px) and (min-width: 320px) {
-    html { background-image: url(asset-path("bg-480.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: #A70101; }
+    html { background-image: url(asset-path("bg-480.webp")); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-color: $site-red-dark; }
     #imPage { padding-top: 0; margin-top: 0px; margin-bottom: 0px; min-width: 320px; }
     #imHeaderBg { height: 100px; background-image: none; background-color: transparent; }
     #imHeader { position: relative; margin-bottom: 0; margin-left: auto; margin-right: auto; height: 120px; background-image: none; background-color: transparent; }
@@ -114,8 +118,8 @@ body { margin: 0; padding: 0; text-align: left; }
     #imMnMnGraphics { display: none; }
     #imContent { min-height: 520px; padding: 15px 0 15px 0; }
     #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
-    #imFooterBg { height: 150px; background-image: none; background-color: #A70101; }
-    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: #B00203; }
+    #imFooterBg { height: 150px; background-image: none; background-color: $site-red-dark; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: $site-red; }
     #imFooterObjects { position: relative; height: 150px; }
     #imFooPad { height: 520px; }
     #imHeader, #imMnMnContainer, #imFooter { width: 320px; }
@@ -136,10 +140,10 @@ body { margin: 0; padding: 0; text-align: left; }
     #imMnMnGraphics { display: none; }
     #imContent { min-height: 520px; padding: 15px 0 15px 0; }
     #imContentGraphics { left: 0; right: 0; margin-left: auto; margin-right: auto; min-height: 520px;  background-image: none; background-color: transparent; }
-    #imFooterBg { height: 150px; background-image: none; background-color: #B00203; }
-    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: #B00203; }
+    #imFooterBg { height: 150px; background-image: none; background-color: $site-red; }
+    #imFooter { margin-left: auto; margin-right: auto; height: 150px; background-image: none; background-color: $site-red; }
     #imFooterObjects { position: relative; height: 150px; }
-    #imFooPad, #imBtMnContainer, #imBtMn, #imPgMnContainer { display: none; }
+    #imFooPad, #imBtMnContainer, #imBtMn { display: none; }
     #imMnMn { width: 70px; }
     #imPage, #imContent, #imContentGraphics, #imFooter { box-sizing: border-box; width: 100%; }
 

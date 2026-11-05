@@ -1,0 +1,36 @@
+// Единый вид кнопок и ценников сайта — по образцу карточки страховки
+// в баннере главной (.im-ins-card). Используется в btn_custom, content_rows,
+// services, price_item, invitation_form.
+@import 'colors';
+
+@mixin ui-button {
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-decoration: none;
+  text-transform: none;
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+
+@mixin ui-button-color($bg, $bg-hover) {
+  background-color: $bg;
+  &, &:link, &:visited, &:hover, &:focus, &:active { color: #fff !important; }
+  &:hover { background-color: $bg-hover; }
+}
+
+// Ценник-«таблетка». $size — размер шрифта, отступы считаются от него.
+@mixin price-pill($size: 22pt) {
+  display: inline-block;
+  padding: .28em 1em;
+  border-radius: 999px;
+  background: $accent_blue;
+  color: #fff;
+  font-size: $size;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}

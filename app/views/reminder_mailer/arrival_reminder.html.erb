@@ -1,7 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><title>Russvisa</title></head>
-<body style="margin:0; padding:24px 12px; background:#f6f7fb; font-family: Arial, sans-serif; color:#111827;">
+<div style="margin:0; padding:24px 12px; background:#f6f7fb; font-family: Arial, sans-serif; color:#111827;">
   <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:12px; padding:24px; line-height:1.6; font-size:15px;">
     <p style="margin-top:0;">Hello,</p>
     <p>According to our records, your travel to the Russian Federation is scheduled to begin in just a few days<% if @invitation.arrival_on %> (<b><%= @invitation.arrival_on.strftime('%d.%m.%Y') %></b>)<% end %>.</p>
@@ -17,5 +14,4 @@
     <p>We wish you a safe and pleasant journey!</p>
     <p>Best regards,<br>Russvisa Team</p>
   </div>
-</body>
-</html>
+</div>

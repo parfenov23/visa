@@ -26,7 +26,9 @@ class ServiceRequest < ApplicationRecord
 
   # --- Страховка ---------------------------------------------------------
   # Ставка в сутки (USD) по гражданству; для остальных стран — DEFAULT.
-  INSURANCE_RATES = { 'IN' => 1.35, 'NP' => 1.35 }.freeze
+  # Коды гражданства в базе (Country.code) — трёхбуквенные (IND, NPL);
+  # двухбуквенные (IN, NP — как у GeoCountry) оставлены как синонимы.
+  INSURANCE_RATES = { 'IND' => 1.35, 'NPL' => 1.35, 'IN' => 1.35, 'NP' => 1.35 }.freeze
   INSURANCE_DEFAULT_RATE = 2.0
   INSURANCE_MAX_DAYS = 180
   INSURANCE_SUM_INSURED = 30_000
@@ -68,7 +70,8 @@ class ServiceRequest < ApplicationRecord
 
   store_accessor :details,
                  :from_city, :to_city, :departure_time, :seat_class, :passengers, # ЖД
-                 :arrival_time, :flight_number, :hotel_address, :invitation_ref   # VIP
+                 :arrival_time, :flight_number, :hotel_address, :invitation_ref,  # VIP
+                 :surname, :given_name, :middle_name # ФИО по частям, как на основной форме
 
   store_accessor :checklist, *VIP_CHECKLIST.keys
 
@@ -96,15 +99,16 @@ class ServiceRequest < ApplicationRecord
     validates :from_city, :to_city, :date_from, :seat_class, presence: true
     validates :seat_class, inclusion: { in: SEAT_CLASSES.keys }, allow_blank: true
     validates :departure_time, inclusion: { in: DEPARTURE_TIMES.keys }, allow_blank: true
-    validate :passengers_in_range
-    validate :passport_copy_attached
   end
 
   with_options if: :vip? do
-    validates :full_name, :date_from, :arrival_time, :flight_number, :hotel_address, presence: true
-    validate :passengers_in_range
-    validate :passport_copy_attached
+    validates :date_from, :arrival_time, :flight_number, :hotel_address, presence: true
+    validate :vip_name_given
   end
+
+  # Один колбэк на ЖД и VIP: повторный `validate :same_method` с другим if:
+  # заменяет предыдущий, и проверка для ЖД молча пропадала.
+  validate :passengers_in_range, :passport_copy_attached, if: -> { train? || vip? }
 
   validate :trip_date_not_in_past, on: :create
 
@@ -219,6 +223,14 @@ class ServiceRequest < ApplicationRecord
     self.email       = email.to_s.strip.downcase.presence
     self.citizenship = citizenship.to_s.strip.upcase.presence
     self.passport_number = passport_number.to_s.strip.presence
+    self.surname     = surname.to_s.squish.presence if surname
+    self.given_name  = given_name.to_s.squish.presence if given_name
+    self.middle_name = middle_name.to_s.squish.presence if middle_name
+    # На сайте ФИО вводят по частям, а full_name (админка, письма, фильтр)
+    # собирается из них. Только при создании: дальше full_name правят в админке.
+    if new_record? && name_parts.any?
+      self.full_name = name_parts.join(' ')
+    end
     self.full_name   = full_name.to_s.squish.presence
     self.passengers  = passengers.to_s.strip.presence if passengers
     self.passengers  = '1' if (train? || vip?) && passengers.blank?
@@ -250,7 +262,15 @@ class ServiceRequest < ApplicationRecord
     return if passport_copy.attached?
     return if full_name.present? && passport_number.present?
 
-    errors.add(:base, 'Please fill in your full name and passport number, or attach a copy of your passport')
+    errors.add(:base, 'Please fill in your surname and passport number, or attach a copy of your passport')
+  end
+
+  def vip_name_given
+    errors.add(:surname, "can't be blank") if full_name.blank?
+  end
+
+  def name_parts
+    [surname, given_name, middle_name].map { |part| part.to_s.squish }.reject(&:empty?)
   end
 
   def passport_copy_attached

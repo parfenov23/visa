@@ -11,9 +11,11 @@ ActiveAdmin.register ServiceRequest do
                 :arrival_time, :flight_number, :hotel_address, :invitation_ref,
                 *ServiceRequest::VIP_CHECKLIST.keys
 
-  scope("Все", :all, default: true)
+  # Название — лямбдой, id — вторым аргументом: русские названия при parameterize
+  # превращаются в пустую строку, и вкладки затирали друг друга.
+  scope(-> { "Все" }, :all, default: true)
   ServiceRequest::KINDS.each do |kind, title|
-    scope(title) { |s| s.where(kind: kind) }
+    scope(-> { title }, kind) { |s| s.where(kind: kind) }
   end
 
   batch_action :destroy, false

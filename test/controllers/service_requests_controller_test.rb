@@ -30,7 +30,7 @@ class ServiceRequestsControllerTest < ActionDispatch::IntegrationTest
           kind: "insurance",
           service_request: {
             citizenship: "IN", date_from: (Date.current + 5).iso8601, date_to: (Date.current + 14).iso8601,
-            full_name: "Rahul Kumar", passport_number: "Z1234567", email: "rahul@example.com"
+            surname: "Kumar", given_name: "Rahul", passport_number: "Z1234567", email: "rahul@example.com"
           }
         }
       end
@@ -38,6 +38,22 @@ class ServiceRequestsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to insurance_path
     assert_equal 13.5, ServiceRequest.last.price.to_f
+    assert_equal "Kumar Rahul", ServiceRequest.last.full_name
+  end
+
+  test "service forms ask for surname, given name and middle name like the main form" do
+    [insurance_path, airport_transfer_path].each do |path|
+      get path
+      assert_select "input[name='service_request[surname]']"
+      assert_select "input[name='service_request[given_name]']"
+      assert_select "input[name='service_request[middle_name]']"
+      assert_select "input[name='service_request[full_name]']", count: 0
+      assert_select "#svcSurnameHint", count: 0
+    end
+
+    get insurance_path(tariff: "custom_20")
+    assert_select "#svcSurnameHint", text: /dash/
+    assert_select "#svcMiddleHint", text: /leave this field empty/
   end
 
   test "invalid request re-renders the form with errors" do

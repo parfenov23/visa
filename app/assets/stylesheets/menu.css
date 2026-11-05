@@ -1,7 +1,6 @@
 /* Desktop */
 @media (min-width: 1100px){
     /* ######################### MENU STYLE #########################*/
-    .hamburger-menu-close-button { display: none; }
     #imMnMn.main-menu { text-align: right; }
     #imMnMn.main-menu > ul { z-index: 10001; display: inline-block; }
     #imMnMn.main-menu li > ul, #imMnMn.main-menu li > div { z-index: 10002; }
@@ -29,7 +28,7 @@
     #imMnMn.main-menu > ul > li:hover .imMnMnFirstBg > .imMnMnTxt, #imMnMn.main-menu > ul > li.imMnMnCurrent:hover .imMnMnFirstBg > .imMnMnTxt { cursor: pointer; color: #FFFFFF;font-weight: normal;font-style: normal;}
     #imMnMn.main-menu > ul > li.imMnMnCurrent .imMnMnFirstBg > .imMnMnTxt { color: #FFFFFF;font-weight: normal;font-style: normal;}
     #imMnMn.main-menu .imMnMnFirstBg { position: relative; display: block; background-repeat: no-repeat; cursor: pointer; width: 100%; }
-    #imMnMn.main-menu a { border: none; cursor: pointer; }
+    #imMnMn.main-menu a { border: none; }
     #imMnMn.main-menu .imMnMnTxt { text-overflow: ellipsis; white-space: nowrap; }
     #imMnMn.main-menu .imMnMnTxt .imMnMnTextLabel { position: relative; }
     #imMnMn.main-menu .imMnMnTxt .imMnMnTextLabel { word-wrap: normal; white-space: normal; line-height: normal; display: inline-block; vertical-align: middle; margin-top: -2px; }
@@ -56,7 +55,6 @@
 
     /* Section font style */
     #imMnMn.main-menu ul a, #imMnMn.main-menu ul a:hover, #imMnMn.main-menu ul a:visited { font: inherit; color: inherit; text-align: inherit; text-decoration: none; }
-
 
     /* MENU POSITION : HORIZONTAL VerticalOneColumn */
 
@@ -86,14 +84,9 @@
 }
 /* Breakpoint 1 */
 @media (max-width: 1099px) and (min-width: 720px){
-    #imMnMn.main-menu .hamburger-button { position: absolute; top: 5px;right: 5px;}
-    #imMnMn.main-menu .hamburger-button { cursor: pointer; width: 58px; height: 58px;background-image: none; background-repeat: no-repeat; background-position: center center;}
-    #imMnMn.main-menu .hamburger-button > div { display: table; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-button > div > div { display: table-cell; vertical-align: middle; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-bar { margin: 6px auto; width: 65%; height: 6px; background-color: #FFFFFF; }
+
     #imMnMn.main-menu .hamburger-menu-background { z-index: 10;position: fixed;display: block;top: 0;bottom: 0;right: 0; left: auto;width: 100px;background-color: #004D81;transition: left 0.5s, right 0.5s, opacity 0.5s;-webkit-transition: left 0.5s, right 0.5s, opacity 0.5s;}
     #imMnMn.main-menu > ul {transition: right 0.5s, left 0.5s, opacity 0.5s;-webkit-transition: right 0.5s, left 0.5s, opacity 0.5s;}
-    #imMnMn.main-menu .hamburger-site-background { display: none;position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 9; background-color: black;}
 
     #imMnMn.main-menu { overflow: visible; float: none; z-index: 11; }
     #imMnMn.main-menu ul ul { display: none; margin-bottom: 1px; }
@@ -119,14 +112,9 @@
 }
 /* Mobile */
 @media (max-width: 719px) and (min-width: 480px){
-    #imMnMn.main-menu .hamburger-button { position: absolute; top: 5px;right: 5px;}
-    #imMnMn.main-menu .hamburger-button { cursor: pointer; width: 58px; height: 58px;background-image: none; background-repeat: no-repeat; background-position: center center;}
-    #imMnMn.main-menu .hamburger-button > div { display: table; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-button > div > div { display: table-cell; vertical-align: middle; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-bar { margin: 6px auto; width: 65%; height: 6px; background-color: #FFFFFF; }
+
     #imMnMn.main-menu .hamburger-menu-background { z-index: 10;position: fixed;display: block;top: 0;bottom: 0;right: 0; left: auto;width: 100px;background-color: #004D81;transition: left 0.5s, right 0.5s, opacity 0.5s;-webkit-transition: left 0.5s, right 0.5s, opacity 0.5s;}
     #imMnMn.main-menu > ul {transition: right 0.5s, left 0.5s, opacity 0.5s;-webkit-transition: right 0.5s, left 0.5s, opacity 0.5s;}
-    #imMnMn.main-menu .hamburger-site-background { display: none;position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 9; background-color: black;}
 
     #imMnMn.main-menu { overflow: visible; float: none; z-index: 11; }
     #imMnMn.main-menu ul ul { display: none; margin-bottom: 1px; }
@@ -152,14 +140,9 @@
 }
 /* BreakPoint */
 @media (max-width: 479px) and (min-width: 360px){
-    #imMnMn.main-menu .hamburger-button { position: absolute; top: 0px;right: 0px;}
-    #imMnMn.main-menu .hamburger-button { cursor: pointer; width: 58px; height: 58px;background-image: none; background-repeat: no-repeat; background-position: center center;}
-    #imMnMn.main-menu .hamburger-button > div { display: table; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-button > div > div { display: table-cell; vertical-align: middle; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-bar { margin: 6px auto; width: 65%; height: 6px; background-color: #FFFFFF; }
+
     #imMnMn.main-menu .hamburger-menu-background { z-index: 10;position: fixed;display: block;top: 0;bottom: 0;right: 0; left: auto;width: 100px;background-color: #004D81;transition: left 0.5s, right 0.5s, opacity 0.5s;-webkit-transition: left 0.5s, right 0.5s, opacity 0.5s;}
     #imMnMn.main-menu > ul {transition: right 0.5s, left 0.5s, opacity 0.5s;-webkit-transition: right 0.5s, left 0.5s, opacity 0.5s;}
-    #imMnMn.main-menu .hamburger-site-background { display: none;position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 9; background-color: black;}
 
     #imMnMn.main-menu { overflow: visible; float: none; z-index: 11; }
     #imMnMn.main-menu ul ul { display: none; margin-bottom: 1px; }
@@ -185,14 +168,9 @@
 }
 /* BreakPoint */
 @media (max-width: 359px) and (min-width: 320px){
-    #imMnMn.main-menu .hamburger-button { position: absolute; top: 0px;right: 0px;}
-    #imMnMn.main-menu .hamburger-button { cursor: pointer; width: 58px; height: 58px;background-image: none; background-repeat: no-repeat; background-position: center center;}
-    #imMnMn.main-menu .hamburger-button > div { display: table; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-button > div > div { display: table-cell; vertical-align: middle; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-bar { margin: 6px auto; width: 65%; height: 6px; background-color: #FFFFFF; }
+
     #imMnMn.main-menu .hamburger-menu-background { z-index: 10;position: fixed;display: block;top: 0;bottom: 0;right: 0; left: auto;width: 100px;background-color: #004D81;transition: left 0.5s, right 0.5s, opacity 0.5s;-webkit-transition: left 0.5s, right 0.5s, opacity 0.5s;}
     #imMnMn.main-menu > ul {transition: right 0.5s, left 0.5s, opacity 0.5s;-webkit-transition: right 0.5s, left 0.5s, opacity 0.5s;}
-    #imMnMn.main-menu .hamburger-site-background { display: none;position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 9; background-color: black;}
 
     #imMnMn.main-menu { overflow: visible; float: none; z-index: 11; }
     #imMnMn.main-menu ul ul { display: none; margin-bottom: 1px; }
@@ -218,14 +196,9 @@
 }
 /* Mobile Fluid */
 @media (max-width: 319px){
-    #imMnMn.main-menu .hamburger-button { position: absolute; top: 0px;right: 0px;}
-    #imMnMn.main-menu .hamburger-button { cursor: pointer; width: 58px; height: 58px;background-image: none; background-repeat: no-repeat; background-position: center center;}
-    #imMnMn.main-menu .hamburger-button > div { display: table; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-button > div > div { display: table-cell; vertical-align: middle; width: 58px; height: 58px; }
-    #imMnMn.main-menu .hamburger-bar { margin: 6px auto; width: 65%; height: 6px; background-color: #FFFFFF; }
+
     #imMnMn.main-menu .hamburger-menu-background { z-index: 10;position: fixed;display: block;top: 0;bottom: 0;right: 0; left: auto;width: 100px;background-color: #004D81;transition: left 0.5s, right 0.5s, opacity 0.5s;-webkit-transition: left 0.5s, right 0.5s, opacity 0.5s;}
     #imMnMn.main-menu > ul {transition: right 0.5s, left 0.5s, opacity 0.5s;-webkit-transition: right 0.5s, left 0.5s, opacity 0.5s;}
-    #imMnMn.main-menu .hamburger-site-background { display: none;position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 9; background-color: black;}
 
     #imMnMn.main-menu { overflow: visible; float: none; z-index: 11; }
     #imMnMn.main-menu ul ul { display: none; margin-bottom: 1px; }
@@ -267,7 +240,6 @@
     /* Hover font style */
 
     /* Section font style */
-
 
     /* MENU POSITION : HORIZONTAL VerticalOneColumn */
 

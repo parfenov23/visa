@@ -1,97 +1,4 @@
-@-webkit-keyframes imCell_85-anim-bounceInRight {
-  0% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    opacity: 0;
-    -webkit-transform: translate3d(3000px, 0, 0);
-    transform: translate3d(3000px, 0, 0);
-  }
-  60% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    opacity: 1;
-    -webkit-transform: translate3d(-25px, 0, 0);
-    transform: translate3d(-25px, 0, 0);
-  }
-  75% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transform: translate3d(10px, 0, 0);
-    transform: translate3d(10px, 0, 0);
-  }
-  90% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transform: translate3d(-5px, 0, 0);
-    transform: translate3d(-5px, 0, 0);
-  }
-  100% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-@keyframes imCell_85-anim-bounceInRight {
-  0% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    opacity: 0;
-    -webkit-transform: translate3d(3000px, 0, 0);
-    transform: translate3d(3000px, 0, 0);
-  }
-  60% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    opacity: 1;
-    -webkit-transform: translate3d(-25px, 0, 0);
-    transform: translate3d(-25px, 0, 0);
-  }
-  75% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transform: translate3d(10px, 0, 0);
-    transform: translate3d(10px, 0, 0);
-  }
-  90% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transform: translate3d(-5px, 0, 0);
-    transform: translate3d(-5px, 0, 0);
-  }
-  100% {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-/* === Remove input autofocus webkit === */
-/* === Form Typography === */
-/* === List Styles === */
-/* === Form Header === */
-/* === Form Elements === */
 /* form element visual styles */
-/* === HTML5 validation styles === */
-/* === Form hints === */
-/* === Button Style === */
-li.clear_selector {
-  width: 100%;
-}
-li.clear_selector .date-picker-holder {
-  width: 100%;
-  display: flex;
-  column-gap: 4px;
-}
-li.clear_selector .date-picker-holder select {
-  width: 100% !important;
-  margin: 0 !important;
-}
-
-#image-0 {
-  width: 19px;
-  height: 18px;
-}
 
 #imGroup_1 {
   float: left;
@@ -162,9 +69,7 @@ li.clear_selector .date-picker-holder select {
   margin: 0;
   padding: 0;
 }
-#imTextObject_72_tab0 .inline-block {
-  display: inline-block;
-}
+
 #imTextObject_72_tab0 sub {
   vertical-align: sub;
   font-size: smaller;
@@ -236,9 +141,7 @@ li.clear_selector .date-picker-holder select {
   margin: 0;
   padding: 0;
 }
-#imTextObject_03_tab0 .inline-block {
-  display: inline-block;
-}
+
 #imTextObject_03_tab0 sub {
   vertical-align: sub;
   font-size: smaller;
@@ -257,19 +160,6 @@ li.clear_selector .date-picker-holder select {
   right: 0;
   background: transparent url(asset-path("bg_advantages_02.jpg")) repeat center top;
   opacity: 1;
-}
-
-#imCell_10 {
-  display: block;
-  position: relative;
-  overflow: hidden;
-}
-
-#imCellStyle_10 {
-  position: relative;
-  box-sizing: border-box;
-  text-align: center;
-  z-index: 2;
 }
 
 #imTextObject_10 {
@@ -334,8 +224,25 @@ li.clear_selector .date-picker-holder select {
   z-index: 2;
 }
 
-*:focus {
+/* Фокус: убираем рамку только для мыши, клавиатурный фокус всегда видим. */
+*:focus:not(:focus-visible) {
   outline: none;
+}
+:focus-visible {
+  outline: 2px solid #004D81;
+  outline-offset: 2px;
+}
+/* На красном/синем фоне (шапка, меню, подвал, баннеры) — белая рамка. */
+#imHeader :focus-visible,
+#imMnMnContainer :focus-visible,
+nav.mobile-nav :focus-visible,
+#imFooter :focus-visible,
+.svc-hero :focus-visible,
+.btn.blue:focus-visible,
+.btn.red:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px #004D81;
 }
 
 body {
@@ -359,16 +266,6 @@ body {
   display: inline-block;
   padding-bottom: 10px;
 }
-.contact_form ul {
-  list-style-type: none;
-  list-style-position: outside;
-  margin: 50px 20px 10px 10px;
-  padding: 0px;
-}
-.contact_form li {
-  padding: 7px;
-  position: relative;
-}
 .contact_form input {
   height: 20px;
   width: 100%;
@@ -388,28 +285,7 @@ body {
   box-shadow: 0 0 3px #aaa;
   padding-right: 10px;
 }
-.contact_form input:focus:invalid {
-  background: #fff url(asset-path("invalid.png")) no-repeat 98% center;
-  box-shadow: 0 0 5px #d45252;
-  border-color: #b03535;
-}
-.contact_form input:focus + .form_hint {
-  display: inline;
-}
-.contact_form input:required {
-  background: #fff url(asset-path("red_asterisk.png")) no-repeat 98% center;
-}
-.contact_form input:required:valid {
-  background: #fff url(asset-path("valid.png")) no-repeat 98% center;
-  box-shadow: 0 0 5px #5cd053;
-  border-color: #28921f;
-}
-.contact_form input:required:valid + .form_hint {
-  background: #28921f;
-}
-.contact_form input:required:valid + .form_hint::before {
-  color: #28921f;
-}
+
 .contact_form textarea {
   padding: 8px;
   width: 100%;
@@ -428,48 +304,8 @@ body {
   box-shadow: 0 0 3px #aaa;
   padding-right: 10px;
 }
-.contact_form textarea:focus:invalid {
-  background: #fff url(asset-path("invalid.png")) no-repeat 98% center;
-  box-shadow: 0 0 5px #d45252;
-  border-color: #b03535;
-}
-.contact_form textarea:required {
-  background: #fff url(asset-path("red_asterisk.png")) no-repeat 98% center;
-}
-.contact_form textarea:required:valid {
-  background: #fff url(asset-path("valid.png")) no-repeat 98% center;
-  box-shadow: 0 0 5px #5cd053;
-  border-color: #28921f;
-}
 .contact_form button {
   margin-left: 0px;
-}
-
-.form_hint {
-  font-size: 11px;
-  background: #d45252;
-  border-radius: 3px 3px 3px 3px;
-  color: white;
-  margin-left: 8px;
-  padding: 1px 6px;
-  z-index: 999;
-  position: absolute;
-  display: none;
-}
-.form_hint::before {
-  content: "\25C0";
-  color: #d45252;
-  position: absolute;
-  top: 1px;
-  left: -6px;
-}
-
-.required_notification {
-  font-size: 11px;
-  color: #d45252;
-  margin: 5px 0 0 0;
-  display: inline;
-  float: right;
 }
 
 .form-control {
@@ -481,51 +317,6 @@ body {
   height: 35px;
   width: 100%;
   padding: 5px 8px;
-}
-
-.line {
-  border-bottom: 1px solid #777;
-  margin: 20px 0px 0px 0px;
-}
-
-button.submit {
-  background-color: #68b12f;
-  background: -webkit-gradient(linear, left top, left bottom, from(#68b12f), to(#50911e));
-  background: -webkit-linear-gradient(top, #68b12f, #50911e);
-  background: -moz-linear-gradient(top, #68b12f, #50911e);
-  background: -ms-linear-gradient(top, #68b12f, #50911e);
-  background: -o-linear-gradient(top, #68b12f, #50911e);
-  background: linear-gradient(top, #68b12f, #50911e);
-  border: 1px solid #509111;
-  border-bottom: 1px solid #5b992b;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  box-shadow: inset 0 1px 0 0 #9fd574;
-  -webkit-box-shadow: 0 1px 0 0 #9fd574 inset;
-  -moz-box-shadow: 0 1px 0 0 #9fd574 inset;
-  -ms-box-shadow: 0 1px 0 0 #9fd574 inset;
-  -o-box-shadow: 0 1px 0 0 #9fd574 inset;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 6px 20px;
-  text-align: center;
-  text-shadow: 0 -1px 0 #396715;
-}
-button.submit:hover {
-  opacity: .85;
-  cursor: pointer;
-}
-button.submit:active {
-  border: 1px solid #20911e;
-  box-shadow: 0 0 10px 5px #356b0b inset;
-  -webkit-box-shadow: 0 0 10px 5px #356b0b inset;
-  -moz-box-shadow: 0 0 10px 5px #356b0b inset;
-  -ms-box-shadow: 0 0 10px 5px #356b0b inset;
-  -o-box-shadow: 0 0 10px 5px #356b0b inset;
 }
 
 .center_button {
@@ -592,10 +383,6 @@ button.submit:active {
     right: 3px;
   }
 
-  #imTextObject_72_tab0 .image-0 {
-    width: 45px;
-    height: 46px;
-  }
   #imTextObject_72_tab0 .image-1 {
     width: 46px;
     height: 47px;
@@ -630,25 +417,6 @@ button.submit:active {
   #imCellStyleGraphics_3 {
     left: 3px;
     right: 3px;
-  }
-
-  #imCell_10 {
-    width: 524px;
-    min-height: 134px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 0px;
-    padding-right: 10px;
-  }
-
-  #imCellStyle_10 {
-    width: 524px;
-    min-height: 134px;
-    padding: 0px 0px 71px 0px;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-right: 0;
   }
 
   #imGroup_9 {
@@ -727,10 +495,6 @@ button.submit:active {
     right: 3px;
   }
 
-  #imTextObject_72_tab0 .image-0 {
-    width: 45px;
-    height: 46px;
-  }
   #imTextObject_72_tab0 .image-1 {
     width: 46px;
     height: 47px;
@@ -767,25 +531,6 @@ button.submit:active {
   #imCellStyleGraphics_3 {
     left: 1px;
     right: 1px;
-  }
-
-  #imCell_10 {
-    width: 678px;
-    min-height: 42px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 0px;
-    padding-right: 10px;
-  }
-
-  #imCellStyle_10 {
-    width: 678px;
-    min-height: 42px;
-    padding: 0px 0px 0px 0px;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-right: 0;
   }
 
   #imGroup_9 {
@@ -864,10 +609,6 @@ button.submit:active {
     right: 3px;
   }
 
-  #imTextObject_72_tab0 .image-0 {
-    width: 45px;
-    height: 46px;
-  }
   #imTextObject_72_tab0 .image-1 {
     width: 46px;
     height: 47px;
@@ -904,25 +645,6 @@ button.submit:active {
   #imCellStyleGraphics_3 {
     left: 1px;
     right: 1px;
-  }
-
-  #imCell_10 {
-    width: 440px;
-    min-height: 63px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 0px;
-    padding-right: 8px;
-  }
-
-  #imCellStyle_10 {
-    width: 440px;
-    min-height: 63px;
-    padding: 0px 0px 0px 0px;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-right: 0;
   }
 
   #imGroup_9 {
@@ -1001,10 +723,6 @@ button.submit:active {
     right: 2px;
   }
 
-  #imTextObject_72_tab0 .image-0 {
-    width: 45px;
-    height: 46px;
-  }
   #imTextObject_72_tab0 .image-1 {
     width: 46px;
     height: 47px;
@@ -1041,25 +759,6 @@ button.submit:active {
   #imCellStyleGraphics_3 {
     left: 1px;
     right: 1px;
-  }
-
-  #imCell_10 {
-    width: 322px;
-    min-height: 105px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 0px;
-    padding-right: 6px;
-  }
-
-  #imCellStyle_10 {
-    width: 322px;
-    min-height: 105px;
-    padding: 0px 0px 0px 0px;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-right: 0;
   }
 
   #imGroup_9 {
@@ -1138,10 +837,6 @@ button.submit:active {
     right: 2px;
   }
 
-  #imTextObject_72_tab0 .image-0 {
-    width: 45px;
-    height: 46px;
-  }
   #imTextObject_72_tab0 .image-1 {
     width: 46px;
     height: 47px;
@@ -1178,25 +873,6 @@ button.submit:active {
   #imCellStyleGraphics_3 {
     left: 1px;
     right: 1px;
-  }
-
-  #imCell_10 {
-    width: 283px;
-    min-height: 105px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 0px;
-    padding-right: 5px;
-  }
-
-  #imCellStyle_10 {
-    width: 283px;
-    min-height: 105px;
-    padding: 0px 0px 0px 0px;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-right: 0;
   }
 
   #imGroup_9 {
@@ -1274,10 +950,6 @@ button.submit:active {
     right: 5px;
   }
 
-  #imTextObject_72_tab0 .image-0 {
-    width: 100%;
-    max-width: 45px;
-  }
   #imTextObject_72_tab0 .image-1 {
     width: 100%;
     max-width: 46px;
@@ -1313,23 +985,6 @@ button.submit:active {
     bottom: 3px;
     left: 5px;
     right: 5px;
-  }
-
-  #imCell_10 {
-    clear: left;
-    width: 100%;
-    min-height: 30px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 5px;
-    padding-right: 5px;
-    box-sizing: border-box;
-  }
-
-  #imCellStyle_10 {
-    width: 100%;
-    min-height: 0px;
-    padding: 0px 0px 0px 0px;
   }
 
   #imGroup_9 {

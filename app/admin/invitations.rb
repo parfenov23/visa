@@ -159,7 +159,7 @@ ActiveAdmin.register Invitation do
               hint: 'Каждая выбранная гостиница добавляется новой строкой в поля Hotels (EN) и Hotels (RU) ниже — можно выбрать несколько подряд. Базу можно вести в разделе «Hotels (база)».'
       f.input :hotels, label: 'Hotels (EN)'
       f.input :hotels_ru, label: 'Hotels (RU)'
-      f.input :accomodation, as: :select, collection: Invitation::ALL_ACCOMODATION
+      f.input :accomodation, label: 'Accommodation', as: :select, collection: Invitation::ALL_ACCOMODATION
       f.input :meals, as: :select, collection: Invitation::ALL_MEALS, default: "RO"
       f.input :email
       f.input :promocode
@@ -216,7 +216,7 @@ ActiveAdmin.register Invitation do
       row :visa_obtain_place
       row :cities
       row :hotels
-      row :accomodation
+      row('Accommodation') { |inv| inv.accomodation }
       row :meals
       row :email
       row :promocode do |inv|

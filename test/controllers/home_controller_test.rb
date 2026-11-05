@@ -18,11 +18,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     with_geo_file("127.0.0.0,127.255.255.255,IN\n") do
       get root_path
       assert_response :success
-      assert_includes response.body, 'name="tariff" value="custom_20"'
+      assert_select 'input[name="tariff"][value="custom_20"]'
       assert_includes response.body, "$ 1.35 / day"
 
       get root_path(currency: "eur")
-      assert_includes response.body, 'name="tariff" value="default"'
+      assert_select 'input[name="tariff"][value="default"]'
     end
   end
 
@@ -30,7 +30,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     with_geo_file("127.0.0.0,127.255.255.255,IN\n") do
       ENV["INDIA_GEO_PRICES"] = "off"
       get root_path
-      assert_includes response.body, 'name="tariff" value="default"'
+      assert_select 'input[name="tariff"][value="default"]'
     ensure
       ENV.delete("INDIA_GEO_PRICES")
     end

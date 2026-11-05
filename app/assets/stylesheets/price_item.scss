@@ -1,5 +1,6 @@
 @import 'vendor/mixin/default_variable';
 @import 'vendor/mixin/colors';
+@import 'vendor/mixin/ui';
 
 .price_item {
   display: block;
@@ -34,9 +35,7 @@
     box-sizing: border-box;
   }
 
-  .amount{
-    font-size: 56px;
-  }
+  .amount > span { @include price-pill; }
 
   // Цена должна стоять на одной линии во всех карточках. Заголовок
   // ("Single or Double entry") может занимать 2 строки, а пояснение — 3,
@@ -93,10 +92,6 @@
     @media (max-width: 719px) and (min-width: 480px) {
       width: 416px;
     }
-
-    //@media (max-width: 479px) and (min-width: 320px) {
-    //  width: 256px;
-    //}
 
     @media (max-width: 319px) {
       width: 100%;

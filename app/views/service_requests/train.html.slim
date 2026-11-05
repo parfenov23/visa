@@ -39,6 +39,8 @@
       = form_with model: f_req, url: service_requests_path, local: true, multipart: true,
           html: { class: "contact_form svc-form", id: "trainForm" } do |f|
         = hidden_field_tag :kind, "train"
+        - if current_tariff_param
+          = hidden_field_tag :tariff, current_tariff_param
         - if @ref.present?
           = hidden_field_tag :ref, @ref
         h2.form-section-title Your trip
@@ -71,7 +73,7 @@
         h2.form-section-title Contacts
         .svc-row
           = f.label :email, "Email*"
-          = f.email_field :email, required: true, placeholder: "john_doe@example.com"
+          = f.email_field :email, required: true, placeholder: "john_doe@example.com", autocomplete: "email", spellcheck: false
         .svc-row
           = f.label :comments, "Comments"
           = f.text_area :comments, rows: 3, placeholder: "Optional"

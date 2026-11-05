@@ -1,3 +1,12 @@
+/ Форма заявки на приглашение.
+/ ВАЖНО: name-атрибуты полей, hidden tariff/currency, action/method — контракт
+/ с InvitationsController#create (invitation_params). Не переименовывать.
+/ id #invitation_type_id, #countrySelect, #birthDate, #arival_date, #departure_date
+/ используются в application.js (tom-select, датапикер, кнопки тарифов).
+- price_items = all_price_items(currency: @currency, tariff: @tariff)
+/ Индийские цены для подмены в селекте, если выбрано гражданство Индии/Непала
+/ (только на базовом тарифе; сервер всё равно пересчитает в Invitation#set_price).
+- india_items = @tariff.to_s == "default" ? all_price_items(currency: :usd, tariff: Invitation::INDIA_TARIFF).index_by { |i| i[:selector][:value].to_s } : {}
 div#imGroup_10.imHGroup.display_flex.center
   div#imGroup_11.imVGroup
     div#imCell_112
@@ -6,148 +15,145 @@ div#imGroup_10.imHGroup.display_flex.center
           = form_with url: invitations_path,
                   method: :post,
                   local: true,
-                  html: { id: "invitationForm", class: "contact_form", name: "contact_form" } do
-            ul
-              li.line
-                h2.form-section-title
-                  | Type of invitation*
-                span.required_notification
-                  | * Denotes Required Field
-              li.w-100per
-                label for="invitation_type_id"
-                  | Select the type of invitation
-                br
-                input type="hidden" name="currency" value=@currency
-                input type="hidden" name="tariff" value=@tariff
-                select#invitation_type_id.form-control name="package" required=""
-                  - all_price_items(currency: @currency, tariff: @tariff).each do |item|
+                  html: { id: "invitationForm", class: "contact_form inv-form", name: "contact_form" } do
+            input type="hidden" name="currency" value=@currency
+            input type="hidden" name="tariff" value=@tariff
+
+            p.inv-form__required-note
+              | Fields marked with
+              span.inv-req aria-hidden="true" *
+              |  are required.
+
+            fieldset.inv-group
+              legend.inv-group__title
+                span.inv-group__num aria-hidden="true" 1
+                | Invitation and travel dates
+              .inv-field
+                label.inv-label for="invitation_type_id"
+                  | Type of invitation
+                  span.inv-req aria-hidden="true" *
+                select#invitation_type_id.form-control name="package" required="" aria-describedby="invitation_type_id-hint"
+                  - price_items.each do |item|
                     - selector = item[:selector]
-                    option value=selector[:value]
+                    - india = india_items[selector[:value].to_s]
+                    option value=selector[:value] data-price=(item[:price].present? ? "#{item[:currency]} #{item[:price]}" : nil) data-india-price=(india && "#{india[:currency]} #{india[:price]}") data-india-text=(india && india[:selector][:text])
                       = raw selector[:text]
-              li.line
-                h2.form-section-title
-                  | Client information
-                span.required_notification
-                  | * Denotes Required Field
-              li
-                label for="surname"
-                  | Surname*:
-                br
-                input#surname type="text" name="surname" placeholder="As in passport" required=""
-                span.form_hint
-                  | As in passport
-              li
-                label for="name"
-                  | Name:
-                br
-                input#name type="text" name="name" placeholder="As in passport"
-                  span.form_hint
-                    | As in passport
-              li
-                label for="middlename"
-                  | Middle Name:
-                br
-                input#middlename type="text" name="middlename" placeholder="As in passport"
-                span.form_hint
-                  | As in passport
-              li.w-100per
-                label for="sex"
-                  | Sex*
-                br
-                select#sex.form-control name="sex" required=""
-                  option value=""
-                    | -
-                  option value="0"
-                    | Female
-                  option value="1"
-                    | Male
-              li.clear_selector
-                label for="countrySelect"
-                  | Citizenship*
-                br
-                select.form-control#countrySelect name="citizenship" required="" aria-label="Citizenship"
-                  option value=""
-                    | -
+                span.inv-hint#invitation_type_id-hint Number of entries and maximum length of stay in Russia.
+              .inv-field
+                label.inv-label for="arival_date" id="arival_date-label"
+                  | Date of arrival in Russia
+                  span.inv-req aria-hidden="true" *
+                input#arival_date type="text" name="arival_date" placeholder="dd.mm.yyyy" required="" autocomplete="off" data-inv-date="future"
+              .inv-field
+                label.inv-label for="departure_date" id="departure_date-label"
+                  | Date of departure from Russia
+                  span.inv-req aria-hidden="true" *
+                input#departure_date type="text" name="departure_date" placeholder="dd.mm.yyyy" required="" autocomplete="off" data-inv-date="after:arival_date"
+                span.inv-hint The invitation covers your whole stay — from arrival to departure.
+
+            fieldset.inv-group
+              legend.inv-group__title
+                span.inv-group__num aria-hidden="true" 2
+                | Traveller — exactly as in passport
+              p.inv-group__hint Use Latin letters as written in your passport.
+              .inv-field
+                label.inv-label for="surname"
+                  | Surname
+                  span.inv-req aria-hidden="true" *
+                / Индийская страница: у многих индийцев нет фамилии — подсказываем ставить прочерк.
+                - if india_pricing?
+                  input#surname type="text" name="surname" placeholder="e.g. SHARMA" required="" autocomplete="family-name" autocapitalize="characters" spellcheck="false" aria-describedby="surname-hint"
+                  span.inv-hint#surname-hint Put a dash (-) if you have no surname.
+                - else
+                  input#surname type="text" name="surname" placeholder="e.g. SHARMA" required="" autocomplete="family-name" autocapitalize="characters" spellcheck="false"
+              .inv-field
+                label.inv-label for="name" Given name(s)
+                input#name type="text" name="name" placeholder="e.g. RAHUL" autocomplete="given-name" autocapitalize="characters" spellcheck="false"
+              .inv-field
+                label.inv-label for="middlename" Middle name
+                - if india_pricing?
+                  input#middlename type="text" name="middlename" placeholder="If shown in passport" autocomplete="additional-name" autocapitalize="characters" spellcheck="false" aria-describedby="middlename-hint"
+                  span.inv-hint#middlename-hint If you have no middle name, leave this field empty.
+                - else
+                  input#middlename type="text" name="middlename" placeholder="If shown in passport" autocomplete="additional-name" autocapitalize="characters" spellcheck="false"
+              .inv-field
+                label.inv-label for="sex"
+                  | Sex
+                  span.inv-req aria-hidden="true" *
+                select#sex.form-control name="sex" required="" autocomplete="sex"
+                  option value="" -
+                  option value="0" Female
+                  option value="1" Male
+              .inv-field
+                label.inv-label for="countrySelect"
+                  | Citizenship
+                  span.inv-req aria-hidden="true" *
+                select.form-control#countrySelect name="citizenship" required="" data-india-codes=Invitation::INDIA_CITIZENSHIPS.join(" ")
+                  option value="" -
                   - Country.order(:title).each do |country|
                     option value=country.code
                       = "#{country.flag} #{country.title}"
+                - if india_items.any?
+                  span.inv-hint.inv-hint--accent#invIndiaNote hidden="" Special prices for citizens of India and Nepal are applied.
+              .inv-field
+                label.inv-label for="birthDate" id="birthDate-label"
+                  | Date of birth
+                  span.inv-req aria-hidden="true" *
+                input#birthDate type="text" name="birthDate" placeholder="dd.mm.yyyy" required="" autocomplete="bday" data-inv-date="past"
 
-                / label for="citizenship"
-                /   | Citizenship*:
-                / br
-                / input#citizenship type="text" name="citizenship" placeholder="As in passport" required=""
-              li.clear_selector
-                label for="birthDate"
-                  | Date of birth*:
-                br
-                input#birthDate type="text" name="birthDate" placeholder="dd.mm.yyyy" required=""
-                span.form_hint
-                  | Proper format "dd.mm.yyyy"
-              li.line
-                h2.form-section-title
-                  | Trip information
-                span.required_notification
-                  | * Denotes Required Field
-              li.clear_selector
-                label for="arival_date"
-                  | Date of arrival*:
-                br
-                input#arival_date type="text" name="arival_date" placeholder="dd.mm.yyyy" required=""
-                span.form_hint
-                  | Proper format "dd.mm.yyyy"
-              li.clear_selector
-                label for="departure_date"
-                  | Date of departure*:
-                br
-                input#departure_date type="text" name="departure_date" placeholder="dd.mm.yyyy" required=""
-                span.form_hint
-                  | Proper format "dd.mm.yyyy"
-              li
-                label for="passport"
-                  | Passport Number*:
-                br
-                input#passport type="text" name="passport" placeholder="As in passport" required=""
-              li
-                label for="visa_obtain_place"
-                  | Place of obtaining the visa:
-                br
-                textarea#visa_obtain_place type="text" name="visa_obtain_place" cols="40" rows="2" placeholder="Country, city with a Russian Consulate or Visa center"
-              li
-                label for="cities"
-                  | Cities of stay:
-                br
-                textarea#cities type="text" name="cities" cols="40" rows="3" placeholder="Cities of stay (if known), or specify NOT DECIDED"
-              li
-                label for="hotels"
-                  | Hotel(s):
-                br
-                textarea#hotels type="text" name="hotels" cols="40" rows="3" placeholder="Hotel(s) (if known) or Airbnb address (if known), or leave this field empty if place of stay is unknown"
-              li.line
-                h2.form-section-title
-                  | Contacts
-                span.required_notification
-                  | * Denotes Required Field
-              li
-                label for="offname"
-                  | Email*:
-                br
-                input#offname type="email" name="email" placeholder="john_doe@example.com" required=""
-                span.form_hint
-                  | Proper format "name@something.com"
-              li
-                label for="promocode"
-                  | Promo code:
-                br
-                textarea#promocode type="text" name="promocode" cols="40" rows="1" placeholder="If known"
-              li
-                label for="comments"
-                  | Comments:
-                br
-                textarea#comments type="text" name="comments" cols="40" rows="3" placeholder="Some additional info about your trip, for example if you travel by car etc. - optional"
-              li
+            fieldset.inv-group
+              legend.inv-group__title
+                span.inv-group__num aria-hidden="true" 3
+                | Passport
+              .inv-field
+                label.inv-label for="passport"
+                  | Passport number
+                  span.inv-req aria-hidden="true" *
+                input#passport type="text" name="passport" placeholder="e.g. Z1234567" required="" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="passport-hint"
+                span.inv-hint#passport-hint Double-check it: a wrong passport number is the most common reason for rejection.
+              .inv-field
+                label.inv-label for="visa_obtain_place" Where will you apply for the visa?
+                textarea#visa_obtain_place name="visa_obtain_place" cols="40" rows="2" placeholder="Country, city with a Russian Consulate or Visa center"
+
+            fieldset.inv-group
+              legend.inv-group__title
+                span.inv-group__num aria-hidden="true" 4
+                | Route and accommodation
+              .inv-field
+                label.inv-label for="cities" Cities of stay
+                textarea#cities name="cities" cols="40" rows="2" placeholder="e.g. Moscow, Saint Petersburg — or NOT DECIDED"
+              .inv-field
+                label.inv-label for="hotels" Hotel(s)
+                textarea#hotels name="hotels" cols="40" rows="2" placeholder="Hotel or Airbnb address, if known"
+                span.inv-hint Leave empty if you don't know yet where you will stay.
+
+            fieldset.inv-group
+              legend.inv-group__title
+                span.inv-group__num aria-hidden="true" 5
+                | Contacts
+              .inv-field
+                label.inv-label for="offname"
+                  | Email
+                  span.inv-req aria-hidden="true" *
+                input#offname type="email" name="email" placeholder="john_doe@example.com" required="" autocomplete="email" inputmode="email" spellcheck="false" autocapitalize="off" aria-describedby="offname-hint"
+                span.inv-hint#offname-hint We will send your invitation and invoice to this address.
+              .inv-field
+                label.inv-label for="promocode" Promo code
+                input#promocode type="text" name="promocode" placeholder="If you have one" autocomplete="off" autocapitalize="characters" spellcheck="false"
+              .inv-field
+                label.inv-label for="comments" Comments
+                textarea#comments name="comments" cols="40" rows="3" placeholder="Optional: anything we should know about your trip, e.g. travelling by car"
+
+            .inv-submit
+              .inv-summary#invSummary aria-live="polite" hidden=""
+                span.inv-summary__label#invSummaryLabel
+                span.inv-summary__price
+                  | Total:
+                  b#invSummaryPrice
+              .inv-turnstile
                 = cloudflare_turnstile_tag
-                p.center_button
-                  | Within one hour we will send you your invitation and invoice.
-              li.display_flex.center
-                button.btn.red.big type="submit" name="submit"
-                  | GET INVITATION AND INVOICE
+              p.center_button
+                | Within an hour, we will send you your invitation and invoice.
+              .inv-form__error-summary#invErrorSummary role="alert" hidden=""
+              button.btn.red.big.inv-submit__btn type="submit" name="submit" data-sending-text="Sending…"
+                | GET INVITATION AND INVOICE
