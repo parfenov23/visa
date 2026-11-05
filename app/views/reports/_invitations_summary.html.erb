@@ -58,6 +58,33 @@
 </table>
 <% end %>
 
+<% lost = report.lost_regulars %>
+<% if lost.any? %>
+<div style="margin:0 0 16px; padding:10px 12px; background:#fff7ed; border-left:4px solid #ea580c;">
+  <div style="font-size:15px; font-weight:bold; margin-bottom:4px;">⚠️ Пропавшие постоянные клиенты: <%= lost.size %></div>
+  <div style="color:#6b7280; font-size:12px; margin-bottom:8px;">
+    От <%= InvitationsReport::REGULAR_MIN_ORDERS %> заявок за <%= InvitationsReport::REGULAR_WINDOW_DAYS %> дней,
+    но больше <%= InvitationsReport::LOST_AFTER_DAYS %> дней без новых (на <%= report.to.strftime('%d.%m.%Y') %>).
+  </div>
+  <table cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+    <tr>
+      <th style="<%= th %>">Клиент (email)</th>
+      <th style="<%= th %> text-align:right;">Заявок раньше</th>
+      <th style="<%= th %> text-align:right;">Последняя</th>
+      <th style="<%= th %> text-align:right;">Дней тишины</th>
+    </tr>
+    <% lost.each do |c| %>
+    <tr>
+      <td style="<%= td %>"><%= c.email %><%= ' · агентство' if c.agency %></td>
+      <td style="<%= td %> text-align:right;"><b><%= c.orders %></b></td>
+      <td style="<%= td %> text-align:right;"><%= c.last_at.strftime('%d.%m.%Y') %></td>
+      <td style="<%= td %> text-align:right; color:#b91c1c;"><b><%= c.days_silent %></b></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+<% end %>
+
 <% if report.rows.empty? %>
   <p style="color:#6b7280;">За период заявок нет.</p>
 <% else %>

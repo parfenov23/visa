@@ -67,4 +67,29 @@ class InvitationsReportTest < ActiveSupport::TestCase
     assert_includes mail.subject, "01.11.2026"
     assert_includes mail.body.encoded, "India"
   end
+
+  test "lost regulars: 3+ orders within 90 days, then silent for more than 30 days" do
+    regular = ->(email, *days, status: "done", agency: false) do
+      days.each do |d|
+        travel_to(Time.zone.local(2026, 11, 30, 12) - d.days) do
+          Invitation.create!(currency: "usd", tariff: "default", package: "single", citizenship: "IN",
+                             email: email, status: status, agency: agency)
+        end
+      end
+    end
+    regular.call("Lost@Agency.com", 40, 50, 60, 70, agency: true) # 4 заявки, молчит 40 дней
+    regular.call("lost2@example.com", 35, 45, 55)                 # 3 заявки, молчит 35 дней
+    regular.call("active@example.com", 5, 40, 60)                 # заказывал 5 дней назад
+    regular.call("rare@example.com", 40, 200, 300)                # редкий: 1 заявка за 90 дней
+    regular.call("void@example.com", 40, 50, 60, status: "cancelled")
+    regular.call("old@example.com", 200, 210, 220)                # молчит дольше 180 дней
+
+    report = InvitationsReport.new(from: Date.new(2026, 11, 1), to: Date.new(2026, 11, 30))
+    lost = report.lost_regulars
+
+    assert_equal %w[lost@agency.com lost2@example.com], lost.map(&:email)
+    assert_equal [4, 3], lost.map(&:orders)
+    assert_equal [40, 35], lost.map(&:days_silent)
+    assert lost.first.agency
+  end
 end

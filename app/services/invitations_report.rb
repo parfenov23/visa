@@ -11,8 +11,21 @@
 #   report.rows      # => [Row(code: "IN", title: "India", count: 40, prev_count: 31), ...]
 #   report.added     # страны, которых не было в прошлом периоде
 #   report.gone      # страны, которые были в прошлом периоде, а сейчас 0
+#   report.lost_regulars # постоянные клиенты, которые перестали заказывать
 class InvitationsReport
   UNKNOWN_CODE = "—"
+
+  # Постоянный клиент (по email): не меньше REGULAR_MIN_ORDERS заявок за
+  # REGULAR_WINDOW_DAYS дней до его последней заявки. «Отвалился» — с последней
+  # заявки прошло больше LOST_AFTER_DAYS дней. Тех, кто молчит дольше
+  # LOST_LOOKBACK_DAYS, уже не показываем, чтобы список не копился бесконечно.
+  REGULAR_MIN_ORDERS = 3
+  REGULAR_WINDOW_DAYS = 90
+  LOST_AFTER_DAYS = 30
+  LOST_LOOKBACK_DAYS = 180
+  LOST_LIMIT = 30
+
+  LostClient = Struct.new(:email, :orders, :last_at, :days_silent, :agency, keyword_init: true)
 
   Row = Struct.new(:code, :title, :count, :prev_count, keyword_init: true) do
     def delta
@@ -82,6 +95,40 @@ class InvitationsReport
     end.compact
   end
 
+  # Постоянные клиенты, которые перестали заказывать (на конец периода `to`).
+  # Сортировка — по числу заявок раньше: крупные потери сверху.
+  def lost_regulars
+    @lost_regulars ||= begin
+      as_of  = to.in_time_zone.end_of_day
+      since  = as_of - (LOST_LOOKBACK_DAYS + REGULAR_WINDOW_DAYS).days
+      void   = Invitation::VOID_STATUSES.map { |st| Invitation.connection.quote(st) }.join(", ")
+      sql = <<~SQL
+        SELECT email, last_at, BOOL_OR(agency) AS agency, COUNT(*) AS orders
+        FROM (
+          SELECT LOWER(TRIM(email)) AS email, created_at, agency,
+                 MAX(created_at) OVER (PARTITION BY LOWER(TRIM(email))) AS last_at
+          FROM invitations
+          WHERE COALESCE(status, '') NOT IN (#{void})
+            AND NULLIF(TRIM(email), '') IS NOT NULL
+            AND created_at BETWEEN #{q(since)} AND #{q(as_of)}
+        ) t
+        WHERE created_at > last_at - INTERVAL '#{REGULAR_WINDOW_DAYS} days'
+        GROUP BY email, last_at
+        HAVING COUNT(*) >= #{REGULAR_MIN_ORDERS}
+           AND last_at < #{q(as_of - LOST_AFTER_DAYS.days)}
+           AND last_at >= #{q(as_of - LOST_LOOKBACK_DAYS.days)}
+        ORDER BY orders DESC, last_at DESC
+        LIMIT #{LOST_LIMIT}
+      SQL
+      Invitation.connection.select_all(sql).map do |r|
+        last_at = Time.zone.parse(r["last_at"].to_s)
+        LostClient.new(email: r["email"], orders: r["orders"].to_i, last_at: last_at,
+                       days_silent: (to - last_at.to_date).to_i,
+                       agency: ActiveModel::Type::Boolean.new.cast(r["agency"]) || false)
+      end
+    end
+  end
+
   def total
     current_counts.values.sum
   end
@@ -110,6 +157,10 @@ class InvitationsReport
   end
 
   private
+
+  def q(time)
+    Invitation.connection.quote(time.utc.strftime("%Y-%m-%d %H:%M:%S.%6N"))
+  end
 
   def current_counts
     @current_counts ||= counts_for(from, to)
