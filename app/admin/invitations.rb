@@ -127,8 +127,13 @@ ActiveAdmin.register Invitation do
     render partial: "admin/invitations/hotel_datalist"
 
     f.inputs "Invitation Details" do
-      f.input :price
-      f.input :package, as: :select, collection: Invitation.tariff_price(currency: f.object.currency.to_sym, tariff: f.object.tariff.to_sym).keys
+      f.input :price, hint: (f.object.new_record? ? 'Можно не заполнять — посчитается по валюте, тарифу и пакету.' : nil)
+      # У новой заявки валюта и тариф ещё не заданы — выбираются здесь.
+      if f.object.new_record?
+        f.input :currency, as: :select, collection: Invitation.currencies, include_blank: false
+        f.input :tariff, as: :select, collection: Invitation.tariffs, include_blank: false
+      end
+      f.input :package, as: :select, collection: Invitation.packages_for(currency: f.object.currency, tariff: f.object.tariff)
       f.input :purpose, as: :select, collection: Invitation::PURPOSES.invert, include_blank: false, label: 'Purpose of visit'
       f.input :status, as: :select, collection: Invitation::STATUSES.invert, include_blank: false,
               hint: 'Duplicate — повторная заявка, Cancelled — клиент отказался (например, из-за ошибки). Такие заявки не удаляются, но не попадают в статистику и рассылки.'

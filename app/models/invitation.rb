@@ -156,7 +156,30 @@ class Invitation < ApplicationRecord
     tariff_price(currency: :usd, tariff: INDIA_TARIFF).dig(package.to_s.to_sym, :price)
   end
 
+  DEFAULT_CURRENCY = "eur"
+  DEFAULT_TARIFF = "default"
+
+  def self.currencies
+    tariff_price_table.keys.map(&:to_s)
+  end
+
+  def self.tariffs
+    tariff_price_table.values.flat_map(&:keys).uniq.map(&:to_s)
+  end
+
+  # Пакеты тарифа; если валюта/тариф не заданы или такой пары нет — все пакеты.
+  def self.packages_for(currency:, tariff:)
+    prices = tariff_price(currency: (currency.presence || DEFAULT_CURRENCY).to_sym,
+                          tariff: (tariff.presence || DEFAULT_TARIFF).to_sym)
+    keys = prices ? prices.keys : tariff_price_table.values.flat_map(&:values).flat_map(&:keys).uniq
+    keys.map(&:to_s)
+  end
+
   def self.tariff_price(currency: :eur, tariff: :default)
+    tariff_price_table.dig(currency.to_s.to_sym, tariff.to_s.to_sym)
+  end
+
+  def self.tariff_price_table
     all_tariffs = {
       eur: {
         default: {
@@ -205,7 +228,7 @@ class Invitation < ApplicationRecord
       }
     }
 
-    all_tariffs[currency][tariff]
+    all_tariffs
   end
 
   # Какие поля можно использовать в фильтрах ActiveAdmin (Ransack)
@@ -375,10 +398,14 @@ class Invitation < ApplicationRecord
     errors.add(:seal_right, "must differ from the left seal") if seal_left == seal_right
   end
 
+  # Цену, введённую вручную в админке, не перезаписываем.
   def set_price
-    apply_india_citizen_tariff
-    get_tariff_price = Invitation.tariff_price(currency: self.currency.to_sym, tariff: self.tariff.to_sym)
-    self.price = get_tariff_price.dig(self.package.to_sym, :price)
+    self.currency = DEFAULT_CURRENCY if currency.blank?
+    self.tariff = DEFAULT_TARIFF if tariff.blank?
+    apply_india_citizen_tariff if price.blank?
+    return if price.present?
+
+    self.price = Invitation.tariff_price(currency: currency, tariff: tariff)&.dig(package.to_s.to_sym, :price)
   end
 
   # Только для базового тарифа: акционные и агентские тарифы не трогаем.
